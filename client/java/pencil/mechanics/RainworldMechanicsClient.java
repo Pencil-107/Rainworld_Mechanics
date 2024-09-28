@@ -49,7 +49,7 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 	public static boolean climbJumping = false;
 	public static boolean miscSet = false;
 
-	private static KeyBinding crawlKey = null;
+	private static KeyBinding crawlKey = Keybinds.crawlKey;
 	private static KeyBinding grabKey = Keybinds.grabKey;
 	private static KeyBinding interactKey = Keybinds.interactKey;
 	private static KeyBinding dropKey = Keybinds.dropKey;
@@ -58,23 +58,22 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		ClientTickEvents.START_CLIENT_TICK.register(client -> {
 			clientPlayer = client;
-			crawlKey = client.options.sneakKey;
+			//crawlKey = client.options.sneakKey;
 			if (client.player != null && !client.player.isCreative() && !client.player.isSpectator()) {
 
 				playerEntity = MinecraftClient.getInstance().player;
 				Keybinds.main();
-				if (!crawlKey.isPressed()) {
+				if (!crawlKey.isPressed() && !client.player.isSubmergedInWater()) {
 					pencil.mechanics.player.movement.WallMovement.main();
 					pencil.mechanics.player.movement.PoleClimbing.main(client, grabKey);
 					crawling = false;
+					client.player.setNoGravity(false);
 				} else {
 					if (crawlKey.isPressed() && !client.player.isSubmergedInWater()) {
 						crawling = true;
 						pencil.mechanics.player.movement.Crawling.main(client);
-						client.player.setPose(EntityPose.SWIMMING);
+						//client.player.setPose(EntityPose.SWIMMING);
 						ClientSidePacketRegistry.INSTANCE.sendToServer(RainworldMechanics.CRAWL_PACKET_ID, PacketByteBufs.empty());
-					} else {
-						client.player.setNoGravity(false);
 					}
 				}
 				if (modelID != lastModelID) {

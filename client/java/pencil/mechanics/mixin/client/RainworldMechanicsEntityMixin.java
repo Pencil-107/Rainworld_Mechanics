@@ -13,9 +13,7 @@ import pencil.mechanics.RainworldMechanicsClient;
 @Mixin(Entity.class)
 public abstract class RainworldMechanicsEntityMixin {
 
-    @Shadow public abstract void requestTeleport(double destX, double destY, double destZ);
-
-    @Shadow public abstract void setSwimming(boolean swimming);
+    @Shadow public abstract boolean isCrawling();
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void tick(CallbackInfo ci) {
@@ -24,8 +22,17 @@ public abstract class RainworldMechanicsEntityMixin {
         }
     }
 
-    @Inject(method = "isSneaking", at = @At("HEAD"), cancellable = true)
-    private void isSwimming(CallbackInfoReturnable<Boolean> cir) {
-        cir.cancel();
+    @Inject(method = "isCrawling", at = @At("RETURN"), cancellable = true)
+    private void isCrawling(CallbackInfoReturnable<Boolean> cir) {
+        if (RainworldMechanicsClient.crawling) {
+            cir.setReturnValue(true);
+        }
+    }
+
+    @Inject(method = "isInSwimmingPose", at = @At("RETURN"), cancellable = true)
+    private void isInSwimmingPose(CallbackInfoReturnable<Boolean> cir) {
+        if (RainworldMechanicsClient.crawling) {
+            cir.setReturnValue(true);
+        }
     }
 }
