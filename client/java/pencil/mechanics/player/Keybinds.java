@@ -51,7 +51,7 @@ public class Keybinds {
             client.options.inventoryKey.setPressed(false);
             client.options.swapHandsKey.setPressed(false);
             client.options.dropKey.setPressed(false);
-            //client.options.sneakKey.setPressed(false);
+            client.options.sneakKey.setPressed(false);
             client.options.chatKey.setPressed(false);
         }
     }

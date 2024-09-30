@@ -3,6 +3,7 @@ package pencil.mechanics.player.movement;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Box;
 import pencil.mechanics.RainworldMechanicsClient;
 import pencil.mechanics.init.BlockInit;
 
@@ -42,6 +43,7 @@ public class Crawling {
                 }
             }
             if (client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() == BlockInit.CRAWL_FRAME) {
+                RainworldMechanicsClient.crawlFrame = true;
                 client.player.setNoGravity(true);
                 if (client.options.forwardKey.isPressed()) {
                     client.player.setVelocity(client.player.getRotationVector().getX()* 0.1, client.player.getRotationVector().getY()* 0.1, client.player.getRotationVector().getZ()* 0.1);
@@ -50,12 +52,14 @@ public class Crawling {
                 }
             } else {
                 client.player.setNoGravity(false);
+                RainworldMechanicsClient.crawlFrame = false;
             }
         } else {
             heldTime = 0;
             pressed = false;
             soundPlayed = false;
             client.player.setNoGravity(false);
+            RainworldMechanicsClient.crawlFrame = false;
         }
     }
 }

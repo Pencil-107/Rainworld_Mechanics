@@ -49,49 +49,56 @@ public class RainworldMechanicsHudMixin implements HudRenderCallback {
     }
 
 
+
     @Override
     public void onHudRender(DrawContext drawContext, float tickDelta) {
     }
 
     @Inject(method = "renderHotbar", at = @At("HEAD"), cancellable = true)
     public void onRenderHotbar (float tickDelta, DrawContext context, CallbackInfo ci) {
-        if (!client.player.isCreative()) {
+        if (!client.player.isCreative() && !client.player.isSpectator()) {
             ci.cancel();
         }
     }
 
     @Inject(method = "renderStatusEffectOverlay", at = @At("HEAD"), cancellable = true)
     public void onRenderStatusEffect (DrawContext context, CallbackInfo ci) {
-        ci.cancel();
+        if (!client.player.isCreative() && !client.player.isSpectator()) {
+            ci.cancel();
+        }
     }
 
     @Inject(method = "renderHealthBar", at = @At("HEAD"), cancellable = true)
     public void onRenderHealth (DrawContext context, PlayerEntity player, int x, int y, int lines, int regeneratingHeartIndex, float maxHealth, int lastHealth, int health, int absorption, boolean blinking, CallbackInfo ci) {
-        ci.cancel();
+        if (!client.player.isCreative() && !client.player.isSpectator()) {
+            ci.cancel();
+        }
     }
 
     @Inject(method = "renderExperienceBar", at = @At("HEAD"), cancellable = true)
     public void onRenderXP (DrawContext context, int x, CallbackInfo ci) {
-        ci.cancel();
+        if (!client.player.isCreative() && !client.player.isSpectator()) {
+            ci.cancel();
+        }
     }
 
     @Inject(method = "renderStatusBars", at = @At("HEAD"), cancellable = true)
     public void onRenderStatus (DrawContext context, CallbackInfo ci) {
-        if (!client.player.isCreative()) {
+        if (!client.player.isCreative() && !client.player.isSpectator()) {
             int foodLevel = RainworldMechanicsClient.foodLevel;
-            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/background_edge.png"), 0, this.scaledHeight-guiY, 0, 0, 307, 74, 307, 74);
-            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/background_corner.png"), 0, this.scaledHeight - guiY, 0, 0, 307, 74, 307, 74);
-            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hunger/hunger"+foodLevel+".png"), guiX+47, this.scaledHeight-(18+(guiY/2)), 0, 0, 256, 38, 256, 38);
-            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/timer/timer"+timerLevel+".png"), guiX-8, this.scaledHeight-(guiY + 18), 1, 0, 108, 109, 108, 109);
-            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/karma/karma"+RainworldMechanicsClient.karmaLevel+".png"), guiX-8, this.scaledHeight-(guiY + 18), 1, 0, 108, 109, 108, 109);
+            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/background_edge.png"), 0, this.scaledHeight-(int) ((scaledWidth/3)/4.15), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/4.15), scaledWidth/3,  (int) ((scaledWidth/3)/4.15));
+            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/background_corner.png"), 0, this.scaledHeight-(int) ((scaledWidth/3)/4.15), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/4.15), scaledWidth/3,  (int) ((scaledWidth/3)/4.15));
+            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hunger/hunger"+foodLevel+".png"), 0, this.scaledHeight-(int) ((scaledWidth/3)/4.15), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/4.15), scaledWidth/3,  (int) ((scaledWidth/3)/4.15));
+            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/timer/timer"+timerLevel+".png"), 0, this.scaledHeight-(int) ((scaledWidth/3)/4.15), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/4.15), scaledWidth/3,  (int) ((scaledWidth/3)/4.15));
+            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/karma/karma"+RainworldMechanicsClient.karmaLevel+".png"), 0, this.scaledHeight-(int) ((scaledWidth/3)/4.15), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/4.15), scaledWidth/3,  (int) ((scaledWidth/3)/4.15));
             if (RainworldMechanicsClient.crawling && Crawling.pressed) {
-                context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/crawl_charge.png"), ((guiX)+8-64) + (int) (64*(Crawling.heldTime*(1/Crawling.heldTimeMax))), this.scaledHeight-(guiY+38), 0+(64*(Crawling.heldTime*(1/Crawling.heldTimeMax))), 0, 64, 32, 128, 32);
+                context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/crawl_charge.png"), (((guiX)+scaledWidth/80)-scaledWidth/10) + (int) (scaledWidth/10*(Crawling.heldTime*(1/Crawling.heldTimeMax))), (this.scaledHeight-(int) ((scaledWidth/3)/4.15))-((scaledWidth/10)/2), 0+((scaledWidth/10)*(Crawling.heldTime*(1/Crawling.heldTimeMax))), 0, scaledWidth/10, (scaledWidth/10)/2, scaledWidth/5, (scaledWidth/10)/2);
             } else if (RainworldMechanicsClient.crawling) {
-                context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/crawl_charge.png"), ((guiX)+8), this.scaledHeight-(guiY+38), 64, 0, 64, 32, 128, 32);
+                context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/crawl_charge.png"), ((guiX)+scaledWidth/80), (this.scaledHeight-(int) (((scaledWidth/3)/4.15))-((scaledWidth/10)/2)), scaledWidth/10, 0, scaledWidth/10, (scaledWidth/10)/2, scaledWidth/5, (scaledWidth/10)/2);
             } else if (PoleClimbing.climbing) {
-                context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/state_horizontal_climbing.png"), guiX-5, this.scaledHeight-(guiY+54), 0, 0, 64, 64, 64, 64);
+                context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/state_horizontal_climbing.png"), guiX-scaledWidth/80, (this.scaledHeight-(int) ((scaledWidth/3)/4.15))-scaledWidth/10, 0, 0, scaledWidth/10, scaledWidth/10, scaledWidth/10, scaledWidth/10);
             } else {
-                context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/state_standing.png"), guiX-5, this.scaledHeight-(guiY+54), 0, 0, 64, 64, 64, 64);
+                context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/state_standing.png"), guiX-scaledWidth/80, (this.scaledHeight-(int) ((scaledWidth/3)/4.15))-scaledWidth/10, 0, 0, scaledWidth/10, scaledWidth/10, scaledWidth/10, scaledWidth/10);
             }
             ci.cancel();
         }

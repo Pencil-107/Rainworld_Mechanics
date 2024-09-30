@@ -7,6 +7,8 @@ import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.item.Item;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -42,6 +44,32 @@ public abstract class RainworldMechanicsPlayerMixin extends Entity {
             if (RainworldMechanicsClient.clientPlayer != null && RainworldMechanicsClient.jumpHeld) {
                 ci.cancel();
             }
+        }
+    }
+
+    @Override
+    public NbtCompound writeNbt(NbtCompound nbt) {
+        if (this.isPlayer()) {
+            nbt.putInt("food_level", RainworldMechanicsClient.lastFoodLevel);
+            nbt.putInt("karma_level", RainworldMechanicsClient.lastKarmaLevel);
+            nbt.putBoolean("starving", RainworldMechanicsClient.starving);
+            nbt.putBoolean("shielded", RainworldMechanicsClient.karmaShielded);
+            nbt.putInt("stored_item", Item.getRawId(RainworldMechanicsClient.lastStoredItem.getItem()));
+        }
+        return super.writeNbt(nbt);
+    }
+
+    @Override
+    public void readNbt(NbtCompound nbt) {
+        super.readNbt(nbt);
+        if (this.isPlayer()) {
+            RainworldMechanicsClient.foodLevel = nbt.getInt("food_level");
+            RainworldMechanicsClient.lastFoodLevel = nbt.getInt("food_level");
+            RainworldMechanicsClient.karmaLevel = nbt.getInt("karma_level");
+            RainworldMechanicsClient.lastKarmaLevel = nbt.getInt("karma_level");
+            RainworldMechanicsClient.starving = nbt.getBoolean("starving");
+            RainworldMechanicsClient.karmaShielded = nbt.getBoolean("shielded");
+            RainworldMechanicsClient.lastStoredItem = Item.byRawId(nbt.getInt("stored_item")).getDefaultStack();
         }
     }
 }
