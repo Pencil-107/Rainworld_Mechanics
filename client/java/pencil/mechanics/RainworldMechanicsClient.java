@@ -167,7 +167,7 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(), BlockInit.PIPE_BLOCK);
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(), BlockInit.PIPE_ENTRANCE);
 
-		ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> view != null && view.getBlockEntityRenderData(pos) instanceof Integer integer ? integer : 0x3495eb, BlockInit.PIPE_BLOCK);
+		ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> view != null && view.getBlockEntityRenderData(pos) instanceof Integer integer ? integer : 0x1f1f1f, BlockInit.PIPE_BLOCK);
 	}
 
 	public static void onHibernated() {
