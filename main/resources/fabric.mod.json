@@ -3,9 +3,9 @@
 	"id": "rw-mechanics",
 	"version": "${version}",
 	"name": "Rainworld Mechanics",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Rainworld Mechanics for the Rainworld MC Project",
 	"authors": [
-		"Me!"
+		"Pencil_107, Fouriiiis"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
