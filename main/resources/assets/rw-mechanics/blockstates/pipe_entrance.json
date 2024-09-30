@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "orientation=north": {
+      "model": "rw-mechanics:block/pipe_entrance"
+    },
+    "orientation=south": {
+      "model": "rw-mechanics:block/pipe_entrance",
+      "y": 180
+    },
+    "orientation=east": {
+      "model": "rw-mechanics:block/pipe_entrance",
+      "y": 90
+    },
+    "orientation=west": {
+      "model": "rw-mechanics:block/pipe_entrance",
+      "y": 270
+    },
+    "orientation=up": {
+      "model": "rw-mechanics:block/pipe_entrance",
+      "x": -90
+    },
+    "orientation=down": {
+      "model": "rw-mechanics:block/pipe_entrance",
+      "x": 90
+    }
+  }
+}
