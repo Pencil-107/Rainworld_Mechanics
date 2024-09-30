@@ -9,7 +9,6 @@ import net.minecraft.util.math.Box;
 public class CrawlingServer {
     public static void main(PlayerEntity client) {
         client.setPose(EntityPose.SWIMMING);
-        client.setBoundingBox(Box.of(client.getBoundingBox().getCenter(), 0.6f, 0.6f, 0.6f));
         client.jump();
     }
 }

@@ -6,6 +6,7 @@ import net.minecraft.registry.Registry;
 import pencil.mechanics.RainworldMechanics;
 
 public class ItemInit {
+
     public static <T extends Item> T register(String name, T item) {
         return Registry.register(Registries.ITEM, RainworldMechanics.id(name), item);
     }
