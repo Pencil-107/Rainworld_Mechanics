@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.GameMode;
@@ -51,9 +52,14 @@ public class TransportManager {
         BlockState nextState = world.getBlockState(nextPos);
         Block nextBlock = nextState.getBlock();
 
-        if (nextBlock instanceof TelePipeBlock) {
+        if (nextBlock instanceof TelePipeBlock && world.getBlockEntity(nextPos) instanceof TelePipeBlockEntity) {
             // Find the nearest non-TelePipe block
-            BlockPos teleportPos = findNearestNonTelePipe(world, nextPos, data.direction);
+            BlockPos teleportPos = null;
+            if (((TelePipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(nextPos))).linkedPos != null) {
+                teleportPos = ((TelePipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(nextPos))).linkedPos;
+            } else {
+                data.isCompleted = true;
+            }
             if (teleportPos != null) {
                 data.currentPos = teleportPos;
                 data.direction = getNextDirection(world, teleportPos, data.direction);
@@ -83,15 +89,8 @@ public class TransportManager {
     }
 
     private static BlockPos findNearestNonTelePipe(World world, BlockPos startPos, Direction initialDirection) {
-        BlockPos currentPos = null;
-        Direction direction = null;
-        if (((TelePipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(startPos))).linkedPos != null) {
-            currentPos = ((TelePipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(startPos))).linkedPos;
-            direction = getNextDirection(world, currentPos, initialDirection);
-        } else {
-            currentPos = startPos;
-            direction = getNextDirection(world, currentPos, initialDirection);
-        }
+        BlockPos currentPos = startPos;
+        Direction direction = initialDirection;
 
         while (true) {
             currentPos = currentPos.offset(direction);
