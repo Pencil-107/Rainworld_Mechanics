@@ -1,11 +1,13 @@
 package pencil.mechanics.block.pipes;
 
+import com.mojang.authlib.minecraft.client.MinecraftClient;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
@@ -23,6 +25,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
+import pencil.mechanics.init.BlockInit;
 
 import java.util.Objects;
 
@@ -106,7 +109,7 @@ public class PipeBlock extends Block implements BlockEntityProvider {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient) {
+        if (!world.isClient && player.isCreative()) {
             // Output the block's connections to the console
             System.out.println("North: " + state.get(NORTH));
             System.out.println("South: " + state.get(SOUTH));
@@ -115,11 +118,12 @@ public class PipeBlock extends Block implements BlockEntityProvider {
             System.out.println("Up: " + state.get(UP));
             System.out.println("Down: " + state.get(DOWN));
 
-            if (!player.getMainHandStack().isEmpty() && Block.getBlockFromItem(player.getMainHandStack().getItem()) != null) {
+            if (!player.getMainHandStack().isEmpty() && Block.getBlockFromItem(player.getMainHandStack().getItem()) != null && Block.getBlockFromItem(player.getMainHandStack().getItem()) != BlockInit.PIPE_BLOCK && Block.getBlockFromItem(player.getMainHandStack().getItem()) != BlockInit.PIPE_ENTRANCE) {
                 if (world.getBlockEntity(pos) instanceof PipeBlockEntity) {
                     if (world.getBlockEntity(pos) != null) {
                         ((PipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(pos))).setBaseBlock(Block.getBlockFromItem(player.getMainHandStack().getItem()).getDefaultState());
-                        ((PipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(pos))).markDirty();
+                        Objects.requireNonNull(world.getBlockEntity(pos)).markDirty();
+                        world.updateListeners(pos, state, state, 0);
                     }
                 }
             }
@@ -146,7 +150,7 @@ public class PipeBlock extends Block implements BlockEntityProvider {
             System.out.println("setting lit to false");
             world.setBlockState(pos, state.with(LIT, false));
             if (world.getBlockEntity(pos) instanceof PipeBlockEntity pipeBlockEntity) {
-                final int newColor = 0x000000;
+                final int newColor = 0x1f1f1f;
                 pipeBlockEntity.color = newColor;
                 pipeBlockEntity.markDirty();
                 world.updateListeners(pos, state, state, 0);

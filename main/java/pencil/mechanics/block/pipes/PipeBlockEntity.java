@@ -17,7 +17,7 @@ public class PipeBlockEntity extends BlockEntity {
 
     private BlockState baseBlockState;
 
-    public int color = 0x000000;
+    public int color = 0x1f1f1f;
 
     public PipeBlockEntity(BlockPos pos, BlockState state) {
         super(RainworldMechanics.PIPE_BLOCK_ENTITY, pos, state);

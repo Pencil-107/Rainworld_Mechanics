@@ -14,6 +14,7 @@ import pencil.mechanics.init.BlockInit;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class TransportManager {
     private static final Map<Entity, TransportData> transports = new HashMap<>();
@@ -82,8 +83,15 @@ public class TransportManager {
     }
 
     private static BlockPos findNearestNonTelePipe(World world, BlockPos startPos, Direction initialDirection) {
-        BlockPos currentPos = startPos;
-        Direction direction = initialDirection;
+        BlockPos currentPos = null;
+        Direction direction = null;
+        if (((TelePipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(startPos))).linkedPos != null) {
+            currentPos = ((TelePipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(startPos))).linkedPos;
+            direction = getNextDirection(world, currentPos, initialDirection);
+        } else {
+            currentPos = startPos;
+            direction = getNextDirection(world, currentPos, initialDirection);
+        }
 
         while (true) {
             currentPos = currentPos.offset(direction);
