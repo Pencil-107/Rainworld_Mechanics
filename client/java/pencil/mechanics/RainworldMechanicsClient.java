@@ -5,30 +5,32 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.HandledScreens;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.entity.EntityPose;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 import pencil.mechanics.gui.screen.KarmaScreen;
 import pencil.mechanics.gui.screen.PlayerModelScreen;
 import pencil.mechanics.init.BlockInit;
+import pencil.mechanics.init.EntityTypeInit;
 import pencil.mechanics.player.Keybinds;
 import pencil.mechanics.render.block.PipeBlockEntityRenderer;
-
-import java.util.Objects;
+import pencil.mechanics.render.entity.GreenLizardRenderer;
+import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
 public class RainworldMechanicsClient implements ClientModInitializer {
+
+	public static final DefaultedEntityGeoModel GREEN_LIZARD_MODEL = new DefaultedEntityGeoModel(new Identifier(RainworldMechanics.MOD_ID, "green_lizard"));
 
 	public static MinecraftClient clientPlayer = null;
 	public static ClientPlayerEntity playerEntity;
@@ -93,6 +95,9 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+
+		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.GREEN_LIZARD, (context) -> new GreenLizardRenderer(context, GREEN_LIZARD_MODEL));
+
 		ClientTickEvents.START_CLIENT_TICK.register(client -> {
 			clientPlayer = client;
 			//crawlKey = client.options.sneakKey;
