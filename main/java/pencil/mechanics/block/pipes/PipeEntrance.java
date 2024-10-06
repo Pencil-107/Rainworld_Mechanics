@@ -3,6 +3,7 @@ package pencil.mechanics.block.pipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.data.client.VariantSetting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
@@ -19,6 +20,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import pencil.mechanics.init.ItemInit;
 
 public class PipeEntrance extends Block {
 
@@ -49,20 +51,45 @@ public class PipeEntrance extends Block {
         }
     }
 
+    public enum Variation implements StringIdentifiable {
+        ONE(0),
+        TWO(1),
+        THREE(2),
+        FOUR(3),
+        FIVE(4);
+
+        private final int value;
+
+        Variation(int value) {
+            this.value = value;
+        }
+
+        @Override
+        public String asString() {
+            return this.name().toLowerCase();
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
     // Property for pipe connection direction
     public static final EnumProperty<Orientation> ORIENTATION = EnumProperty.of("orientation", Orientation.class);
     public static final EnumProperty<Orientation> CONNECTION = EnumProperty.of("connection", Orientation.class);
+    public static final EnumProperty<Variation> VARIATION = EnumProperty.of("variation", Variation.class);
 
     public PipeEntrance(Settings settings) {
         super(settings);
         setDefaultState(this.stateManager.getDefaultState()
-            .with(ORIENTATION, Orientation.NORTH)
-            .with(CONNECTION, Orientation.NORTH)); // Default to NORTH, but will be updated upon placement
+                .with(ORIENTATION, Orientation.NORTH)
+                .with(CONNECTION, Orientation.NORTH)
+                .with(VARIATION, Variation.ONE));
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(ORIENTATION, CONNECTION);
+        builder.add(ORIENTATION, CONNECTION, VARIATION);
     }
 
     @Override
@@ -133,7 +160,20 @@ public class PipeEntrance extends Block {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient && player != null) {
+        if (player != null && player.isCreative() && player.getMainHandStack().getItem() == ItemInit.PIPE_WAND) {
+            if (state.get(VARIATION).value == 0) {
+                world.setBlockState(pos, state.with(VARIATION, Variation.TWO));
+            } else if (state.get(VARIATION).value == 1) {
+                world.setBlockState(pos, state.with(VARIATION, Variation.THREE));
+            } else if (state.get(VARIATION).value == 2) {
+                world.setBlockState(pos, state.with(VARIATION, Variation.FOUR));
+            } else if (state.get(VARIATION).value == 3) {
+                world.setBlockState(pos, state.with(VARIATION, Variation.FIVE));
+            } else if (state.get(VARIATION).value == 4) {
+                world.setBlockState(pos, state.with(VARIATION, Variation.ONE));
+            }
+            world.updateListeners(pos, state, state, 0);
+        } else if (!world.isClient && player != null && !player.isCreative()) {
             TransportManager.startTransport(player, pos, state.get(CONNECTION).getDirection());
         }
         return ActionResult.SUCCESS;

@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
+import pencil.mechanics.RainworldMechanics;
 import pencil.mechanics.init.BlockInit;
 
 import java.util.HashMap;
@@ -57,18 +58,12 @@ public class TransportManager {
             BlockPos teleportPos = null;
             if (((TelePipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(nextPos))).linkedPos != null) {
                 teleportPos = ((TelePipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(nextPos))).linkedPos;
-            } else {
-                data.isCompleted = true;
             }
             if (teleportPos != null) {
                 data.currentPos = teleportPos;
                 data.direction = getNextDirection(world, teleportPos, data.direction);
-                if (world.getBlockState(data.currentPos).getBlock() == BlockInit.PIPE_ENTRANCE) {
-                    data.isCompleted = true;
-                }
+                System.out.println("can i get uhhhhh");
                 // Do not mark as completed; let transport continue
-            } else {
-                data.isCompleted = true; // End if no valid teleport position found
             }
         } else if (nextBlock instanceof PipeBlock) {
             data.currentPos = nextPos;
@@ -113,7 +108,7 @@ public class TransportManager {
         Direction[] directions = Direction.values();
 
         for (Direction direction : directions) {
-            if (direction != currentDirection.getOpposite()) {
+            if (direction != currentDirection.getOpposite() || world.getBlockState(pos).getBlock() == RainworldMechanics.TELEPIPE_BLOCK) {
                 BlockState neighborState = world.getBlockState(pos.offset(direction));
                 Block neighborBlock = neighborState.getBlock();
                 if (neighborBlock instanceof PipeBlock || neighborBlock instanceof PipeEntrance || neighborBlock instanceof TelePipeBlock) {

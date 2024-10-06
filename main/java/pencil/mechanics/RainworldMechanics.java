@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pencil.mechanics.block.pipes.*;
 import pencil.mechanics.init.BlockInit;
+import pencil.mechanics.init.EntityTypeInit;
 import pencil.mechanics.init.ItemInit;
 import pencil.mechanics.init.itemGroupInit;
 
@@ -97,6 +98,7 @@ public class RainworldMechanics implements ModInitializer {
 		itemGroupInit.load();
 		BlockInit.load();
 		ItemInit.load();
+		EntityTypeInit.load();
 
 		// Register the custom item class for PIPE_BLOCK and PIPE_ENTRANCE
 		Registry.register(Registries.ITEM, new Identifier("rw-mechanics", "pipe_block"), new PipeBlockItem(PIPE_BLOCK, new FabricItemSettings()));
