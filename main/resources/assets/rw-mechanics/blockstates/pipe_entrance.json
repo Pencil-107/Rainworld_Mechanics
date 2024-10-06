@@ -1,26 +1,118 @@
 {
   "variants": {
-    "orientation=north": {
-      "model": "rw-mechanics:block/pipe_entrance"
+    "orientation=north,variation=one": {
+      "model": "rw-mechanics:block/pipe_entrance_0"
     },
-    "orientation=south": {
-      "model": "rw-mechanics:block/pipe_entrance",
+    "orientation=south,variation=one": {
+      "model": "rw-mechanics:block/pipe_entrance_0",
       "y": 180
     },
-    "orientation=east": {
-      "model": "rw-mechanics:block/pipe_entrance",
+    "orientation=east,variation=one": {
+      "model": "rw-mechanics:block/pipe_entrance_0",
       "y": 90
     },
-    "orientation=west": {
-      "model": "rw-mechanics:block/pipe_entrance",
+    "orientation=west,variation=one": {
+      "model": "rw-mechanics:block/pipe_entrance_0",
       "y": 270
     },
-    "orientation=up": {
-      "model": "rw-mechanics:block/pipe_entrance",
+    "orientation=up,variation=one": {
+      "model": "rw-mechanics:block/pipe_entrance_0",
       "x": -90
     },
-    "orientation=down": {
-      "model": "rw-mechanics:block/pipe_entrance",
+    "orientation=down,variation=one": {
+      "model": "rw-mechanics:block/pipe_entrance_0",
+      "x": 90
+    },
+    "orientation=north,variation=two": {
+      "model": "rw-mechanics:block/pipe_entrance_1"
+    },
+    "orientation=south,variation=two": {
+      "model": "rw-mechanics:block/pipe_entrance_1",
+      "y": 180
+    },
+    "orientation=east,variation=two": {
+      "model": "rw-mechanics:block/pipe_entrance_1",
+      "y": 90
+    },
+    "orientation=west,variation=two": {
+      "model": "rw-mechanics:block/pipe_entrance_1",
+      "y": 270
+    },
+    "orientation=up,variation=two": {
+      "model": "rw-mechanics:block/pipe_entrance_1",
+      "x": -90
+    },
+    "orientation=down,variation=two": {
+      "model": "rw-mechanics:block/pipe_entrance_1",
+      "x": 90
+    },
+    "orientation=north,variation=three": {
+      "model": "rw-mechanics:block/pipe_entrance_2"
+    },
+    "orientation=south,variation=three": {
+      "model": "rw-mechanics:block/pipe_entrance_2",
+      "y": 180
+    },
+    "orientation=east,variation=three": {
+      "model": "rw-mechanics:block/pipe_entrance_2",
+      "y": 90
+    },
+    "orientation=west,variation=three": {
+      "model": "rw-mechanics:block/pipe_entrance_2",
+      "y": 270
+    },
+    "orientation=up,variation=three": {
+      "model": "rw-mechanics:block/pipe_entrance_2",
+      "x": -90
+    },
+    "orientation=down,variation=three": {
+      "model": "rw-mechanics:block/pipe_entrance_2",
+      "x": 90
+    },
+    "orientation=north,variation=four": {
+      "model": "rw-mechanics:block/pipe_entrance_3"
+    },
+    "orientation=south,variation=four": {
+      "model": "rw-mechanics:block/pipe_entrance_3",
+      "y": 180
+    },
+    "orientation=east,variation=four": {
+      "model": "rw-mechanics:block/pipe_entrance_3",
+      "y": 90
+    },
+    "orientation=west,variation=four": {
+      "model": "rw-mechanics:block/pipe_entrance_3",
+      "y": 270
+    },
+    "orientation=up,variation=four": {
+      "model": "rw-mechanics:block/pipe_entrance_3",
+      "x": -90
+    },
+    "orientation=down,variation=four": {
+      "model": "rw-mechanics:block/pipe_entrance_3",
+      "x": 90
+    },
+    "orientation=north,variation=five": {
+      "model": "rw-mechanics:block/pipe_entrance_4"
+    },
+    "orientation=south,variation=five": {
+      "model": "rw-mechanics:block/pipe_entrance_4",
+      "y": 180
+    },
+    "orientation=east,variation=five": {
+      "model": "rw-mechanics:block/pipe_entrance_4",
+      "y": 90
+    },
+    "orientation=west,variation=five": {
+      "model": "rw-mechanics:block/pipe_entrance_4",
+      "y": 270
+    },
+    "orientation=up,variation=five": {
+      "model": "rw-mechanics:block/pipe_entrance_4",
+      "x": -90
+    },
+    "orientation=down,variation=five": {
+      "model": "rw-mechanics:block/pipe_entrance_4",
       "x": 90
     }
   }

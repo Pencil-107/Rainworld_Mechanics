@@ -3,6 +3,11 @@
   "block.rw-mechanics.pole_x": "Pole Horizontal X",
   "block.rw-mechanics.pole_z": "Pole Horizontal Z",
   "block.rw-mechanics.crawl_frame": "Crawl Frame",
+  "block.rw-mechanics.pipe_block": "Travel Pipe",
+  "block.rw-mechanics.pipe_entrance": "Travel Pipe Entrance",
+  "block.rw-mechanics.telepipe_block": "Telepipe",
+
+  "item.rw-mechanics.pipe_wand": "Pipe Editor",
 
   "category.rw-mechanics.rainworld": "Rainworld Movement",
   "key.rw-mechanics.crawl": "Crawl",
