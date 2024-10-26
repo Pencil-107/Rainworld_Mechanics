@@ -25,12 +25,9 @@ import pencil.mechanics.init.BlockInit;
 import pencil.mechanics.init.EntityTypeInit;
 import pencil.mechanics.player.Keybinds;
 import pencil.mechanics.render.block.PipeBlockEntityRenderer;
-import pencil.mechanics.render.entity.GreenLizardRenderer;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
 public class RainworldMechanicsClient implements ClientModInitializer {
-
-	public static final DefaultedEntityGeoModel GREEN_LIZARD_MODEL = new DefaultedEntityGeoModel(new Identifier(RainworldMechanics.MOD_ID, "green_lizard"));
 
 	public static MinecraftClient clientPlayer = null;
 	public static ClientPlayerEntity playerEntity;
@@ -95,8 +92,6 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-
-		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.GREEN_LIZARD, (context) -> new GreenLizardRenderer(context, GREEN_LIZARD_MODEL));
 
 		ClientTickEvents.START_CLIENT_TICK.register(client -> {
 			clientPlayer = client;

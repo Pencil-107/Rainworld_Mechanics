@@ -14,7 +14,7 @@ public class Keybinds {
     public static KeyBinding crawlKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.rw-mechanics.crawl", // The translation key of the keybinding's name
             InputUtil.Type.KEYSYM, // The type of the keybinding, KEYSYM for keyboard, MOUSE for mouse.
-            GLFW.GLFW_KEY_LEFT_SHIFT, // The keycode of the key
+            GLFW.GLFW_KEY_UNKNOWN, // The keycode of the key
             "category.rw-mechanics.rainworld" // The translation key of the keybinding's category.
     ));
 

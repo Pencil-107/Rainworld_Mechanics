@@ -32,7 +32,7 @@ public abstract class RainworldMechanicsPlayerMixin extends Entity {
     private void tick(CallbackInfo ci) {
         if (this.isPlayer()) {
             this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).setBaseValue(RainworldMechanicsClient.moveSpeed);
-            if (RainworldMechanicsClient.clientPlayer != null && RainworldMechanicsClient.crawling) {
+            if (RainworldMechanicsClient.clientPlayer != null && this.isCrawling()) {
                 this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED).setBaseValue(RainworldMechanicsClient.moveSpeed*2);
             }
         }

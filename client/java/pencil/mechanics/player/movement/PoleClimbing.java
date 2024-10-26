@@ -188,7 +188,7 @@ public class PoleClimbing {
                             climbRotation += 90;
                         }
                     }
-                    if (client.options.forwardKey.isPressed() && client.player.getPitch() < 8 && client.player.getPos().getY() <= pole.toCenterPos().getY() + 0.5) {
+                    if (client.options.forwardKey.isPressed() && client.player.getPitch() < 8 && client.player.getPos().getY() <= pole.toCenterPos().getY() + 0.5 && client.world.getBlockState(pole.add(0,1,0)).getBlock() == BlockInit.POLE_Y) {
                         client.player.setVelocity(0, 0.15, 0);
                         client.player.setPos(climbOffsetPos.getX(), client.player.getY(), climbOffsetPos.getZ());
                     } else if (client.options.forwardKey.isPressed() && client.player.getPitch() > -16) {
