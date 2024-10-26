@@ -79,7 +79,7 @@ public class RainworldMechanics implements ModInitializer {
 			packetContext.getTaskQueue().execute(() -> { // Execute on the main thread
 				if(packetContext.getPlayer() != null){
 					CommandManager commandManager = packetContext.getPlayer().getServer().getCommandManager();
-					commandManager.executeWithPrefix(packetContext.getPlayer().getCommandSource(), "/cpm setskin -f "+packetContext.getPlayer().getEntityName()+" "+ modelID);
+					//commandManager.executeWithPrefix(packetContext.getPlayer().getCommandSource(), "/cpm setskin -f "+packetContext.getPlayer().getEntityName()+" "+ modelID);
 				}
 			});
 		});
