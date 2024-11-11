@@ -4,6 +4,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
@@ -15,8 +16,10 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.ClientConnection;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.Box;
 import org.lwjgl.glfw.GLFW;
 import pencil.mechanics.gui.screen.KarmaScreen;
 import pencil.mechanics.gui.screen.PlayerModelScreen;
@@ -27,6 +30,9 @@ import pencil.mechanics.render.block.PipeBlockEntityRenderer;
 import java.util.Objects;
 
 public class RainworldMechanicsClient implements ClientModInitializer {
+
+	// True only if mod is on server
+	public static boolean modEnabled = false;
 
 	// Player client and player entity references
 	public static MinecraftClient clientPlayer = null;
@@ -67,6 +73,7 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 	public static boolean crouchPressed = false;
 	public static boolean crawlFrame = false;
 	public static boolean climbJumping = false;
+	public static boolean climbing = false;
 	public static boolean miscSet = false;
 
 	// Stored item variables
@@ -98,6 +105,27 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 
+		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+			// Checks the server for the mod
+			if (client.player != null) {
+				// Asks if mod is on the server
+				PacketByteBuf buf = PacketByteBufs.create(); // Create Packet
+				ClientSidePacketRegistry.INSTANCE.sendToServer(RainworldMechanics.SLUGCAT_MISC_PACKET_ID, buf); // Send to server
+
+				// If the server says yes enable mod
+				ClientSidePacketRegistry.INSTANCE.register(RainworldMechanics.SLUGCAT_MISC_PACKET_ID, (packetContext, attachedData) -> {
+					boolean serversideResponse = attachedData.readBoolean();
+					packetContext.getTaskQueue().execute(() -> {
+						modEnabled = true;
+					});
+				});
+			}
+		});
+
+		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+			modEnabled = false;
+		});
+
 		// Runs at the start of each client tick
 		ClientTickEvents.START_CLIENT_TICK.register(client -> {
 			// Sets a reference to the player
@@ -108,6 +136,12 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 
 			// Checks if the player is in game and in survival/adventure mode
 			if (client.player != null && !client.player.isCreative() && !client.player.isSpectator()) {
+
+				if (foodLevel<maxFoodLevel) {
+					client.player.getHungerManager().setFoodLevel(19);
+				} else {
+					client.player.getHungerManager().setFoodLevel(20);
+				}
 
 				// Opens karma menu for testing purposes
 				if (testingKey1.wasPressed() && !cycling) {
@@ -129,14 +163,17 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 				}
 
 				// Checks if the crawl key was pressed and toggles crawl mode
-				if (crawlKey.isPressed()) {
-					if (crawling && !crouchPressed) { // Checks if already in a crawl and if true stops crawling
-						crawling = false;
-						crouchPressed = true;
-					} else if (!crawling && !crouchPressed) { // Checks if already in a crawl and if not start crawling
+				if (crawlKey.isPressed() && !crawling && !crouchPressed && !climbing) {
 						crawling = true;
 						crouchPressed = true;
-					}
+				}
+				if (crawling && client.options.sprintKey.isPressed()) { // Checks if already in a crawl and if true stops crawling
+					crawling = false;
+					crouchPressed = true;
+				}
+
+				if (client.world.getBlockState(client.player.getBlockPos()).getBlock() == BlockInit.PIPE_ENTRANCE) {
+					crawling = true;
 				}
 
 				// Resets the above crawl toggle function on release of the crawl key
@@ -150,15 +187,16 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 				// activates the movement keybinds
 				Keybinds.main();
 
-				// Checks if the player is standing and not crawling or submerged in water
-				if (!crawling && !client.player.isSubmergedInWater()) { // Then activates the movement code
+				pencil.mechanics.player.movement.PoleClimbing.main(client, grabKey);
+
+				// Checks if the player is standing and not crawling
+				if (!crawling) { // Then activates the movement code
 					pencil.mechanics.player.movement.WallMovement.main();
-					pencil.mechanics.player.movement.PoleClimbing.main(client, grabKey);
 					client.player.setNoGravity(false);
 				} else { // Runs if crawling or submerged in water
 
-					// Checks if crawling and not submerged in water
-					if (crawling && !client.player.isSubmergedInWater()) { // Then activates the crawling code
+					// Checks if crawling
+					if (crawling && !climbing) { // Then activates the crawling code
 						pencil.mechanics.player.movement.Crawling.main(client);
 						client.player.setPose(EntityPose.SWIMMING);
 						ClientSidePacketRegistry.INSTANCE.sendToServer(RainworldMechanics.CRAWL_PACKET_ID, PacketByteBufs.empty());
@@ -183,9 +221,6 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 
 				// Runs once on startup or when entering survival/adventure mode to set misc values
 				if (!miscSet) {
-					// this packet used to disable fall damage, does nothing anymore but could be used for any misc server packet requests
-					PacketByteBuf buf = PacketByteBufs.create(); // Create Packet
-					ClientSidePacketRegistry.INSTANCE.sendToServer(RainworldMechanics.SLUGCAT_MISC_PACKET_ID, buf); // Send to server
 
 					// Sets the initial player model
 					PacketByteBuf bufModel = PacketByteBufs.create(); // Create Packet

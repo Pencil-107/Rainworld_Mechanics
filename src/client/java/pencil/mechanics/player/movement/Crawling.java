@@ -42,7 +42,7 @@ public class Crawling {
                     pressed = false;
                 }
             }
-            if (client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() == BlockInit.CRAWL_FRAME) {
+            if (client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() == BlockInit.CRAWL_FRAME || client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() == BlockInit.PIPE_ENTRANCE) {
                 RainworldMechanicsClient.crawlFrame = true;
                 client.player.setNoGravity(true);
                 if (client.options.forwardKey.isPressed()) {

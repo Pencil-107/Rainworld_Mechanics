@@ -142,7 +142,7 @@ public class KarmaScreen extends Screen implements NamedScreenHandlerFactory {
             time--;
         } else if (time <= 0 && karmaLevel >= prevKarma) {
             RainworldMechanicsClient.cycling = false;
-            RainworldMechanicsClient.karmaScren = false;
+            RainworldMechanicsClient.karmaScreen = false;
             RainworldMechanicsClient.lastKarmaLevel = RainworldMechanicsClient.karmaLevel;
             client.currentScreen.close();
         }

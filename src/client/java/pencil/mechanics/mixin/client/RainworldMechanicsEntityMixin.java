@@ -49,6 +49,14 @@ public abstract class RainworldMechanicsEntityMixin {
         }
     }
 
+    @Inject(method = "isCollidable", at = @At("RETURN"), cancellable = true)
+    private void canCollide(CallbackInfoReturnable<Boolean> cir) {
+        if (RainworldMechanicsClient.climbing) {
+            cir.setReturnValue(false);
+        }
+        cir.setReturnValue(false);
+    }
+
     @Inject(method = "isSwimming", at = @At("RETURN"), cancellable = true)
     private void isSwimming(CallbackInfoReturnable<Boolean> cir) {
         if (RainworldMechanicsClient.crawling) {
