@@ -1,0 +1,69 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pole_connector",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pole_connector",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pole_connector",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pole_connector",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pole_connector",
+        "x": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pole_connector",
+        "x": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "apply": {
+        "model": "rw-mechanics:block/pole_joint",
+        "uvlock": true
+      }
+    }
+  ]
+}

@@ -1,15 +1,15 @@
 {
   "variants": {
     "": [
-{"model": "minecraft:block/pole0", "weight": 10, "y": 0, "x": 90},
-{"model": "minecraft:block/pole1", "weight": 10, "y": 0, "x": 90},
-{"model": "minecraft:block/pole2", "weight": 10, "y": 0, "x": 90},
-{"model": "minecraft:block/pole3", "weight": 10, "y": 0, "x": 90},
-{"model": "minecraft:block/pole4", "weight": 10, "y": 0, "x": 90},
-{"model": "minecraft:block/pole5", "weight": 10, "y": 0, "x": 90},
-{"model": "minecraft:block/pole6", "weight": 10, "y": 0, "x": 90},
-{"model": "minecraft:block/pole7", "weight": 10, "y": 0, "x": 90},
-{"model": "minecraft:block/pole8", "weight": 120, "y": 0, "x": 90}
+{"model": "rw-mechanics:block/pole0", "weight": 10, "y": 0, "x": 90},
+{"model": "rw-mechanics:block/pole1", "weight": 10, "y": 0, "x": 90},
+{"model": "rw-mechanics:block/pole2", "weight": 10, "y": 0, "x": 90},
+{"model": "rw-mechanics:block/pole3", "weight": 10, "y": 0, "x": 90},
+{"model": "rw-mechanics:block/pole4", "weight": 10, "y": 0, "x": 90},
+{"model": "rw-mechanics:block/pole5", "weight": 10, "y": 0, "x": 90},
+{"model": "rw-mechanics:block/pole6", "weight": 10, "y": 0, "x": 90},
+{"model": "rw-mechanics:block/pole7", "weight": 10, "y": 0, "x": 90},
+{"model": "rw-mechanics:block/pole8", "weight": 120, "y": 0, "x": 90}
 ]
 
   }
