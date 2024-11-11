@@ -3,12 +3,17 @@ package pencil.mechanics.block.pipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.block.Waterloggable;
 import net.minecraft.data.client.VariantSetting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.StringIdentifiable;
@@ -22,9 +27,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import pencil.mechanics.init.ItemInit;
 
-public class PipeEntrance extends Block {
+public class PipeEntrance extends Block implements Waterloggable{
 
     private Entity lastCol;
+    public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
     // Enum for orientation
     public enum Orientation implements StringIdentifiable {
@@ -84,12 +90,13 @@ public class PipeEntrance extends Block {
         setDefaultState(this.stateManager.getDefaultState()
                 .with(ORIENTATION, Orientation.NORTH)
                 .with(CONNECTION, Orientation.NORTH)
-                .with(VARIATION, Variation.ONE));
+                .with(VARIATION, Variation.ONE)
+                .with(WATERLOGGED, false));
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(ORIENTATION, CONNECTION, VARIATION);
+        builder.add(ORIENTATION, CONNECTION, VARIATION, WATERLOGGED);
     }
 
     @Override
@@ -115,7 +122,12 @@ public class PipeEntrance extends Block {
             }
         }
 
-        return state.with(CONNECTION, connectionOrientation);
+        return state.with(CONNECTION, connectionOrientation).with(WATERLOGGED, ctx.getWorld().getFluidState(ctx.getBlockPos()).isOf(Fluids.WATER));
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
     }
 
     private Direction getConnectionDirection(ItemPlacementContext ctx, Direction excludeDirection) {
@@ -145,6 +157,14 @@ public class PipeEntrance extends Block {
 
             return state.with(CONNECTION, connectionOrientation);
         }
+
+        if (state.get(WATERLOGGED)) {
+            // For 1.17 and below:
+            // world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+            // For versions since 1.18 below 1.21.2:
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+        }
+
         return state;
     }
 
@@ -178,4 +198,5 @@ public class PipeEntrance extends Block {
         }
         return ActionResult.SUCCESS;
     }
+
 }

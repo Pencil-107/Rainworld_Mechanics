@@ -37,7 +37,7 @@ public class TransportManager {
                     data.ticksLeft--;
                 } else {
                     movePlayer(player, data);
-                    data.ticksLeft = 2; // Reset the tick counter
+                    data.ticksLeft = 1; // Reset the tick counter
                 }
                 // Override the player's position to prevent them from moving
                 player.teleport(data.currentPos.getX() + 0.5, data.currentPos.getY(), data.currentPos.getZ() + 0.5);
@@ -62,7 +62,6 @@ public class TransportManager {
             if (teleportPos != null) {
                 data.currentPos = teleportPos;
                 data.direction = getNextDirection(world, teleportPos, data.direction);
-                System.out.println("can i get uhhhhh");
                 // Do not mark as completed; let transport continue
             }
         } else if (nextBlock instanceof PipeBlock) {

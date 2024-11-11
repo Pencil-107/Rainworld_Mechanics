@@ -147,7 +147,6 @@ public class PipeBlock extends Block implements BlockEntityProvider {
     //@Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (state.get(LIT)) {
-            System.out.println("setting lit to false");
             world.setBlockState(pos, state.with(LIT, false));
             if (world.getBlockEntity(pos) instanceof PipeBlockEntity pipeBlockEntity) {
                 final int newColor = 0x1f1f1f;
@@ -160,7 +159,6 @@ public class PipeBlock extends Block implements BlockEntityProvider {
 
     // Method to switch to lit state for a set amount of time
     public void switchLitState(World world, BlockPos pos, BlockState state, int ticks) {
-        System.out.println("setting lit to true");
         world.setBlockState(pos, state.with(LIT, true));
         world.scheduleBlockTick(pos, this, ticks);
         if (world.getBlockEntity(pos) instanceof PipeBlockEntity pipeBlockEntity) {

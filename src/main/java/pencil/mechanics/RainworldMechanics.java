@@ -1,9 +1,11 @@
 package pencil.mechanics;
 
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.AbstractBlock;
@@ -11,17 +13,21 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
+import net.minecraft.world.World;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pencil.mechanics.block.pipes.*;
@@ -86,7 +92,9 @@ public class RainworldMechanics implements ModInitializer {
 
 		ServerSidePacketRegistry.INSTANCE.register(SLUGCAT_MISC_PACKET_ID, (packetContext, attachedData) -> {
 			packetContext.getTaskQueue().execute(() -> { // Execute on the main thread
-
+				PacketByteBuf buf = PacketByteBufs.create(); // Create Packet
+				buf.writeBoolean(true);
+				ServerSidePacketRegistry.INSTANCE.sendToPlayer(packetContext.getPlayer(), RainworldMechanics.SLUGCAT_MISC_PACKET_ID, buf);
 			});
 		});
 

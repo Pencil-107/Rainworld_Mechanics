@@ -4,12 +4,14 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FenceBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import pencil.mechanics.RainworldMechanics;
+import pencil.mechanics.block.PoleJoint;
 import pencil.mechanics.block.PoleX;
 import pencil.mechanics.block.PoleY;
 import pencil.mechanics.block.PoleZ;
@@ -22,6 +24,8 @@ public class BlockInit {
     public static final Block POLE_Y = registerWithItem("pole_y", new PoleY(AbstractBlock.Settings.create()
             .noBlockBreakParticles().noCollision()));
     public static final Block POLE_Z = registerWithItem("pole_z", new PoleZ(AbstractBlock.Settings.create()
+            .noBlockBreakParticles().noCollision()));
+    public static final Block POLE_JOINT = registerWithItem("pole_joint", new PoleJoint(AbstractBlock.Settings.create()
             .noBlockBreakParticles().noCollision()));
     public static final Block CRAWL_FRAME = registerWithItem("crawl_frame", new Block(AbstractBlock.Settings.create()
             .noBlockBreakParticles().noCollision()));
