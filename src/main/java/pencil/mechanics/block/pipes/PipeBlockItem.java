@@ -2,14 +2,12 @@ package pencil.mechanics.block.pipes;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import pencil.mechanics.init.BlockInit;
 
 public class PipeBlockItem extends BlockItem {
 
@@ -21,7 +19,8 @@ public class PipeBlockItem extends BlockItem {
     public ActionResult useOnBlock(ItemUsageContext context) {
         World world = context.getWorld();
         BlockPos targetPos = context.getBlockPos();
-        BlockState baseBlockState = Blocks.RED_WOOL.getDefaultState();
+        // set base block state to the target block state by default
+        BlockState baseBlockState = world.getBlockState(targetPos);
 
         // Check if the target block is a PipeBlock and use its stored base block state
         BlockEntity targetBlockEntity = world.getBlockEntity(targetPos);
