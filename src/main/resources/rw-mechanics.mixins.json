@@ -3,9 +3,7 @@
 	"package": "pencil.mechanics.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"ExampleMixin",
-		"EntityMixin",
-		"LivingEntityMixin"
+		"ExampleMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
