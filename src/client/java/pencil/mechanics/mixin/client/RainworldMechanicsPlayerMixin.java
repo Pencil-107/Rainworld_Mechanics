@@ -10,6 +10,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -21,15 +22,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import pencil.mechanics.RainworldMechanics;
 import pencil.mechanics.RainworldMechanicsClient;
+import pencil.mechanics.player.movement.Crawling;
 
 @Mixin(LivingEntity.class)
 public abstract class RainworldMechanicsPlayerMixin extends Entity {
 
     @Shadow public abstract @Nullable EntityAttributeInstance getAttributeInstance(EntityAttribute attribute);
 
+    @Shadow protected abstract void takeShieldHit(LivingEntity attacker);
+
     public RainworldMechanicsPlayerMixin(EntityType<?> type, World world) {
         super(type, world);
     }
+
     @Inject(method = "tick", at = @At("HEAD"))
     private void tick(CallbackInfo ci) {
         if (this.isPlayer()) {
@@ -41,12 +46,10 @@ public abstract class RainworldMechanicsPlayerMixin extends Entity {
         }
     }
 
-    @Inject(method = "jump", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "jump", at = @At("RETURN"), cancellable = true)
     private void jump(CallbackInfo ci) {
-        if (this.isPlayer()) {
-            if (RainworldMechanicsClient.clientPlayer != null && RainworldMechanicsClient.jumpHeld) {
-                ci.cancel();
-            }
+        if (this.isPlayer() && Crawling.pressed) {
+            ci.cancel();
         }
     }
 

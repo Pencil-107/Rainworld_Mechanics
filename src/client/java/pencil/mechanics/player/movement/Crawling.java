@@ -41,7 +41,7 @@ public class Crawling {
                     pressed = false;
                 } else if (client.player.isOnGround()){
                     RainworldMechanicsClient.jumpHeld = false;
-                    client.player.addVelocity(0, 0.6, 0);
+                    //client.player.addVelocity(0, 0.6, 0);
                     heldTime = 0;
                     soundPlayed = false;
                     pressed = false;

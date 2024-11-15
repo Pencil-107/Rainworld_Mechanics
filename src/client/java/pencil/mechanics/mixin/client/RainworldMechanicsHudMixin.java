@@ -82,13 +82,16 @@ public class RainworldMechanicsHudMixin implements HudRenderCallback {
 
     @Inject(method = "renderStatusBars", at = @At("HEAD"), cancellable = true)
     public void onRenderStatus (DrawContext context, CallbackInfo ci) {
-        if (!client.player.isCreative() && !client.player.isSpectator()) {
+        if (client.player != null && !client.player.isCreative() && !client.player.isSpectator()) {
             int foodLevel = RainworldMechanicsClient.foodLevel;
             context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/hunger/hunger_count.png"), (scaledWidth/3) , this.scaledHeight-(int) ((scaledWidth/3)/2.78), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/2.78), scaledWidth/3,  (int) ((scaledWidth/3)/2.78));
             context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/karma/karma_symbol.png"), (scaledWidth/3) , this.scaledHeight-(int) ((scaledWidth/3)/2.78), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/2.78), scaledWidth/3,  (int) ((scaledWidth/3)/2.78));
             context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/timer/rain_timer.png"), (scaledWidth/3) , this.scaledHeight-(int) ((scaledWidth/3)/2.78), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/2.78), scaledWidth/3,  (int) ((scaledWidth/3)/2.78));
             context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/slugcat/slugcat_symbol.png"), (scaledWidth/3) , this.scaledHeight-(int) ((scaledWidth/3)/2.78), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/2.78), scaledWidth/3,  (int) ((scaledWidth/3)/2.78));
             context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/inventory_slots.png"), (scaledWidth/3) , this.scaledHeight-(int) ((scaledWidth/3)/2.78), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/2.78), scaledWidth/3,  (int) ((scaledWidth/3)/2.78));
+            if (RainworldMechanicsClient.stunned) {
+                context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/black_vignette.png"), 0 , 0, 0, 0, scaledWidth,  scaledHeight, scaledWidth,  scaledHeight);
+            }
             ci.cancel();
         }
     }
