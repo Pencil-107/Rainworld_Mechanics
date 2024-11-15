@@ -13,8 +13,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pencil.mechanics.RainworldMechanicsClient;
-import pencil.mechanics.player.movement.Crawling;
-import pencil.mechanics.player.movement.PoleClimbing;
 
 @Mixin(InGameHud.class)
 public class RainworldMechanicsHudMixin implements HudRenderCallback {
@@ -86,20 +84,11 @@ public class RainworldMechanicsHudMixin implements HudRenderCallback {
     public void onRenderStatus (DrawContext context, CallbackInfo ci) {
         if (!client.player.isCreative() && !client.player.isSpectator()) {
             int foodLevel = RainworldMechanicsClient.foodLevel;
-            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/background_edge.png"), 0, this.scaledHeight-(int) ((scaledWidth/3)/4.15), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/4.15), scaledWidth/3,  (int) ((scaledWidth/3)/4.15));
-            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/background_corner.png"), 0, this.scaledHeight-(int) ((scaledWidth/3)/4.15), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/4.15), scaledWidth/3,  (int) ((scaledWidth/3)/4.15));
-            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hunger/hunger"+foodLevel+".png"), 0, this.scaledHeight-(int) ((scaledWidth/3)/4.15), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/4.15), scaledWidth/3,  (int) ((scaledWidth/3)/4.15));
-            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/timer/timer"+timerLevel+".png"), 0, this.scaledHeight-(int) ((scaledWidth/3)/4.15), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/4.15), scaledWidth/3,  (int) ((scaledWidth/3)/4.15));
-            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/karma/karma"+RainworldMechanicsClient.karmaLevel+".png"), 0, this.scaledHeight-(int) ((scaledWidth/3)/4.15), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/4.15), scaledWidth/3,  (int) ((scaledWidth/3)/4.15));
-            if (RainworldMechanicsClient.crawling && Crawling.pressed) {
-                context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/crawl_charge.png"), (((guiX)+scaledWidth/80)-scaledWidth/10) + (int) (scaledWidth/10*(Crawling.heldTime*(1/Crawling.heldTimeMax))), (this.scaledHeight-(int) ((scaledWidth/3)/4.15))-((scaledWidth/10)/2), 0+((scaledWidth/10)*(Crawling.heldTime*(1/Crawling.heldTimeMax))), 0, scaledWidth/10, (scaledWidth/10)/2, scaledWidth/5, (scaledWidth/10)/2);
-            } else if (RainworldMechanicsClient.crawling) {
-                context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/crawl_charge.png"), ((guiX)+scaledWidth/80), (this.scaledHeight-(int) (((scaledWidth/3)/4.15))-((scaledWidth/10)/2)), scaledWidth/10, 0, scaledWidth/10, (scaledWidth/10)/2, scaledWidth/5, (scaledWidth/10)/2);
-            } else if (PoleClimbing.climbing) {
-                context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/state_horizontal_climbing.png"), guiX-scaledWidth/80, (this.scaledHeight-(int) ((scaledWidth/3)/4.15))-scaledWidth/10, 0, 0, scaledWidth/10, scaledWidth/10, scaledWidth/10, scaledWidth/10);
-            } else {
-                context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/state_standing.png"), guiX-scaledWidth/80, (this.scaledHeight-(int) ((scaledWidth/3)/4.15))-scaledWidth/10, 0, 0, scaledWidth/10, scaledWidth/10, scaledWidth/10, scaledWidth/10);
-            }
+            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/hunger/hunger_count.png"), (scaledWidth/3) , this.scaledHeight-(int) ((scaledWidth/3)/2.78), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/2.78), scaledWidth/3,  (int) ((scaledWidth/3)/2.78));
+            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/karma/karma_symbol.png"), (scaledWidth/3) , this.scaledHeight-(int) ((scaledWidth/3)/2.78), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/2.78), scaledWidth/3,  (int) ((scaledWidth/3)/2.78));
+            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/timer/rain_timer.png"), (scaledWidth/3) , this.scaledHeight-(int) ((scaledWidth/3)/2.78), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/2.78), scaledWidth/3,  (int) ((scaledWidth/3)/2.78));
+            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/slugcat/slugcat_symbol.png"), (scaledWidth/3) , this.scaledHeight-(int) ((scaledWidth/3)/2.78), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/2.78), scaledWidth/3,  (int) ((scaledWidth/3)/2.78));
+            context.drawTexture(new Identifier("rw-mechanics", "textures/gui/hud/inventory_slots.png"), (scaledWidth/3) , this.scaledHeight-(int) ((scaledWidth/3)/2.78), 0, 0, scaledWidth/3,  (int) ((scaledWidth/3)/2.78), scaledWidth/3,  (int) ((scaledWidth/3)/2.78));
             ci.cancel();
         }
     }

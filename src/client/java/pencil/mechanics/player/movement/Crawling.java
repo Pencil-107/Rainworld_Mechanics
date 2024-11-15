@@ -3,7 +3,7 @@ package pencil.mechanics.player.movement;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Box;
+import pencil.mechanics.ConfigValues;
 import pencil.mechanics.RainworldMechanicsClient;
 import pencil.mechanics.init.BlockInit;
 
@@ -11,25 +11,30 @@ public class Crawling {
     public static float heldTime = 0;
     public static final float heldTimeMax = 35;
     public static boolean pressed = false;
-    public static float crawlJumpMultiplier = 1.3f  ;
+    public static float crawlJumpXMultiplier = ConfigValues.crawlJumpXMultiplier;
+    public static float crawlJumpYMultiplier = ConfigValues.crawlJumpYMultiplier;
     public static boolean soundPlayed = false;
 
     public static void main(MinecraftClient client) {
         if (RainworldMechanicsClient.clientPlayer != null) {
+            if (crawlJumpXMultiplier != ConfigValues.crawlJumpXMultiplier || crawlJumpYMultiplier != ConfigValues.crawlJumpYMultiplier) {
+                crawlJumpXMultiplier = ConfigValues.crawlJumpXMultiplier;
+                crawlJumpYMultiplier = ConfigValues.crawlJumpYMultiplier;
+            }
             if (client.options.jumpKey.isPressed() && !client.options.forwardKey.isPressed()) {
+                RainworldMechanicsClient.jumpHeld = true;
                 if (heldTime < heldTimeMax) {
                     ++heldTime;
                 }
                 pressed = true;
-                RainworldMechanicsClient.jumpHeld = true;
             }
             if (heldTime >= heldTimeMax && !soundPlayed){
                 client.player.playSound(SoundEvent.of(Identifier.of("minecraft", "block.note_block.bell")), 1, 1);
                 soundPlayed = true;
             }
-            if (!client.options.jumpKey.isPressed() && pressed == true && client.player.isOnGround()) {
+            if (!client.options.jumpKey.isPressed() && pressed && client.player.isOnGround()) {
                 if (heldTime >= heldTimeMax && !client.options.forwardKey.isPressed()) {
-                    client.player.addVelocity(client.player.getRotationVector().getX()* crawlJumpMultiplier, 0.6, client.player.getRotationVector().getZ()* crawlJumpMultiplier);
+                    client.player.addVelocity(client.player.getRotationVector().getX()* crawlJumpXMultiplier, crawlJumpYMultiplier, client.player.getRotationVector().getZ()* crawlJumpXMultiplier);
                     RainworldMechanicsClient.jumpHeld = false;
                     heldTime = 0;
                     soundPlayed = false;

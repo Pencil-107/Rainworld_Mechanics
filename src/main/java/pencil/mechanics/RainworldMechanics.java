@@ -3,9 +3,11 @@ package pencil.mechanics;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.AbstractBlock;
@@ -18,19 +20,27 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
+import net.minecraft.world.PersistentState;
+import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.core.jmx.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pencil.mechanics.block.pipes.*;
+import pencil.mechanics.commands.MechanicsCommands;
 import pencil.mechanics.init.BlockInit;
 import pencil.mechanics.init.EntityTypeInit;
 import pencil.mechanics.init.ItemInit;
@@ -46,6 +56,7 @@ public class RainworldMechanics implements ModInitializer {
 	public static final Identifier CRAWL_PACKET_ID = Identifier.of("rw-mechanics", "crawl_player");
 	public static final Identifier DROP_PACKET_ID = Identifier.of("rw-mechanics", "drop_item");
 	public static final Identifier CLEAR_SLOT_PACKET_ID = Identifier.of("rw-mechanics", "clear_slot");
+	public static final Identifier STUN_PLAYER_PACKET_ID = Identifier.of("rw-mechanics", "stun_player");
 
 	public static Block PIPE_BLOCK = BlockInit.PIPE_BLOCK;
 	public static BlockEntityType<PipeBlockEntity> PIPE_BLOCK_ENTITY;
@@ -55,8 +66,16 @@ public class RainworldMechanics implements ModInitializer {
 	public static Block TELEPIPE_BLOCK;
 	public static BlockEntityType<TelePipeBlockEntity> TELEPIPE_BLOCK_ENTITY;
 
+	public static final Identifier PIPE_LOOP_ID = Identifier.of("rw-mechanics", "pipe_loop");
+	public static SoundEvent PIPE_LOOP_EVENT = SoundEvent.of(PIPE_LOOP_ID);
+
+	private static final double LETHAL_VELOCITY = 60; // Threshold for lethal impact velocity in m/s
+	private static final double STUN_VELOCITY = 35; // Threshold for stun velocity in m/s
+
 	@Override
 	public void onInitialize() {
+
+		Registry.register(Registries.SOUND_EVENT, RainworldMechanics.PIPE_LOOP_ID, PIPE_LOOP_EVENT);
 
 		// Crawls
 		ServerSidePacketRegistry.INSTANCE.register(CRAWL_PACKET_ID, (packetContext, attachedData) -> {
@@ -102,6 +121,7 @@ public class RainworldMechanics implements ModInitializer {
 		BlockInit.load();
 		ItemInit.load();
 		EntityTypeInit.load();
+		MechanicsCommands.main();
 
 		// Register the custom item class for PIPE_BLOCK and PIPE_ENTRANCE
 		Registry.register(Registries.ITEM, new Identifier("rw-mechanics", "pipe_block"), new PipeBlockItem(PIPE_BLOCK, new FabricItemSettings()));
@@ -115,6 +135,55 @@ public class RainworldMechanics implements ModInitializer {
 		TELEPIPE_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier("rw-mechanics", "telepipe_block_entity"), FabricBlockEntityTypeBuilder.create(TelePipeBlockEntity::new, TELEPIPE_BLOCK).build(null));
 
 		TransportManager.initialize();
+
+		ServerPlayNetworking.registerGlobalReceiver(VelocityFallPacket.ID, (server, player, handler, buf, responseSender) -> {
+			VelocityFallPacket packet = VelocityFallPacket.fromBytes(buf);
+
+			server.execute(() -> {
+				double clientVelocityY = packet.getVelocityY();
+
+				// convert from 20 ticks per second to 40 ticks per second
+
+				double impactVelocity = Math.abs(clientVelocityY * 20);
+
+				// Handle fall damage based on calculated impact velocity
+				applyFallDamage(player, impactVelocity);
+			});
+		});
+	}
+
+	private void applyFallDamage(ServerPlayerEntity player, double impactVelocity) {
+		// Rolling check, using a hypothetical method to check if rolling (you might need a custom flag on the player)
+		boolean isRolling = isPlayerRolling(player);
+
+		if (impactVelocity > LETHAL_VELOCITY) {
+			// Death condition
+			player.damage(player.getWorld().getDamageSources().fall(), Float.MAX_VALUE);
+			//LOGGER.info("Player died due to high impact velocity.");
+		} else if (impactVelocity > STUN_VELOCITY) {
+			// Stun condition
+			float stunDuration = lerpMap(impactVelocity, STUN_VELOCITY, LETHAL_VELOCITY, 40f, 140f) / 2;
+			PacketByteBuf buf = PacketByteBufs.create(); // Create Packet
+			buf.writeFloat(stunDuration);
+			ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, RainworldMechanics.STUN_PLAYER_PACKET_ID, buf);
+			player.sendMessage(Text.of("Stunned for "+stunDuration), true);
+			//LOGGER.info("Player stunned for " + stunDuration + " ticks due to fall.");
+		} else if (isRolling) {
+			//LOGGER.info("Player avoided damage due to rolling.");
+		} else {
+			//LOGGER.info("Minor fall impact for player.");
+		}
+	}
+
+	private boolean isPlayerRolling(ServerPlayerEntity player) {
+		return false;
+	}
+
+	// Linear interpolation method to map value between two ranges
+	private static float lerpMap(double value, double min1, double max1, double min2, double max2) {
+
+		value = Math.max(min1, Math.min(max1, value));
+		return (float) ((value - min1) / (max1 - min1) * (max2 - min2) + min2);
 	}
 
 	public static Identifier id(String path) {

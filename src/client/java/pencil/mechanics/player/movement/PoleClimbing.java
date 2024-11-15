@@ -4,14 +4,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.Property;
-import net.minecraft.text.Text;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
+import pencil.mechanics.ConfigValues;
 import pencil.mechanics.RainworldMechanicsClient;
 import pencil.mechanics.init.BlockInit;
 
@@ -24,6 +22,9 @@ public class PoleClimbing {
     public static Vec3d climbOffsetPos = new Vec3d(0, 0, 0);
     public static double climbOffset = 0.19;
     public static double axis = 1;
+
+    public static float poleJumpX = ConfigValues.poleJumpXMultiplier;
+    public static float poleJumpY = ConfigValues.poleJumpYMultiplier;
 
     private static boolean verticalSet = false;
     private static boolean touchingPole = false;
@@ -38,6 +39,11 @@ public class PoleClimbing {
 
     public static void main(MinecraftClient client, KeyBinding grabKey) {
         HitResult hit1 = client.cameraEntity.raycast(3, 0, false);
+
+        if (poleJumpX != ConfigValues.poleJumpXMultiplier || poleJumpY != ConfigValues.poleJumpYMultiplier) {
+            poleJumpX = ConfigValues.poleJumpXMultiplier;
+            poleJumpY = ConfigValues.poleJumpYMultiplier;
+        }
 
         if (!setPole) {
             if (client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() == BlockInit.POLE_X) {
@@ -137,7 +143,6 @@ public class PoleClimbing {
                     verticalSet = false;
                     axis = 2;
                 }
-                client.player.sendMessage(Text.of(""+client.world.getBlockState(pole).getBlock()), true);
             }
 
             if (client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() != BlockInit.POLE_X && client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() != BlockInit.POLE_Y && client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() != BlockInit.POLE_Z && client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() != BlockInit.POLE_JOINT) {
@@ -242,7 +247,7 @@ public class PoleClimbing {
                         verticalSet = false;
                         setPole = false;
                         RainworldMechanicsClient.climbJumping = true;
-                        client.player.setVelocity(client.player.getRotationVector().getX() * .5, 0.6, client.player.getRotationVector().getZ() * .5);
+                        client.player.setVelocity(client.player.getRotationVector().getX() * poleJumpX, poleJumpY, client.player.getRotationVector().getZ() * poleJumpX);
                         touchingPole = false;
                         climbing = false;
                         set = false;
@@ -317,7 +322,7 @@ public class PoleClimbing {
                         RainworldMechanicsClient.climbJumping = true;
                         climbing = false;
                         pole = null;
-                        client.player.setVelocity(client.player.getRotationVector().getX() * .5, 0.6, client.player.getRotationVector().getZ() * .5);
+                        client.player.setVelocity(client.player.getRotationVector().getX() * poleJumpX, poleJumpY, client.player.getRotationVector().getZ() * poleJumpX);
                         touchingPole = false;
                         set = false;
                         setPole = false;

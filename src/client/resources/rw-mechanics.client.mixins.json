@@ -5,7 +5,9 @@
   "client": [
     "RainworldMechanicsPlayerMixin",
     "RainworldMechanicsEntityMixin",
-    "RainworldMechanicsHudMixin"
+    "RainworldMechanicsHudMixin",
+    "LivingEntityMixin",
+    "ClientPlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

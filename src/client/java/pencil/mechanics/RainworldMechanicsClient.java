@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
@@ -16,10 +17,8 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.ClientConnection;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.Box;
 import org.lwjgl.glfw.GLFW;
 import pencil.mechanics.gui.screen.KarmaScreen;
 import pencil.mechanics.gui.screen.PlayerModelScreen;
@@ -83,6 +82,9 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 	public static float storeTimeMax = 40;
 	public static float lastTime = storeTime;
 
+	public static boolean stunned = false;
+	public static float stunTime = 0;
+
 	// Keybinding Variables
 	private static KeyBinding crawlKey = null;
 	private static final KeyBinding grabKey = Keybinds.grabKey;
@@ -101,6 +103,14 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 			GLFW.GLFW_KEY_U, // The keycode of the key
 			"category.slugcatmovement.rainworld" // The translation key of the keybinding's category.
 	));
+
+	public static void sendFallVelocityPacket(ClientPlayerEntity player) {
+		if (player != null) {
+			double velocityY = player.getVelocity().y;
+			VelocityFallPacket packet = new VelocityFallPacket(velocityY);
+			ClientPlayNetworking.send(VelocityFallPacket.ID, packet.toBytes());
+		}
+	}
 
 	@Override
 	public void onInitializeClient() {
@@ -181,6 +191,25 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 					crouchPressed = false;
 				}
 
+				ClientSidePacketRegistry.INSTANCE.register(RainworldMechanics.STUN_PLAYER_PACKET_ID, (packetContext, attachedData) -> {
+					float stunServerTime = attachedData.readFloat();
+					packetContext.getTaskQueue().execute(() -> {
+						stunned = true;
+						stunTime = stunServerTime;
+					});
+				});
+
+				if (stunned) {
+					crawling = true;
+					client.player.setVelocity(0,0,0);
+					if (stunTime > 0) {
+						stunTime--;
+					} else {
+						stunned = false;
+						stunTime = 0;
+					}
+				}
+
 				// Sets refrence to the player entity
 				playerEntity = MinecraftClient.getInstance().player;
 
@@ -244,10 +273,12 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 		// Color provider for pipes
 		ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> view != null && view.getBlockEntityRenderData(pos) instanceof Integer integer ? integer : 0x1f1f1f, BlockInit.PIPE_BLOCK);
 
-		// Registers pole blocks as transparent
+		// Registers blocks as transparent
 		BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.POLE_X, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.POLE_Y, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.POLE_Z, RenderLayer.getCutout());
+		BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.PIPE_BLOCK, RenderLayer.getCutout());
+		BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.PIPE_ENTRANCE, RenderLayer.getCutout());
 	}
 
 	// Basic hibernation code could probably be improved upon

@@ -4,15 +4,16 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.EntityPose;
+import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 import pencil.mechanics.RainworldMechanics;
-import pencil.mechanics.init.BlockInit;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +26,6 @@ public class TransportManager {
         if (player instanceof ServerPlayerEntity) {
             ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
             GameMode originalGameMode = serverPlayer.interactionManager.getGameMode();
-            serverPlayer.changeGameMode(GameMode.SPECTATOR);
             transports.put(player, new TransportData(startPos, initialDirection, 2, originalGameMode));
         }
     }
@@ -40,7 +40,13 @@ public class TransportManager {
                     data.ticksLeft = 1; // Reset the tick counter
                 }
                 // Override the player's position to prevent them from moving
-                player.teleport(data.currentPos.getX() + 0.5, data.currentPos.getY(), data.currentPos.getZ() + 0.5);
+                if (data.direction.equals(Direction.UP) || data.direction.equals(Direction.DOWN)) {
+                    player.teleport(player.getWorld().getServer().getWorld(World.OVERWORLD), data.currentPos.getX() + 0.5, data.currentPos.getY(), data.currentPos.getZ() + 0.5, PositionFlag.getFlags(0), 0, data.direction.asRotation()*-1);
+                } else {
+                    player.teleport(player.getWorld().getServer().getWorld(World.OVERWORLD), data.currentPos.getX() + 0.5, data.currentPos.getY(), data.currentPos.getZ() + 0.5, PositionFlag.getFlags(0), data.direction.asRotation(), 0);
+                }
+                player.setPose(EntityPose.SWIMMING);
+                player.setHeadYaw(data.direction.asRotation());
                 player.setInvulnerable(true);
             });
             transports.entrySet().removeIf(entry -> entry.getValue().isCompleted);
@@ -62,14 +68,17 @@ public class TransportManager {
             if (teleportPos != null) {
                 data.currentPos = teleportPos;
                 data.direction = getNextDirection(world, teleportPos, data.direction);
+                player.setHeadYaw(data.direction.asRotation());
                 // Do not mark as completed; let transport continue
             }
         } else if (nextBlock instanceof PipeBlock) {
             data.currentPos = nextPos;
             data.direction = getNextDirection(world, nextPos, data.direction);
+            world.playSound(null, player.getBlockPos(), RainworldMechanics.PIPE_LOOP_EVENT, SoundCategory.BLOCKS, 1f, 1f);
+            player.setHeadYaw(data.direction.asRotation());
             ((PipeBlock) nextBlock).switchLitState(world, nextPos, nextState, 5); // Set the lit state for 10 ticks
         } else if (nextBlock instanceof PipeEntrance) {
-            data.currentPos = nextPos;
+            data.currentPos = nextPos.add(new Vec3i(0,1,0));
             data.isCompleted = true; // End the transport
         } else {
             data.isCompleted = true; // End the transport if there's no valid pipe
