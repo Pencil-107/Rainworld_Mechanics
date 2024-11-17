@@ -7,8 +7,11 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import pencil.mechanics.RainworldMechanics;
 import pencil.mechanics.item.PipeWand;
+import pencil.mechanics.item.SpearItem;
 
 public class ItemInit {
+
+    public static final Item SPEAR_ITEM = register("spear_item", new SpearItem(new Item.Settings().maxDamage(250)));
 
     public static final Item PIPE_WAND = register("pipe_wand", new PipeWand(new Item.Settings()));
 

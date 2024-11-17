@@ -3,5 +3,20 @@
     "sounds": [
       "rw-mechanics:pipe_loop"
     ]
+  },
+  "player_jump": {
+    "sounds": [
+      "rw-mechanics:player_jump"
+    ]
+  },
+  "player_wall_jump": {
+    "sounds": [
+      "rw-mechanics:player_wall_jump"
+    ]
+  },
+  "player_wall_slide": {
+    "sounds": [
+      "rw-mechanics:player_wall_slide"
+    ]
   }
 }

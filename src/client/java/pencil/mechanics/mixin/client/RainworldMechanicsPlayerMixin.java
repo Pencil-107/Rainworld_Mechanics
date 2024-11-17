@@ -9,6 +9,7 @@ import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
@@ -31,6 +32,8 @@ public abstract class RainworldMechanicsPlayerMixin extends Entity {
 
     @Shadow protected abstract void takeShieldHit(LivingEntity attacker);
 
+    @Shadow public abstract ItemStack eatFood(World world, ItemStack stack);
+
     public RainworldMechanicsPlayerMixin(EntityType<?> type, World world) {
         super(type, world);
     }
@@ -46,10 +49,20 @@ public abstract class RainworldMechanicsPlayerMixin extends Entity {
         }
     }
 
-    @Inject(method = "jump", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "jump", at = @At("HEAD"), cancellable = true)
     private void jump(CallbackInfo ci) {
-        if (this.isPlayer() && Crawling.pressed) {
+        if (Crawling.pressed) {
+            RainworldMechanicsClient.playerEntity.sendMessage(Text.of("jumped"), true);
             ci.cancel();
+        }
+    }
+
+    @Inject(method = "getJumpVelocity", at = @At("HEAD"), cancellable = true)
+    private void jumpVelocity(CallbackInfoReturnable<Float> cir) {
+        if (Crawling.pressed) {
+            RainworldMechanicsClient.playerEntity.sendMessage(Text.of("jumped"), true);
+            cir.setReturnValue(0f);
+            cir.cancel();
         }
     }
 

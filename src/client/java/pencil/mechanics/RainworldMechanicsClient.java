@@ -7,24 +7,31 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 import pencil.mechanics.gui.screen.KarmaScreen;
 import pencil.mechanics.gui.screen.PlayerModelScreen;
 import pencil.mechanics.init.BlockInit;
+import pencil.mechanics.init.EntityTypeInit;
 import pencil.mechanics.player.Keybinds;
 import pencil.mechanics.render.block.PipeBlockEntityRenderer;
+import pencil.mechanics.render.entity.SpearEntityModel;
+import pencil.mechanics.render.entity.SpearEntityRenderer;
 
 import java.util.Objects;
 
@@ -112,8 +119,13 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 		}
 	}
 
+	public static final EntityModelLayer MODEL_SPEAR_LAYER = new EntityModelLayer(new Identifier("rw-mechanics", "spear"), "main");
+
 	@Override
 	public void onInitializeClient() {
+
+		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.SPEAR, SpearEntityRenderer::new);
+		EntityModelLayerRegistry.registerModelLayer(MODEL_SPEAR_LAYER, SpearEntityModel::getTexturedModelData);
 
 		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
 			// Checks the server for the mod

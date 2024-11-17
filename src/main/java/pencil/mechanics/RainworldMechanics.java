@@ -66,8 +66,16 @@ public class RainworldMechanics implements ModInitializer {
 	public static Block TELEPIPE_BLOCK;
 	public static BlockEntityType<TelePipeBlockEntity> TELEPIPE_BLOCK_ENTITY;
 
+	// Sounds
 	public static final Identifier PIPE_LOOP_ID = Identifier.of("rw-mechanics", "pipe_loop");
 	public static SoundEvent PIPE_LOOP_EVENT = SoundEvent.of(PIPE_LOOP_ID);
+	public static final Identifier JUMP_ID = Identifier.of("rw-mechanics", "player_jump");
+	public static SoundEvent JUMP_EVENT = SoundEvent.of(JUMP_ID);
+	public static final Identifier WALL_JUMP_ID = Identifier.of("rw-mechanics", "player_wall_jump");
+	public static SoundEvent WALL_JUMP_EVENT = SoundEvent.of(WALL_JUMP_ID);
+	public static final Identifier WALL_SLIDE_ID = Identifier.of("rw-mechanics", "player_wall_slide");
+	public static SoundEvent WALL_SLIDE_EVENT = SoundEvent.of(WALL_SLIDE_ID);
+
 
 	private static final double LETHAL_VELOCITY = 60; // Threshold for lethal impact velocity in m/s
 	private static final double STUN_VELOCITY = 35; // Threshold for stun velocity in m/s
@@ -76,6 +84,9 @@ public class RainworldMechanics implements ModInitializer {
 	public void onInitialize() {
 
 		Registry.register(Registries.SOUND_EVENT, RainworldMechanics.PIPE_LOOP_ID, PIPE_LOOP_EVENT);
+		Registry.register(Registries.SOUND_EVENT, RainworldMechanics.JUMP_ID, JUMP_EVENT);
+		Registry.register(Registries.SOUND_EVENT, RainworldMechanics.WALL_JUMP_ID, WALL_JUMP_EVENT);
+		Registry.register(Registries.SOUND_EVENT, RainworldMechanics.WALL_SLIDE_ID, WALL_SLIDE_EVENT);
 
 		// Crawls
 		ServerSidePacketRegistry.INSTANCE.register(CRAWL_PACKET_ID, (packetContext, attachedData) -> {
