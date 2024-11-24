@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.text.Text;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -53,25 +54,11 @@ public class PoleClimbing {
                 pole = client.player.getBlockPos();
                 climbRotation = 0;
                 setPole = true;
-            } else if (client.player.getWorld().getBlockState(client.player.getBlockPos().add(0, 1, 0)).getBlock() == BlockInit.POLE_X) {
-                axis = 1;
-                verticalSet = false;
-                touchingPole = true;
-                pole = client.player.getBlockPos().add(0, 1, 0);
-                climbRotation = 0;
-                setPole = true;
             } else if (client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() == BlockInit.POLE_Z) {
                 axis = 2;
                 verticalSet = false;
                 touchingPole = true;
                 pole = client.player.getBlockPos();
-                climbRotation = 0;
-                setPole = true;
-            } else if (client.player.getWorld().getBlockState(client.player.getBlockPos().add(0, 1, 0)).getBlock() == BlockInit.POLE_Z) {
-                axis = 2;
-                verticalSet = false;
-                touchingPole = true;
-                pole = client.player.getBlockPos().add(0, 1, 0);
                 climbRotation = 0;
                 setPole = true;
             } else if (client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() == BlockInit.POLE_Y) {
@@ -80,18 +67,37 @@ public class PoleClimbing {
                 pole = client.player.getBlockPos();
                 climbRotation = 0;
                 setPole = true;
-            } else if (client.player.getWorld().getBlockState(client.player.getBlockPos().add(0, 1, 0)).getBlock() == BlockInit.POLE_Y) {
-                verticalSet = true;
-                touchingPole = true;
-                pole = client.player.getBlockPos().add(0, 1, 0);
-                climbRotation = 0;
-                setPole = true;
             } else if (client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() == BlockInit.POLE_JOINT) {
                 verticalSet = true;
                 touchingPole = true;
                 pole = client.player.getBlockPos();
                 climbRotation = 0;
                 setPole = true;
+            }
+
+            if (client.player.getWorld().getBlockState(client.player.getBlockPos().add(0, 1, 0)).getBlock() == BlockInit.POLE_X) {
+                axis = 1;
+                verticalSet = false;
+                touchingPole = true;
+                pole = client.player.getBlockPos().add(0, 1, 0);
+                climbRotation = 0;
+                setPole = true;
+                client.player.sendMessage(Text.of("polex"), true);
+            } else if (client.player.getWorld().getBlockState(client.player.getBlockPos().add(0, 1, 0)).getBlock() == BlockInit.POLE_Y) {
+                verticalSet = true;
+                touchingPole = true;
+                pole = client.player.getBlockPos().add(0, 1, 0);
+                climbRotation = 0;
+                setPole = true;
+                client.player.sendMessage(Text.of("poley"), true);
+            } else if (client.player.getWorld().getBlockState(client.player.getBlockPos().add(0, 1, 0)).getBlock() == BlockInit.POLE_Z) {
+                axis = 2;
+                verticalSet = false;
+                touchingPole = true;
+                pole = client.player.getBlockPos().add(0, 1, 0);
+                climbRotation = 0;
+                setPole = true;
+                client.player.sendMessage(Text.of("polez"), true);
             } else if (client.player.getWorld().getBlockState(client.player.getBlockPos().add(0, 1, 0)).getBlock() == BlockInit.POLE_JOINT) {
                 verticalSet = true;
                 touchingPole = true;
@@ -155,12 +161,14 @@ public class PoleClimbing {
             }
         }
 
-        if (grabKey.isPressed() && !climbing && setPole && !jumped && touchingPole && pole != null && client.player.getBlockStateAtPos().getBlock() == BlockInit.POLE_Y && verticalSet) {
+        if (grabKey.isPressed() && !climbing && setPole && !jumped && touchingPole && pole != null && verticalSet) {
             jumped = true;
             climbing = true;
-        } else if (grabKey.isPressed() && !climbing && setPole && !jumped && touchingPole && pole != null && client.world.getBlockState(pole).getBlock() != BlockInit.POLE_Y) {
+            client.player.setPos(pole.getX(), pole.getY(), pole.getZ());
+        } else if (grabKey.isPressed() && !climbing && setPole && !jumped && touchingPole && pole != null) {
             jumped = true;
             climbing = true;
+            client.player.setPos(pole.getX(), pole.getY(), pole.getZ());
         } else if (grabKey.isPressed() && !jumped && climbing) {
             jumped = true;
             climbing = false;
@@ -175,13 +183,6 @@ public class PoleClimbing {
             RainworldMechanicsClient.climbing = climbing;
             if (pole != null) {
                 if (verticalSet) {
-                    if (client.world.getBlockState(pole.add(0, 1, 0)).getBlock() != BlockInit.POLE_Y && client.world.getBlockState(pole.add(0, 1, 0)).getBlock() != BlockInit.POLE_JOINT && client.player.getBlockPos().getY() > pole.getY()) {
-                        touchingPole = false;
-                        climbing = false;
-                        set = false;
-                        verticalSet = false;
-                        setPole = false;
-                    }
                     if (!set && pole != null) {
                         climbRotation = 0;
                         set = true;
@@ -243,6 +244,13 @@ public class PoleClimbing {
                     if (client.player.getPos().getY() >= pole.getY() && client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() == BlockInit.POLE_Y) {
                         pole = client.player.getBlockPos().add(0, 1, 0);
                     }
+                    if (client.world.getBlockState(pole.add(0, 1, 0)).getBlock() != BlockInit.POLE_Y && client.world.getBlockState(pole.add(0, 1, 0)).getBlock() != BlockInit.POLE_JOINT && client.player.getBlockPos().getY() > pole.getY()) {
+                        touchingPole = false;
+                        climbing = false;
+                        set = false;
+                        verticalSet = false;
+                        setPole = false;
+                    }
                     if (client.options.jumpKey.isPressed() && touchingPole) {
                         verticalSet = false;
                         setPole = false;
@@ -253,19 +261,6 @@ public class PoleClimbing {
                         set = false;
                     }
                 } else if (!verticalSet) {
-                    if (client.player.getPos().getX() > pole.toCenterPos().getX() + 0.6 && axis == 1
-                            || client.player.getPos().getZ() > pole.toCenterPos().getZ() + 0.6 && axis == 2) {
-                        touchingPole = false;
-                        climbing = false;
-                        set = false;
-                        setPole = false;
-                    } else if (client.player.getPos().getX() < pole.toCenterPos().getX() - 0.6 && axis == 1
-                            || client.player.getPos().getZ() < pole.toCenterPos().getZ() - 0.6 && axis == 2) {
-                        touchingPole = false;
-                        climbing = false;
-                        set = false;
-                        setPole = false;
-                    }
                     if (client.options.leftKey.wasPressed() && climbing && touchingPole) {
                         if (Arrays.stream(nonColidables).anyMatch(client.player.getWorld().getBlockState(pole.add(new Vec3i(0, -1, 0))).getBlock()::equals) &&
                                 Arrays.stream(nonColidables).anyMatch(client.player.getWorld().getBlockState(pole.add(new Vec3i(0, -2, 0))).getBlock()::equals)) {
@@ -317,6 +312,19 @@ public class PoleClimbing {
                             client.player.setVelocity(0, 0, 0);
                             client.player.setPos(climbOffsetPos.getX(), climbOffsetPos.getY(), client.player.getZ());
                         }
+                    }
+                    if (client.player.getPos().getX() > pole.toCenterPos().getX() + 0.6 && axis == 1
+                            || client.player.getPos().getZ() > pole.toCenterPos().getZ() + 0.6 && axis == 2) {
+                        touchingPole = false;
+                        climbing = false;
+                        set = false;
+                        setPole = false;
+                    } else if (client.player.getPos().getX() < pole.toCenterPos().getX() - 0.6 && axis == 1
+                            || client.player.getPos().getZ() < pole.toCenterPos().getZ() - 0.6 && axis == 2) {
+                        touchingPole = false;
+                        climbing = false;
+                        set = false;
+                        setPole = false;
                     }
                     if (client.options.jumpKey.isPressed() && touchingPole) {
                         RainworldMechanicsClient.climbJumping = true;

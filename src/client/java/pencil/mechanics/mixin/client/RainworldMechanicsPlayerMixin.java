@@ -52,7 +52,6 @@ public abstract class RainworldMechanicsPlayerMixin extends Entity {
     @Inject(method = "jump", at = @At("HEAD"), cancellable = true)
     private void jump(CallbackInfo ci) {
         if (Crawling.pressed) {
-            RainworldMechanicsClient.playerEntity.sendMessage(Text.of("jumped"), true);
             ci.cancel();
         }
     }
