@@ -1,5 +1,7 @@
 package pencil.mechanics.block.pipes;
 
+import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -10,6 +12,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
@@ -25,6 +29,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import pencil.mechanics.RainworldMechanics;
 import pencil.mechanics.init.ItemInit;
 
 public class PipeEntrance extends Block implements Waterloggable{
@@ -84,6 +89,10 @@ public class PipeEntrance extends Block implements Waterloggable{
     public static final EnumProperty<Orientation> ORIENTATION = EnumProperty.of("orientation", Orientation.class);
     public static final EnumProperty<Orientation> CONNECTION = EnumProperty.of("connection", Orientation.class);
     public static final EnumProperty<Variation> VARIATION = EnumProperty.of("variation", Variation.class);
+    public static final BooleanProperty LIGHT_ONE = BooleanProperty.of("light_one");
+    public static final BooleanProperty LIGHT_TWO = BooleanProperty.of("light_two");
+    public static final BooleanProperty LIGHT_THREE = BooleanProperty.of("light_three");
+    public static final BooleanProperty LIGHT_FOUR = BooleanProperty.of("light_four");
 
     public PipeEntrance(Settings settings) {
         super(settings);
@@ -91,12 +100,16 @@ public class PipeEntrance extends Block implements Waterloggable{
                 .with(ORIENTATION, Orientation.NORTH)
                 .with(CONNECTION, Orientation.NORTH)
                 .with(VARIATION, Variation.ONE)
+                .with(LIGHT_ONE, Boolean.valueOf(true))
+                .with(LIGHT_TWO, Boolean.valueOf(true))
+                .with(LIGHT_THREE, Boolean.valueOf(true))
+                .with(LIGHT_FOUR, Boolean.valueOf(true))
                 .with(WATERLOGGED, false));
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(ORIENTATION, CONNECTION, VARIATION, WATERLOGGED);
+        builder.add(ORIENTATION, CONNECTION, VARIATION, LIGHT_ONE, LIGHT_TWO, LIGHT_THREE, LIGHT_FOUR, WATERLOGGED);
     }
 
     @Override
@@ -181,6 +194,9 @@ public class PipeEntrance extends Block implements Waterloggable{
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (player != null && player.isCreative() && player.getMainHandStack().getItem() == ItemInit.PIPE_WAND) {
+            PacketByteBuf buf = PacketByteBufs.create(); // Create Packet
+            buf.writeBlockPos(pos);
+            //ServerSidePacketRegistry.INSTANCE.sendToPlayer(((ServerPlayerEntity) player), RainworldMechanics.SELECT_BLOCK_TO_EDIT_ID, buf);
             if (state.get(VARIATION).value == 0) {
                 world.setBlockState(pos, state.with(VARIATION, Variation.TWO));
             } else if (state.get(VARIATION).value == 1) {

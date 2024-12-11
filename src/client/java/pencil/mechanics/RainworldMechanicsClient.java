@@ -12,6 +12,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
@@ -19,15 +20,19 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import org.lwjgl.glfw.GLFW;
+import pencil.mechanics.gui.screen.BlockEditorScreen;
 import pencil.mechanics.gui.screen.KarmaScreen;
 import pencil.mechanics.gui.screen.PlayerModelScreen;
 import pencil.mechanics.init.BlockInit;
 import pencil.mechanics.init.EntityTypeInit;
+import pencil.mechanics.init.ItemInit;
 import pencil.mechanics.player.Keybinds;
 import pencil.mechanics.render.block.PipeBlockEntityRenderer;
 import pencil.mechanics.render.entity.SpearEntityModel;
@@ -46,6 +51,8 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 
 	// Base move speed
 	public static float moveSpeed = 0.12f;
+
+	public static BlockState editorBlock = null;
 
 	// Food variables
 	public static int foodLevel = 0;
@@ -130,6 +137,10 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
 			// Checks the server for the mod
 			if (client.player != null) {
+				if (client.world != null) {
+					editorBlock = client.world.getBlockState(new BlockPos(0, 0, 0));
+				}
+
 				// Asks if mod is on the server
 				PacketByteBuf buf = PacketByteBufs.create(); // Create Packet
 				ClientSidePacketRegistry.INSTANCE.sendToServer(RainworldMechanics.SLUGCAT_MISC_PACKET_ID, buf); // Send to server
@@ -274,6 +285,13 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 			} else if (client.player != null){ // Runs when in creative/spectator
 				Keybinds.disable(); // Disables movement keybindings
 				client.options.inventoryKey.setBoundKey(client.options.inventoryKey.getDefaultKey()); // Enables inventory
+				ClientSidePacketRegistry.INSTANCE.register(RainworldMechanics.SELECT_BLOCK_TO_EDIT_ID, (packetContext, attachedData) -> {
+					BlockPos pos = attachedData.readBlockPos();
+					packetContext.getTaskQueue().execute(() -> {
+						editorBlock = client.world.getBlockState(pos);
+						client.setScreen(new BlockEditorScreen(Text.empty()));
+					});
+				});
 			}
 		});
 

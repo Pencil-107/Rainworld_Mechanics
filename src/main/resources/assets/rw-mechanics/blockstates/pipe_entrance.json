@@ -1,119 +1,1370 @@
 {
-  "variants": {
-    "orientation=north,variation=one": {
-      "model": "rw-mechanics:block/pipe_entrance_0"
+  "multipart": [
+    {
+      "when": {
+        "orientation": "north"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance",
+        "uvlock": false
+      }
     },
-    "orientation=south,variation=one": {
-      "model": "rw-mechanics:block/pipe_entrance_0",
-      "y": 180
+    {
+      "when": {
+        "orientation": "north"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_claws",
+        "uvlock": false
+      }
     },
-    "orientation=east,variation=one": {
-      "model": "rw-mechanics:block/pipe_entrance_0",
-      "y": 90
+    {
+      "when": {
+        "orientation": "east"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance",
+        "y": 90,
+        "uvlock": false
+      }
     },
-    "orientation=west,variation=one": {
-      "model": "rw-mechanics:block/pipe_entrance_0",
-      "y": 270
+    {
+      "when": {
+        "orientation": "east"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_claws",
+        "y": 90,
+        "uvlock": false
+      }
     },
-    "orientation=up,variation=one": {
-      "model": "rw-mechanics:block/pipe_entrance_0",
-      "x": -90
+    {
+      "when": {
+        "orientation": "south"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance",
+        "y": 180,
+        "uvlock": false
+      }
     },
-    "orientation=down,variation=one": {
-      "model": "rw-mechanics:block/pipe_entrance_0",
-      "x": 90
+    {
+      "when": {
+        "orientation": "south"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_claws",
+        "y": 180,
+        "uvlock": false
+      }
     },
-    "orientation=north,variation=two": {
-      "model": "rw-mechanics:block/pipe_entrance_1"
+    {
+      "when": {
+        "orientation": "west"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance",
+        "y": 270,
+        "uvlock": false
+      }
     },
-    "orientation=south,variation=two": {
-      "model": "rw-mechanics:block/pipe_entrance_1",
-      "y": 180
+    {
+      "when": {
+        "orientation": "west"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_claws",
+        "y": 270,
+        "uvlock": false
+      }
     },
-    "orientation=east,variation=two": {
-      "model": "rw-mechanics:block/pipe_entrance_1",
-      "y": 90
+    {
+      "when": {
+        "orientation": "up"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance",
+        "x": 270,
+        "uvlock": false
+      }
     },
-    "orientation=west,variation=two": {
-      "model": "rw-mechanics:block/pipe_entrance_1",
-      "y": 270
+    {
+      "when": {
+        "orientation": "up"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_claws",
+        "x": 270,
+        "uvlock": false
+      }
     },
-    "orientation=up,variation=two": {
-      "model": "rw-mechanics:block/pipe_entrance_1",
-      "x": -90
+    {
+      "when": {
+        "orientation": "down"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance",
+        "x": 90,
+        "uvlock": false
+      }
     },
-    "orientation=down,variation=two": {
-      "model": "rw-mechanics:block/pipe_entrance_1",
-      "x": 90
+    {
+      "when": {
+        "orientation": "down"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_claws",
+        "x": 90,
+        "uvlock": false
+      }
     },
-    "orientation=north,variation=three": {
-      "model": "rw-mechanics:block/pipe_entrance_2"
+    {
+      "when": {
+        "orientation": "north",
+        "variation": "one",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0",
+        "x": 0,
+        "y": 0,
+        "uvlock": false
+      }
     },
-    "orientation=south,variation=three": {
-      "model": "rw-mechanics:block/pipe_entrance_2",
-      "y": 180
+    {
+      "when": {
+        "orientation": "north",
+        "variation": "one",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0_side",
+        "x": 0,
+        "y": 0,
+        "uvlock": false
+      }
     },
-    "orientation=east,variation=three": {
-      "model": "rw-mechanics:block/pipe_entrance_2",
-      "y": 90
+    {
+      "when": {
+        "orientation": "north",
+        "variation": "one",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0",
+        "x": 180,
+        "y": 180,
+        "uvlock": false
+      }
     },
-    "orientation=west,variation=three": {
-      "model": "rw-mechanics:block/pipe_entrance_2",
-      "y": 270
+    {
+      "when": {
+        "orientation": "north",
+        "variation": "one",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0_side",
+        "x": 180,
+        "y": 180,
+        "uvlock": false
+      }
     },
-    "orientation=up,variation=three": {
-      "model": "rw-mechanics:block/pipe_entrance_2",
-      "x": -90
+    {
+      "when": {
+        "orientation": "east",
+        "variation": "one",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0",
+        "x": 0,
+        "y": 90,
+        "uvlock": false
+      }
     },
-    "orientation=down,variation=three": {
-      "model": "rw-mechanics:block/pipe_entrance_2",
-      "x": 90
+    {
+      "when": {
+        "orientation": "east",
+        "variation": "one",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0_side",
+        "x": 0,
+        "y": 90,
+        "uvlock": false
+      }
     },
-    "orientation=north,variation=four": {
-      "model": "rw-mechanics:block/pipe_entrance_3"
+    {
+      "when": {
+        "orientation": "east",
+        "variation": "one",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0",
+        "x": 180,
+        "y": 270,
+        "uvlock": false
+      }
     },
-    "orientation=south,variation=four": {
-      "model": "rw-mechanics:block/pipe_entrance_3",
-      "y": 180
+    {
+      "when": {
+        "orientation": "east",
+        "variation": "one",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0_side",
+        "x": 180,
+        "y": 270,
+        "uvlock": false
+      }
     },
-    "orientation=east,variation=four": {
-      "model": "rw-mechanics:block/pipe_entrance_3",
-      "y": 90
+    {
+      "when": {
+        "orientation": "south",
+        "variation": "one",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0",
+        "x": 0,
+        "y": 180,
+        "uvlock": false
+      }
     },
-    "orientation=west,variation=four": {
-      "model": "rw-mechanics:block/pipe_entrance_3",
-      "y": 270
+    {
+      "when": {
+        "orientation": "south",
+        "variation": "one",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0_side",
+        "x": 0,
+        "y": 180,
+        "uvlock": false
+      }
     },
-    "orientation=up,variation=four": {
-      "model": "rw-mechanics:block/pipe_entrance_3",
-      "x": -90
+    {
+      "when": {
+        "orientation": "south",
+        "variation": "one",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0",
+        "x": 180,
+        "y": 0,
+        "uvlock": false
+      }
     },
-    "orientation=down,variation=four": {
-      "model": "rw-mechanics:block/pipe_entrance_3",
-      "x": 90
+    {
+      "when": {
+        "orientation": "south",
+        "variation": "one",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0_side",
+        "x": 180,
+        "y": 0,
+        "uvlock": false
+      }
     },
-    "orientation=north,variation=five": {
-      "model": "rw-mechanics:block/pipe_entrance_4"
+    {
+      "when": {
+        "orientation": "west",
+        "variation": "one",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0",
+        "x": 0,
+        "y": 270,
+        "uvlock": false
+      }
     },
-    "orientation=south,variation=five": {
-      "model": "rw-mechanics:block/pipe_entrance_4",
-      "y": 180
+    {
+      "when": {
+        "orientation": "west",
+        "variation": "one",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0_side",
+        "x": 0,
+        "y": 270,
+        "uvlock": false
+      }
     },
-    "orientation=east,variation=five": {
-      "model": "rw-mechanics:block/pipe_entrance_4",
-      "y": 90
+    {
+      "when": {
+        "orientation": "west",
+        "variation": "one",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0",
+        "x": 180,
+        "y": 90,
+        "uvlock": false
+      }
     },
-    "orientation=west,variation=five": {
-      "model": "rw-mechanics:block/pipe_entrance_4",
-      "y": 270
+    {
+      "when": {
+        "orientation": "west",
+        "variation": "one",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0_side",
+        "x": 180,
+        "y": 90,
+        "uvlock": false
+      }
     },
-    "orientation=up,variation=five": {
-      "model": "rw-mechanics:block/pipe_entrance_4",
-      "x": -90
+    {
+      "when": {
+        "orientation": "up",
+        "variation": "one",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0",
+        "x": 270,
+        "y": 0,
+        "uvlock": false
+      }
     },
-    "orientation=down,variation=five": {
-      "model": "rw-mechanics:block/pipe_entrance_4",
-      "x": 90
+    {
+      "when": {
+        "orientation": "up",
+        "variation": "one",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0_side",
+        "x": 270,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "up",
+        "variation": "one",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0",
+        "x": 270,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "up",
+        "variation": "one",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0_side",
+        "x": 270,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "down",
+        "variation": "one",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0",
+        "x": 90,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "down",
+        "variation": "one",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0_side",
+        "x": 90,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "down",
+        "variation": "one",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0",
+        "x": 90,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "down",
+        "variation": "one",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_0_side",
+        "x": 90,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "north",
+        "variation": "two",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1",
+        "x": 0,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "north",
+        "variation": "two",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1_side",
+        "x": 0,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "north",
+        "variation": "two",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1",
+        "x": 180,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "north",
+        "variation": "two",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1_side",
+        "x": 180,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "east",
+        "variation": "two",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1",
+        "x": 0,
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "east",
+        "variation": "two",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1_side",
+        "x": 0,
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "east",
+        "variation": "two",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1",
+        "x": 180,
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "east",
+        "variation": "two",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1_side",
+        "x": 180,
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "south",
+        "variation": "two",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1",
+        "x": 0,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "south",
+        "variation": "two",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1_side",
+        "x": 0,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "south",
+        "variation": "two",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1",
+        "x": 180,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "south",
+        "variation": "two",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1_side",
+        "x": 180,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "west",
+        "variation": "two",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1",
+        "x": 0,
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "west",
+        "variation": "two",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1_side",
+        "x": 0,
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "west",
+        "variation": "two",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1",
+        "x": 180,
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "west",
+        "variation": "two",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1_side",
+        "x": 180,
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "up",
+        "variation": "two",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1",
+        "x": 270,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "up",
+        "variation": "two",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1_side",
+        "x": 270,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "up",
+        "variation": "two",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1",
+        "x": 270,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "up",
+        "variation": "two",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1_side",
+        "x": 270,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "down",
+        "variation": "two",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1",
+        "x": 90,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "down",
+        "variation": "two",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1_side",
+        "x": 90,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "down",
+        "variation": "two",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1",
+        "x": 90,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "down",
+        "variation": "two",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_1_side",
+        "x": 90,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "north",
+        "variation": "three",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2",
+        "x": 0,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "north",
+        "variation": "three",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2_side",
+        "x": 0,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "north",
+        "variation": "three",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2",
+        "x": 180,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "north",
+        "variation": "three",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2_side",
+        "x": 180,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "east",
+        "variation": "three",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2",
+        "x": 0,
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "east",
+        "variation": "three",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2_side",
+        "x": 0,
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "east",
+        "variation": "three",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2",
+        "x": 180,
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "east",
+        "variation": "three",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2_side",
+        "x": 180,
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "south",
+        "variation": "three",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2",
+        "x": 0,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "south",
+        "variation": "three",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2_side",
+        "x": 0,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "south",
+        "variation": "three",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2",
+        "x": 180,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "south",
+        "variation": "three",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2_side",
+        "x": 180,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "west",
+        "variation": "three",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2",
+        "x": 0,
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "west",
+        "variation": "three",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2_side",
+        "x": 0,
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "west",
+        "variation": "three",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2",
+        "x": 180,
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "west",
+        "variation": "three",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2_side",
+        "x": 180,
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "up",
+        "variation": "three",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2",
+        "x": 270,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "up",
+        "variation": "three",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2_side",
+        "x": 270,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "up",
+        "variation": "three",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2",
+        "x": 270,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "up",
+        "variation": "three",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2_side",
+        "x": 270,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "down",
+        "variation": "three",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2",
+        "x": 90,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "down",
+        "variation": "three",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2_side",
+        "x": 90,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "down",
+        "variation": "three",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2",
+        "x": 90,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "down",
+        "variation": "three",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_2_side",
+        "x": 90,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "north",
+        "variation": "four",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3",
+        "x": 0,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "north",
+        "variation": "four",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3_side",
+        "x": 0,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "north",
+        "variation": "four",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3",
+        "x": 180,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "north",
+        "variation": "four",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3_side",
+        "x": 180,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "east",
+        "variation": "four",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3",
+        "x": 0,
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "east",
+        "variation": "four",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3_side",
+        "x": 0,
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "east",
+        "variation": "four",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3",
+        "x": 180,
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "east",
+        "variation": "four",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3_side",
+        "x": 180,
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "south",
+        "variation": "four",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3",
+        "x": 0,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "south",
+        "variation": "four",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3_side",
+        "x": 0,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "south",
+        "variation": "four",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3",
+        "x": 180,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "south",
+        "variation": "four",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3_side",
+        "x": 180,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "west",
+        "variation": "four",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3",
+        "x": 0,
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "west",
+        "variation": "four",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3_side",
+        "x": 0,
+        "y": 270,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "west",
+        "variation": "four",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3",
+        "x": 180,
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "west",
+        "variation": "four",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3_side",
+        "x": 180,
+        "y": 90,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "up",
+        "variation": "four",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3",
+        "x": 270,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "up",
+        "variation": "four",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3_side",
+        "x": 270,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "up",
+        "variation": "four",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3",
+        "x": 270,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "up",
+        "variation": "four",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3_side",
+        "x": 270,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "down",
+        "variation": "four",
+        "light_one": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3",
+        "x": 90,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "down",
+        "variation": "four",
+        "light_two": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3_side",
+        "x": 90,
+        "y": 0,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "down",
+        "variation": "four",
+        "light_three": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3",
+        "x": 90,
+        "y": 180,
+        "uvlock": false
+      }
+    },
+    {
+      "when": {
+        "orientation": "down",
+        "variation": "four",
+        "light_four": "true"
+      },
+      "apply": {
+        "model": "rw-mechanics:block/pipe_entrance_light_3_side",
+        "x": 90,
+        "y": 180,
+        "uvlock": false
+      }
     }
-  }
+  ]
 }

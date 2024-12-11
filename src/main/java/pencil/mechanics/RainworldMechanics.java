@@ -57,6 +57,7 @@ public class RainworldMechanics implements ModInitializer {
 	public static final Identifier DROP_PACKET_ID = Identifier.of("rw-mechanics", "drop_item");
 	public static final Identifier CLEAR_SLOT_PACKET_ID = Identifier.of("rw-mechanics", "clear_slot");
 	public static final Identifier STUN_PLAYER_PACKET_ID = Identifier.of("rw-mechanics", "stun_player");
+	public static final Identifier SELECT_BLOCK_TO_EDIT_ID = Identifier.of("rw-mechanics", "select_block");
 
 	public static Block PIPE_BLOCK = BlockInit.PIPE_BLOCK;
 	public static BlockEntityType<PipeBlockEntity> PIPE_BLOCK_ENTITY;

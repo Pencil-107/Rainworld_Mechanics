@@ -27,6 +27,7 @@ public class PoleClimbing {
     public static float poleJumpX = ConfigValues.poleJumpXMultiplier;
     public static float poleJumpY = ConfigValues.poleJumpYMultiplier;
 
+    private static boolean upperGrabbed = false;
     private static boolean verticalSet = false;
     private static boolean touchingPole = false;
 
@@ -52,14 +53,14 @@ public class PoleClimbing {
                 verticalSet = false;
                 touchingPole = true;
                 pole = client.player.getBlockPos();
-                climbRotation = 0;
+                climbRotation = 90;
                 setPole = true;
             } else if (client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() == BlockInit.POLE_Z) {
                 axis = 2;
                 verticalSet = false;
                 touchingPole = true;
                 pole = client.player.getBlockPos();
-                climbRotation = 0;
+                climbRotation = 90;
                 setPole = true;
             } else if (client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() == BlockInit.POLE_Y) {
                 verticalSet = true;
@@ -80,7 +81,7 @@ public class PoleClimbing {
                 verticalSet = false;
                 touchingPole = true;
                 pole = client.player.getBlockPos().add(0, 1, 0);
-                climbRotation = 0;
+                climbRotation = 90;
                 setPole = true;
                 client.player.sendMessage(Text.of("polex"), true);
             } else if (client.player.getWorld().getBlockState(client.player.getBlockPos().add(0, 1, 0)).getBlock() == BlockInit.POLE_Y) {
@@ -90,12 +91,13 @@ public class PoleClimbing {
                 climbRotation = 0;
                 setPole = true;
                 client.player.sendMessage(Text.of("poley"), true);
+                upperGrabbed = true;
             } else if (client.player.getWorld().getBlockState(client.player.getBlockPos().add(0, 1, 0)).getBlock() == BlockInit.POLE_Z) {
                 axis = 2;
                 verticalSet = false;
                 touchingPole = true;
                 pole = client.player.getBlockPos().add(0, 1, 0);
-                climbRotation = 0;
+                climbRotation = 90;
                 setPole = true;
                 client.player.sendMessage(Text.of("polez"), true);
             } else if (client.player.getWorld().getBlockState(client.player.getBlockPos().add(0, 1, 0)).getBlock() == BlockInit.POLE_JOINT) {
@@ -120,8 +122,11 @@ public class PoleClimbing {
                     }
                 }
             } else if (client.player.getWorld().getBlockState(pole).getBlock() == BlockInit.POLE_Y) {
-                if (setPole && client.player.getPos().getY() >= pole.toCenterPos().getY() + 0.5 || setPole && client.player.getPos().getY() <= pole.toCenterPos().getY() - 0.5) {
+                if (setPole && !upperGrabbed && client.player.getPos().getY() >= pole.toCenterPos().getY() + 0.5 || setPole && !upperGrabbed && client.player.getPos().getY() <= pole.toCenterPos().getY() - 0.5) {
                     pole = new BlockPos(pole.getX(), client.player.getBlockPos().getY(), pole.getZ());
+                    verticalSet = true;
+                } else if (setPole && upperGrabbed && client.player.getPos().getY() >= pole.toCenterPos().getY() + 0.5) {
+                    pole = new BlockPos(pole.getX(), client.player.getBlockPos().getY()+1, pole.getZ());
                     verticalSet = true;
                 }
             } else if (client.player.getWorld().getBlockState(pole).getBlock() == BlockInit.POLE_Z) {
@@ -151,7 +156,7 @@ public class PoleClimbing {
                 }
             }
 
-            if (client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() != BlockInit.POLE_X && client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() != BlockInit.POLE_Y && client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() != BlockInit.POLE_Z && client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() != BlockInit.POLE_JOINT) {
+            if (client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() != BlockInit.POLE_X && client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() != BlockInit.POLE_Y && client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() != BlockInit.POLE_Z && client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() != BlockInit.POLE_JOINT && client.player.getWorld().getBlockState(client.player.getBlockPos().add(0, 1, 0)).getBlock() != BlockInit.POLE_X && client.player.getWorld().getBlockState(client.player.getBlockPos().add(0, 1, 0)).getBlock() != BlockInit.POLE_Y && client.player.getWorld().getBlockState(client.player.getBlockPos().add(0, 1, 0)).getBlock() != BlockInit.POLE_Z && client.player.getWorld().getBlockState(client.player.getBlockPos().add(0, 1, 0)).getBlock() != BlockInit.POLE_JOINT) {
                 touchingPole = false;
                 climbing = false;
                 set = false;
@@ -261,19 +266,13 @@ public class PoleClimbing {
                         set = false;
                     }
                 } else if (!verticalSet) {
-                    if (client.options.leftKey.wasPressed() && climbing && touchingPole) {
-                        if (Arrays.stream(nonColidables).anyMatch(client.player.getWorld().getBlockState(pole.add(new Vec3i(0, -1, 0))).getBlock()::equals) &&
-                                Arrays.stream(nonColidables).anyMatch(client.player.getWorld().getBlockState(pole.add(new Vec3i(0, -2, 0))).getBlock()::equals)) {
-                            climbRotation = 180;
-                            climbOffsetPos = pole.toCenterPos().subtract(0, 1.75, 0);
-                        }
+                    if (client.options.sprintKey.wasPressed() && climbing && touchingPole) {
+                        climbRotation = 0;
+                        climbOffsetPos = pole.toCenterPos().add(0, 0.1, 0);
                     }
-                    if (client.options.rightKey.wasPressed() && climbing && touchingPole) {
-                        if (Arrays.stream(nonColidables).anyMatch(client.player.getWorld().getBlockState(pole.add(new Vec3i(0, 1, 0))).getBlock()::equals) &&
-                                Arrays.stream(nonColidables).anyMatch(client.player.getWorld().getBlockState(pole.add(new Vec3i(0, 2, 0))).getBlock()::equals)) {
-                            climbRotation = 0;
-                            climbOffsetPos = pole.toCenterPos().add(0, 0.1, 0);
-                        }
+                    if (client.options.sneakKey.wasPressed() && climbing && touchingPole) {
+                        climbRotation = 180;
+                        climbOffsetPos = pole.toCenterPos().subtract(0, 1.3, 0);
                     }
                     if (!set) {
                         if (client.player.getWorld().getBlockState(pole.add(new Vec3i(0, 1, 0))).getBlock() == Blocks.AIR && client.player.getWorld().getBlockState(pole.add(new Vec3i(0, 2, 0))).getBlock() == Blocks.AIR) {
