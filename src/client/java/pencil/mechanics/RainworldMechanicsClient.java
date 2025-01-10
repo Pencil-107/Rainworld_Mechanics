@@ -12,6 +12,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -19,12 +20,16 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.glfw.GLFW;
 import pencil.mechanics.gui.screen.BlockEditorScreen;
@@ -34,11 +39,13 @@ import pencil.mechanics.init.BlockInit;
 import pencil.mechanics.init.EntityTypeInit;
 import pencil.mechanics.init.ItemInit;
 import pencil.mechanics.player.Keybinds;
+import pencil.mechanics.player.foodHandler;
 import pencil.mechanics.render.block.PipeBlockEntityRenderer;
 import pencil.mechanics.render.entity.SpearEntityModel;
 import pencil.mechanics.render.entity.SpearEntityRenderer;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class RainworldMechanicsClient implements ClientModInitializer {
 
@@ -53,6 +60,7 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 	public static float moveSpeed = 0.12f;
 
 	public static BlockState editorBlock = null;
+	public static BlockPos editorPos = null;
 
 	// Food variables
 	public static int foodLevel = 0;
@@ -64,6 +72,8 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 
 	// Is the rain cycling now
 	public static boolean cycling = false;
+	// Time left in Cycle
+	public static int cycleTime = 25;
 	// Has slugcat survived this cycle so far
 	public static boolean survived = true;
 
@@ -190,6 +200,18 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 					}
 				}
 
+				// Checks if the item in the players hand is food and they are eating it
+				if (client.player != null && client.player.isUsingItem() && client.player.getActiveItem().isFood() && foodLevel < maxFoodLevel) {
+					eating = true;
+				} else {
+					eating = false;
+				}
+
+				// Eats item
+				if (client.player != null && client.player.isUsingItem() && client.player.getItemUseTimeLeft() <= 1f && eating  && foodLevel < maxFoodLevel){
+					foodHandler.tick(client);
+				}
+
 				// Opens player model debug menu for testing purposes
 				if (testingKey2.wasPressed()) {
 					client.setScreen(new PlayerModelScreen(Text.empty()));
@@ -210,7 +232,7 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 				}
 
 				// Resets the above crawl toggle function on release of the crawl key
-				if (!crawlKey.isPressed()  && crouchPressed){
+				if (!crawlKey.isPressed() && crouchPressed || !client.options.sprintKey.isPressed() && crouchPressed){
 					crouchPressed = false;
 				}
 
@@ -285,13 +307,27 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 			} else if (client.player != null){ // Runs when in creative/spectator
 				Keybinds.disable(); // Disables movement keybindings
 				client.options.inventoryKey.setBoundKey(client.options.inventoryKey.getDefaultKey()); // Enables inventory
-				ClientSidePacketRegistry.INSTANCE.register(RainworldMechanics.SELECT_BLOCK_TO_EDIT_ID, (packetContext, attachedData) -> {
-					BlockPos pos = attachedData.readBlockPos();
-					packetContext.getTaskQueue().execute(() -> {
-						editorBlock = client.world.getBlockState(pos);
-						client.setScreen(new BlockEditorScreen(Text.empty()));
-					});
-				});
+
+				if (client.options.useKey.isPressed() && client.world != null) {
+					HitResult hit = client.crosshairTarget;
+
+					switch(Objects.requireNonNull(hit).getType()) {
+						case MISS:
+							//nothing near enough
+							break;
+						case BLOCK:
+							BlockHitResult blockHit = (BlockHitResult) hit;
+							BlockPos blockPos = blockHit.getBlockPos();
+							BlockState blockState = client.world.getBlockState(blockPos);
+							Block block = blockState.getBlock();
+							if (block == BlockInit.PIPE_ENTRANCE && client.player.getMainHandStack().getItem() == ItemInit.PIPE_WAND) {
+								editorBlock = block.getDefaultState();
+								editorPos = blockPos;
+								client.setScreen(new BlockEditorScreen(Text.empty()));
+							}
+							break;
+					}
+				}
 			}
 		});
 

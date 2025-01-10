@@ -83,14 +83,12 @@ public class PoleClimbing {
                 pole = client.player.getBlockPos().add(0, 1, 0);
                 climbRotation = 90;
                 setPole = true;
-                client.player.sendMessage(Text.of("polex"), true);
             } else if (client.player.getWorld().getBlockState(client.player.getBlockPos().add(0, 1, 0)).getBlock() == BlockInit.POLE_Y) {
                 verticalSet = true;
                 touchingPole = true;
                 pole = client.player.getBlockPos().add(0, 1, 0);
                 climbRotation = 0;
                 setPole = true;
-                client.player.sendMessage(Text.of("poley"), true);
                 upperGrabbed = true;
             } else if (client.player.getWorld().getBlockState(client.player.getBlockPos().add(0, 1, 0)).getBlock() == BlockInit.POLE_Z) {
                 axis = 2;
@@ -99,7 +97,6 @@ public class PoleClimbing {
                 pole = client.player.getBlockPos().add(0, 1, 0);
                 climbRotation = 90;
                 setPole = true;
-                client.player.sendMessage(Text.of("polez"), true);
             } else if (client.player.getWorld().getBlockState(client.player.getBlockPos().add(0, 1, 0)).getBlock() == BlockInit.POLE_JOINT) {
                 verticalSet = true;
                 touchingPole = true;

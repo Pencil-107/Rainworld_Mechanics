@@ -7,6 +7,7 @@ import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,9 +31,16 @@ public abstract class RainworldMechanicsPlayerMixin extends Entity {
 
     @Shadow public abstract @Nullable EntityAttributeInstance getAttributeInstance(EntityAttribute attribute);
 
-    @Shadow protected abstract void takeShieldHit(LivingEntity attacker);
+    @Inject(method = "jump", at = @At("HEAD"), cancellable = true)
+    private void jump(CallbackInfo ci) {
+        if (RainworldMechanicsClient.crawling) {
+            ci.cancel();
+            this.sendMessage(Text.of(""+ci.isCancellable()+" "+ci.isCancelled()));
+        }
+    }
 
-    @Shadow public abstract ItemStack eatFood(World world, ItemStack stack);
+
+
 
     public RainworldMechanicsPlayerMixin(EntityType<?> type, World world) {
         super(type, world);
@@ -49,18 +57,19 @@ public abstract class RainworldMechanicsPlayerMixin extends Entity {
         }
     }
 
-    @Inject(method = "jump", at = @At("HEAD"), cancellable = true)
-    private void jump(CallbackInfo ci) {
-        if (Crawling.pressed) {
-            ci.cancel();
-        }
-    }
+    @Inject(method = "handleFallDamage", at = @At("HEAD"), cancellable = true)
+    private void onHandleFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
+        if (RainworldMechanicsClient.playerEntity != null) {
+            World world = RainworldMechanicsClient.playerEntity.getWorld();
 
-    @Inject(method = "getJumpVelocity", at = @At("HEAD"), cancellable = true)
-    private void jumpVelocity(CallbackInfoReturnable<Float> cir) {
-        if (Crawling.pressed) {
-            RainworldMechanicsClient.playerEntity.sendMessage(Text.of("jumped"), true);
-            cir.setReturnValue(0f);
+            if (world.isClient()) {
+                // Send velocity packet to the server
+                RainworldMechanicsClient.sendFallVelocityPacket(RainworldMechanicsClient.playerEntity);
+            }
+
+
+            // Prevent further fall damage
+            cir.setReturnValue(true);
             cir.cancel();
         }
     }

@@ -6,7 +6,6 @@
     "RainworldMechanicsPlayerMixin",
     "RainworldMechanicsEntityMixin",
     "RainworldMechanicsHudMixin",
-    "LivingEntityMixin",
     "ClientPlayerEntityMixin"
   ],
   "injectors": {

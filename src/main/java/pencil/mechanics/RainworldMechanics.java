@@ -1,5 +1,6 @@
 package pencil.mechanics;
 
+import com.sun.jna.platform.win32.WinNT;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 
@@ -12,6 +13,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.EntityPose;
@@ -32,6 +34,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
@@ -57,7 +60,7 @@ public class RainworldMechanics implements ModInitializer {
 	public static final Identifier DROP_PACKET_ID = Identifier.of("rw-mechanics", "drop_item");
 	public static final Identifier CLEAR_SLOT_PACKET_ID = Identifier.of("rw-mechanics", "clear_slot");
 	public static final Identifier STUN_PLAYER_PACKET_ID = Identifier.of("rw-mechanics", "stun_player");
-	public static final Identifier SELECT_BLOCK_TO_EDIT_ID = Identifier.of("rw-mechanics", "select_block");
+	public static final Identifier EDIT_BLOCK_ID = Identifier.of("rw-mechanics", "edit_block");
 
 	public static Block PIPE_BLOCK = BlockInit.PIPE_BLOCK;
 	public static BlockEntityType<PipeBlockEntity> PIPE_BLOCK_ENTITY;
@@ -117,6 +120,41 @@ public class RainworldMechanics implements ModInitializer {
 				if(packetContext.getPlayer() != null){
 					CommandManager commandManager = packetContext.getPlayer().getServer().getCommandManager();
 					//commandManager.executeWithPrefix(packetContext.getPlayer().getCommandSource(), "/cpm setskin -f "+packetContext.getPlayer().getEntityName()+" "+ modelID);
+				}
+			});
+		});
+
+		ServerSidePacketRegistry.INSTANCE.register(EDIT_BLOCK_ID, (packetContext, attachedData) -> {
+			BlockPos pos = attachedData.readBlockPos();
+			int state = attachedData.readInt();
+			packetContext.getTaskQueue().execute(() -> {
+				BlockState blockState = packetContext.getPlayer().getWorld().getBlockState(pos);
+
+				if (state == 0) {
+					if (blockState.get(PipeEntrance.VARIATION).getValue() == 0) {
+						packetContext.getPlayer().getWorld().setBlockState(pos, blockState.with(PipeEntrance.VARIATION, PipeEntrance.Variation.TWO));
+					} else if (blockState.get(PipeEntrance.VARIATION).getValue() == 1) {
+						packetContext.getPlayer().getWorld().setBlockState(pos, blockState.with(PipeEntrance.VARIATION, PipeEntrance.Variation.THREE));
+					} else if (blockState.get(PipeEntrance.VARIATION).getValue() == 2) {
+						packetContext.getPlayer().getWorld().setBlockState(pos, blockState.with(PipeEntrance.VARIATION, PipeEntrance.Variation.FOUR));
+					} else if (blockState.get(PipeEntrance.VARIATION).getValue() == 3) {
+						packetContext.getPlayer().getWorld().setBlockState(pos, blockState.with(PipeEntrance.VARIATION, PipeEntrance.Variation.FIVE));
+					} else if (blockState.get(PipeEntrance.VARIATION).getValue() == 4) {
+						packetContext.getPlayer().getWorld().setBlockState(pos, blockState.with(PipeEntrance.VARIATION, PipeEntrance.Variation.ONE));
+					}
+				}
+
+				if (state == 1) {
+					packetContext.getPlayer().getWorld().setBlockState(pos, blockState.with(PipeEntrance.LIGHT_ONE, !blockState.get(PipeEntrance.LIGHT_ONE)));
+				}
+				if (state == 2) {
+					packetContext.getPlayer().getWorld().setBlockState(pos, blockState.with(PipeEntrance.LIGHT_TWO, !blockState.get(PipeEntrance.LIGHT_TWO)));
+				}
+				if (state == 3) {
+					packetContext.getPlayer().getWorld().setBlockState(pos, blockState.with(PipeEntrance.LIGHT_THREE, !blockState.get(PipeEntrance.LIGHT_THREE)));
+				}
+				if (state == 4) {
+					packetContext.getPlayer().getWorld().setBlockState(pos, blockState.with(PipeEntrance.LIGHT_FOUR, !blockState.get(PipeEntrance.LIGHT_FOUR)));
 				}
 			});
 		});

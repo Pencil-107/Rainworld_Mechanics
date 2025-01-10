@@ -193,23 +193,7 @@ public class PipeEntrance extends Block implements Waterloggable{
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (player != null && player.isCreative() && player.getMainHandStack().getItem() == ItemInit.PIPE_WAND) {
-            PacketByteBuf buf = PacketByteBufs.create(); // Create Packet
-            buf.writeBlockPos(pos);
-            //ServerSidePacketRegistry.INSTANCE.sendToPlayer(((ServerPlayerEntity) player), RainworldMechanics.SELECT_BLOCK_TO_EDIT_ID, buf);
-            if (state.get(VARIATION).value == 0) {
-                world.setBlockState(pos, state.with(VARIATION, Variation.TWO));
-            } else if (state.get(VARIATION).value == 1) {
-                world.setBlockState(pos, state.with(VARIATION, Variation.THREE));
-            } else if (state.get(VARIATION).value == 2) {
-                world.setBlockState(pos, state.with(VARIATION, Variation.FOUR));
-            } else if (state.get(VARIATION).value == 3) {
-                world.setBlockState(pos, state.with(VARIATION, Variation.FIVE));
-            } else if (state.get(VARIATION).value == 4) {
-                world.setBlockState(pos, state.with(VARIATION, Variation.ONE));
-            }
-            world.updateListeners(pos, state, state, 0);
-        } else if (!world.isClient && player != null && !player.isCreative()) {
+        if (!world.isClient && player != null && !player.isCreative()) {
             TransportManager.startTransport(player, pos, state.get(CONNECTION).getDirection());
         }
         return ActionResult.SUCCESS;

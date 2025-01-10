@@ -76,7 +76,7 @@ public class WallMovement {
             wall2 = false;
         }
 
-        if(client.options.jumpKey.wasPressed() && !client.player.isOnGround() && !pressed) {
+        if(client.options.jumpKey.isPressed() && !client.player.isOnGround() && !pressed) {
 
             if (blockHit != null && wall1 && !wall2 && blockHit.getSide() != Direction.UP) { // checks for side of block
                 Vec3d v3 = new Vec3d((client.player.getPos().getX()-wallVector.getX())*jumpDistance, jumpHeight, (client.player.getPos().getZ()-wallVector.getZ())*jumpDistance); // the Velocity Values
@@ -95,6 +95,10 @@ public class WallMovement {
             pressed = true;
         } else if (pressed && !client.options.jumpKey.isPressed()) {
             pressed = false;
+            wall2 = false;
+            wall1 = false;
+        } else if (!pressed && client.options.jumpKey.isPressed() && client.player.isOnGround()) {
+            pressed = true;
         }
 
         if (!client.player.isOnGround() && client.player.getVelocity().getY() <= 0) {
