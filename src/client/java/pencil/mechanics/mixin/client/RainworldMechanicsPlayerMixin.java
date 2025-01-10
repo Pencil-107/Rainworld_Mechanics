@@ -39,9 +39,6 @@ public abstract class RainworldMechanicsPlayerMixin extends Entity {
         }
     }
 
-
-
-
     public RainworldMechanicsPlayerMixin(EntityType<?> type, World world) {
         super(type, world);
     }

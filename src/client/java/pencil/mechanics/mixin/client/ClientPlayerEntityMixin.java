@@ -55,7 +55,7 @@ public class ClientPlayerEntityMixin {
             }
 
             // Jump boost logic
-            if (RainworldMechanicsClient.playerEntity != null && RainworldMechanicsClient.playerEntity.input.jumping && canJump) {
+            if (RainworldMechanicsClient.playerEntity != null && RainworldMechanicsClient.playerEntity.input.jumping && canJump && !RainworldMechanicsClient.crawling) {
                 jumpBoost = 0.4 + adrenaline * 0.1; // Adjust jump boost based on adrenaline
                 Vec3d currentVelocity = RainworldMechanicsClient.playerEntity.getVelocity();
                 RainworldMechanicsClient.playerEntity.setVelocity(currentVelocity.x, jumpBoost, currentVelocity.z);
