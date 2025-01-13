@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.selectors.TargetSelector;
 import org.spongepowered.asm.mixin.injection.selectors.TargetSelectors;
 import pencil.mechanics.block.pipes.PipeEntrance;
 import pencil.mechanics.entity.ai.goal.GreenLizardAttackGoal;
-import pencil.mechanics.entity.ai.goal.GreenLizardWanderIntoPipeGoal;
+import pencil.mechanics.entity.ai.goal.WanderIntoPipeGoal;
 import pencil.mechanics.init.BlockInit;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -47,6 +47,12 @@ public class GreenLizardEntity extends HostileEntity implements GeoEntity {
     private static BlockPos lastTargetPos = null;
     public int color = 0x24c814;
 
+    private static final float movementTimer = 20;
+    private static final float movementReset = 20;
+    private static float timer = movementTimer;
+    private static float speed = 0.4F;
+    private static boolean moving = true;
+
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
     public int getColor() {
@@ -66,8 +72,8 @@ public class GreenLizardEntity extends HostileEntity implements GeoEntity {
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(2, new GreenLizardAttackGoal(this, 0.7, false));
-        this.goalSelector.add(3, new GreenLizardWanderIntoPipeGoal(this, 0.3F, 5));
-        //this.goalSelector.add(4, new WanderAroundFarGoal(this, 1D));
+        this.goalSelector.add(3, new WanderIntoPipeGoal(this, 0.3F, 5));
+        this.goalSelector.add(4, new WanderAroundFarGoal(this, 1D));
 
         this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, GreenLizardEntity.class, true));
@@ -78,21 +84,37 @@ public class GreenLizardEntity extends HostileEntity implements GeoEntity {
         return new AttributeContainer(createMobAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 10)
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 10)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3F)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, speed)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 4)
                 .build());
     }
 
     @Override
-    public void tickMovement() {
-        if (this.getTarget() != null) {
-            visibleTarget = true;
-            lastTargetPos = this.getTarget().getBlockPos();
-        } else if (visibleTarget == true && lastTargetPos != null) {
-            this.moveControl.moveTo(lastTargetPos.getX(), lastTargetPos.getY(), lastTargetPos.getZ(), 0.3F);
-            visibleTarget = false;
+    public void tick() {
+        if (this.navigation.isFollowingPath()) {
+            if (moving) {
+                if (timer > 0) {
+                    timer--;
+                } else {
+                    this.setMovementSpeed(0F);
+                    System.out.println("slowed");
+                    moving = false;
+                    timer = movementReset;
+                    return;
+                }
+            } else {
+                if (timer > 0) {
+                    timer--;
+                } else {
+                    this.setMovementSpeed(speed);
+                    moving = true;
+                    timer = movementTimer;
+                    return;
+                }
+            }
         }
-        super.tickMovement();
+
+        super.tick();
     }
 
     @Override

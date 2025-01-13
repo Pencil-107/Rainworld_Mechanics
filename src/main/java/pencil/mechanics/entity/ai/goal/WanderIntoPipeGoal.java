@@ -13,7 +13,7 @@ import java.util.EnumSet;
 
 import static pencil.mechanics.block.pipes.PipeEntrance.CONNECTION;
 
-public class GreenLizardWanderIntoPipeGoal extends Goal {
+public class WanderIntoPipeGoal extends Goal {
 
     protected final PathAwareEntity creature;
     protected double targetX;
@@ -31,7 +31,7 @@ public class GreenLizardWanderIntoPipeGoal extends Goal {
     protected BlockPos closestPos = null;
     protected BlockPos checkPos;
 
-    public GreenLizardWanderIntoPipeGoal(PathAwareEntity mob, float speed, int range) {
+    public WanderIntoPipeGoal(PathAwareEntity mob, float speed, int range) {
         super();
         creature = mob;
         searchRange = range;
