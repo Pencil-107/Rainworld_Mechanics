@@ -15,5 +15,8 @@
   "key.rw-mechanics.interact": "Grab",
   "key.rw-mechanics.drop": "Drop",
 
-  "itemGroup.rw-mechanics.rainworld_group": "Rainworld Movement"
+  "itemGroup.rw-mechanics.rainworld_group": "Rainworld Movement",
+
+  "entity.minecraft.green_lizard": "Green Lizard",
+  "item.rw-mechanics.green_lizard_spawn_egg": "GreenLizard Spawn Egg"
 }

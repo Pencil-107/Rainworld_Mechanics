@@ -171,12 +171,6 @@ public class PoleClimbing {
             jumped = true;
             climbing = true;
             client.player.setPos(pole.getX(), pole.getY(), pole.getZ());
-        } else if (grabKey.isPressed() && !jumped && climbing) {
-            jumped = true;
-            climbing = false;
-            set = false;
-            setPole = false;
-            touchingPole = false;
         } else if (!grabKey.isPressed() && jumped) {
             jumped = false;
         }

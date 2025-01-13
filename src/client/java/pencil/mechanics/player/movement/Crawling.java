@@ -33,7 +33,7 @@ public class Crawling {
                 soundPlayed = true;
             }
             if (!client.options.jumpKey.isPressed() && pressed && client.player.isOnGround()) {
-                if (heldTime >= heldTimeMax && !client.options.forwardKey.isPressed()) {
+                if (heldTime >= heldTimeMax && !client.options.forwardKey.isPressed() && RainworldMechanicsClient.crawling) {
                     client.player.addVelocity(client.player.getRotationVector().getX()* crawlJumpXMultiplier, crawlJumpYMultiplier, client.player.getRotationVector().getZ()* crawlJumpXMultiplier);
                     RainworldMechanicsClient.jumpHeld = false;
                     heldTime = 0;
@@ -41,7 +41,7 @@ public class Crawling {
                     pressed = false;
                 } else if (client.player.isOnGround()){
                     RainworldMechanicsClient.jumpHeld = false;
-                    //client.player.addVelocity(0, 0.6, 0);
+                    client.player.addVelocity(0, 0.6, 0);
                     heldTime = 0;
                     soundPlayed = false;
                     pressed = false;

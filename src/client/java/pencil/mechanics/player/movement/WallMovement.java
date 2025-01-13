@@ -133,7 +133,7 @@ public class WallMovement {
                 BlockHitResult blockHit3 = Hit3; // sets detected block
                 if (blockHit3.getSide() != Direction.UP) { // checks for side of block
                     if (client.options.forwardKey.isPressed()) {
-                        client.player.addVelocity(client.player.getVelocity().getX(), 0.6, client.player.getVelocity().getZ() ); // Slowing down fall with velocity
+                        // client.player.addVelocity(client.player.getVelocity().getX(), 0.6, client.player.getVelocity().getZ() ); // Slowing down fall with velocity
                         boosted = true;
                     }
                 }

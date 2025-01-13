@@ -35,9 +35,9 @@ public abstract class RainworldMechanicsPlayerMixin extends Entity {
     private void jump(CallbackInfo ci) {
         if (RainworldMechanicsClient.crawling) {
             ci.cancel();
-            this.sendMessage(Text.of(""+ci.isCancellable()+" "+ci.isCancelled()));
         }
     }
+
 
     public RainworldMechanicsPlayerMixin(EntityType<?> type, World world) {
         super(type, world);

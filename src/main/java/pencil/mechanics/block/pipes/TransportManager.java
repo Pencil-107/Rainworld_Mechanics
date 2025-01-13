@@ -5,11 +5,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
@@ -24,9 +27,13 @@ public class TransportManager {
 
     public static void startTransport(Entity player, BlockPos startPos, Direction initialDirection) {
         if (player instanceof ServerPlayerEntity) {
-            ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-            GameMode originalGameMode = serverPlayer.interactionManager.getGameMode();
-            transports.put(player, new TransportData(startPos, initialDirection, 2, originalGameMode));
+            transports.put(player, new TransportData(startPos, initialDirection, 2, 0x1f1f1f));
+            player.setInvulnerable(true);
+            player.setInvisible(true);
+        } else {
+            transports.put(player, new TransportData(startPos, initialDirection, 2, player.getTeamColorValue()));
+            player.setInvulnerable(true);
+            player.setInvisible(true);
         }
     }
 
@@ -47,7 +54,6 @@ public class TransportManager {
                 }
                 player.setPose(EntityPose.SWIMMING);
                 player.setHeadYaw(data.direction.asRotation());
-                player.setInvulnerable(true);
             });
             transports.entrySet().removeIf(entry -> entry.getValue().isCompleted);
         });
@@ -76,18 +82,24 @@ public class TransportManager {
             data.direction = getNextDirection(world, nextPos, data.direction);
             world.playSound(null, player.getBlockPos(), RainworldMechanics.PIPE_LOOP_EVENT, SoundCategory.BLOCKS, 1f, 1f);
             player.setHeadYaw(data.direction.asRotation());
-            ((PipeBlock) nextBlock).switchLitState(world, nextPos, nextState, 5); // Set the lit state for 10 ticks
+            ((PipeBlock) nextBlock).switchLitState(world, nextPos, nextState, 5); // Set the lit state for 5 ticks
         } else if (nextBlock instanceof PipeEntrance) {
             data.currentPos = nextPos.add(new Vec3i(0,1,0));
+            player.setInvulnerable(false);
+            player.setInvisible(false);
             data.isCompleted = true; // End the transport
         } else {
+            player.setInvulnerable(false);
+            player.setInvisible(false);
             data.isCompleted = true; // End the transport if there's no valid pipe
         }
 
-        if (data.isCompleted && player instanceof ServerPlayerEntity) {
-            ((ServerPlayerEntity) player).changeGameMode(data.originalGameMode);
-        } else if (data.isCompleted) {
+        if (data.isCompleted) {
             player.setInvulnerable(false);
+            player.setInvisible(false);
+            if (!(player instanceof ServerPlayerEntity)) {
+                player.addVelocity(new Vec3d(player.getRotationVector().getX() * 1, 0, player.getRotationVector().getZ() * 1));
+            }
         }
     }
 
@@ -141,14 +153,14 @@ public class TransportManager {
         Direction direction;
         int ticksLeft;
         boolean isCompleted;
-        GameMode originalGameMode;
+        int color;
 
-        TransportData(BlockPos startPos, Direction direction, int ticksLeft, GameMode originalGameMode) {
+        TransportData(BlockPos startPos, Direction direction, int ticksLeft, int entityColor) {
             this.currentPos = startPos;
             this.direction = direction;
             this.ticksLeft = ticksLeft;
             this.isCompleted = false;
-            this.originalGameMode = originalGameMode;
+            this.color = entityColor;
         }
     }
 }

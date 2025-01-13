@@ -15,7 +15,7 @@ public class itemGroupInit {
     private static final Text RAINWORLD_TITLE = Text.translatable("itemGroup." + RainworldMechanics.MOD_ID + ".rainworld_group");
     public static final ItemGroup RAINWORLD_GROUP = register("rainworld_group", FabricItemGroup.builder()
             .displayName(RAINWORLD_TITLE)
-            .icon(Items.NAUTILUS_SHELL::getDefaultStack)
+            .icon(BlockInit.PIPE_BLOCK.asItem()::getDefaultStack)
             .entries((displayContext, entries) -> Registries.ITEM.getIds()
                     .stream()
                     .filter(key -> key.getNamespace().equals(RainworldMechanics.MOD_ID))

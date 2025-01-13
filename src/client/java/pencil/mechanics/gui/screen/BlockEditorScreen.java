@@ -40,6 +40,7 @@ public class BlockEditorScreen extends Screen {
 
     @Override
     protected void init() {
+
         blockState = RainworldMechanicsClient.editorBlock;
         pos = RainworldMechanicsClient.editorPos;
         if (blockState.getBlock() == BlockInit.PIPE_ENTRANCE) {

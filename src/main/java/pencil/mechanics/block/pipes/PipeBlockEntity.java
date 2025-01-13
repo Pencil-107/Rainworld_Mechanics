@@ -31,6 +31,10 @@ public class PipeBlockEntity extends BlockEntity {
         this.baseBlockState = blockState;
     }
 
+    public void setPipeColor(int newColor) {
+        color = newColor;
+    }
+
     @Nullable
     @Override
     public Packet<ClientPlayPacketListener> toUpdatePacket() {
