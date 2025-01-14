@@ -82,9 +82,12 @@ public class TransportManager {
             data.direction = getNextDirection(world, nextPos, data.direction);
             world.playSound(null, player.getBlockPos(), RainworldMechanics.PIPE_LOOP_EVENT, SoundCategory.BLOCKS, 1f, 1f);
             player.setHeadYaw(data.direction.asRotation());
+            if (player instanceof PathAwareEntity) {
+                ((PipeBlock) nextBlock).setColor(player.getTeamColorValue());
+            }
             ((PipeBlock) nextBlock).switchLitState(world, nextPos, nextState, 5); // Set the lit state for 5 ticks
         } else if (nextBlock instanceof PipeEntrance) {
-            data.currentPos = nextPos.add(new Vec3i(0,1,0));
+            data.currentPos = nextPos;
             player.setInvulnerable(false);
             player.setInvisible(false);
             data.isCompleted = true; // End the transport

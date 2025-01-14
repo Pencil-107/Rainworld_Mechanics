@@ -1,6 +1,8 @@
 package pencil.mechanics.entity.ai.goal;
 
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.sound.SoundCategory;
+import pencil.mechanics.RainworldMechanics;
 import pencil.mechanics.entity.GreenLizardEntity;
 
 import java.util.EnumSet;
@@ -17,6 +19,7 @@ public class GreenLizardAttackGoal extends MeleeAttackGoal {
 
     public void start() {
         super.start();
+        lizard.getWorld().playSound(null, lizard.getBlockPos(), RainworldMechanics.GREEN_LIZARD_HISS_EVENT, SoundCategory.HOSTILE, 1, 1);
         this.ticks = 0;
     }
 

@@ -39,6 +39,11 @@ public class PipeBlock extends Block implements BlockEntityProvider {
     public static final BooleanProperty DOWN = BooleanProperty.of("down");
     public static final BooleanProperty LIT = BooleanProperty.of("lit");
 
+    public static BlockPos location = null;
+    public static World blockWorld = null;
+
+    public static int litColor = 0x1f1f1f;
+
     public PipeBlock(Settings settings) {
         super(settings);
         setDefaultState(getStateManager().getDefaultState()
@@ -64,6 +69,8 @@ public class PipeBlock extends Block implements BlockEntityProvider {
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         // This method can be used for additional logic on placement if needed
+        location = pos;
+        blockWorld = world;
     }
 
     @Override
@@ -157,15 +164,22 @@ public class PipeBlock extends Block implements BlockEntityProvider {
         }
     }
 
+    public void setColor(int newColor) {
+        if (blockWorld != null && location != null && blockWorld.getBlockEntity(location) instanceof PipeBlockEntity pipeBlockEntity) {
+            litColor = newColor;
+        }
+    }
+
     // Method to switch to lit state for a set amount of time
     public void switchLitState(World world, BlockPos pos, BlockState state, int ticks) {
         world.setBlockState(pos, state.with(LIT, true));
         world.scheduleBlockTick(pos, this, ticks);
         if (world.getBlockEntity(pos) instanceof PipeBlockEntity pipeBlockEntity) {
-            final int newColor = 0xffffff;
-            pipeBlockEntity.color = newColor;
+            pipeBlockEntity.color = litColor;
             pipeBlockEntity.markDirty();
             world.updateListeners(pos, state, state, 0);
         }
+        location = pos;
+        blockWorld = world;
     }
 }

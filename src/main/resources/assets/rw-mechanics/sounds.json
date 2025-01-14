@@ -18,5 +18,15 @@
     "sounds": [
       "rw-mechanics:player_wall_slide"
     ]
+  },
+  "green_lizard_hiss": {
+    "sounds": [
+      "rw-mechanics:lizard/green_hiss"
+    ]
+  },
+  "bite01": {
+    "sounds": [
+      "rw-mechanics:lizard/bite01"
+    ]
   }
 }

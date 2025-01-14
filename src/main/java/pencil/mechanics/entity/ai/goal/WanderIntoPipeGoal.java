@@ -19,13 +19,13 @@ public class WanderIntoPipeGoal extends Goal {
     protected double targetX;
     protected double targetY;
     protected double targetZ;
-    private final int searchRange;
-    private final float moveSpeed;
-    private final float cooldown = 100;
-    private float timer = 100;
-    private boolean enterable = true;
+    protected final int searchRange;
+    protected final float moveSpeed;
+    protected final float cooldown = 200;
+    protected float timer = cooldown;
+    protected boolean enterable = true;
 
-    Vec3d vec3d = null;
+    protected Vec3d vec3d = null;
 
     protected Block targetBlock = BlockInit.PIPE_ENTRANCE;
     protected BlockPos closestPos = null;
@@ -40,14 +40,24 @@ public class WanderIntoPipeGoal extends Goal {
     }
 
     public boolean canStart() {
-        if (!enterable && timer > 0) {
-            timer--;
-        } else if (!enterable && timer <= 0) {
-            enterable = true;
-            System.out.println("Pipe Cooldown ended");
+    if (new Vec3d(targetX, targetY, targetZ).isInRange(creature.getPos(), 1.75) && enterable && creature.getWorld().getBlockState(closestPos) != null) {
+            TransportManager.startTransport(creature, closestPos, creature.getWorld().getBlockState(closestPos).get(CONNECTION).getDirection());
+            creature.getNavigation().recalculatePath();
+            enterable = false;
+            vec3d = null;
+            closestPos = null;
             return false;
         }
-        if (vec3d == null && enterable == true) {
+        if (!enterable && timer > 0) {
+            timer--;
+            System.out.println(timer);
+            return false;
+        } else if (!enterable && timer <= 0) {
+            timer = cooldown;
+            enterable = true;
+            return false;
+        }
+        if (vec3d == null && enterable) {
             vec3d = this.getPipeTarget();
             return false;
         } else if (enterable) {
@@ -55,9 +65,6 @@ public class WanderIntoPipeGoal extends Goal {
             this.targetY = vec3d.y;
             this.targetZ = vec3d.z;
             start();
-            enterable = false;
-            timer = cooldown;
-            vec3d = null;
             return true;
         } else {
             return false;
@@ -66,11 +73,6 @@ public class WanderIntoPipeGoal extends Goal {
 
     public void start() {
         creature.getNavigation().startMovingTo(this.targetX, this.targetY, this.targetZ, 1);
-        if (new Vec3d(targetX, targetY, targetZ).isInRange(creature.getPos(), 1.75   )) {
-            TransportManager.startTransport(creature, closestPos, creature.getWorld().getBlockState(closestPos).get(CONNECTION).getDirection());
-            System.out.println("Creature entered pipe");
-            creature.getNavigation().stop();
-        }
     }
 
     @Nullable

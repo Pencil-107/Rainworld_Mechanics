@@ -79,6 +79,11 @@ public class RainworldMechanics implements ModInitializer {
 	public static SoundEvent WALL_JUMP_EVENT = SoundEvent.of(WALL_JUMP_ID);
 	public static final Identifier WALL_SLIDE_ID = Identifier.of("rw-mechanics", "player_wall_slide");
 	public static SoundEvent WALL_SLIDE_EVENT = SoundEvent.of(WALL_SLIDE_ID);
+	public static final Identifier GREEN_LIZARD_HISS_ID = Identifier.of("rw-mechanics", "green_lizard_hiss");
+	public static SoundEvent GREEN_LIZARD_HISS_EVENT = SoundEvent.of(GREEN_LIZARD_HISS_ID);
+	public static final Identifier BITE01_ID = Identifier.of("rw-mechanics", "bite01");
+	public static SoundEvent BITE01_EVENT = SoundEvent.of(BITE01_ID);
+
 
 
 	private static final double LETHAL_VELOCITY = 60; // Threshold for lethal impact velocity in m/s
@@ -91,6 +96,8 @@ public class RainworldMechanics implements ModInitializer {
 		Registry.register(Registries.SOUND_EVENT, RainworldMechanics.JUMP_ID, JUMP_EVENT);
 		Registry.register(Registries.SOUND_EVENT, RainworldMechanics.WALL_JUMP_ID, WALL_JUMP_EVENT);
 		Registry.register(Registries.SOUND_EVENT, RainworldMechanics.WALL_SLIDE_ID, WALL_SLIDE_EVENT);
+		Registry.register(Registries.SOUND_EVENT, RainworldMechanics.GREEN_LIZARD_HISS_ID, GREEN_LIZARD_HISS_EVENT);
+		Registry.register(Registries.SOUND_EVENT, RainworldMechanics.BITE01_ID, BITE01_EVENT);
 
 		// Crawls
 		ServerSidePacketRegistry.INSTANCE.register(CRAWL_PACKET_ID, (packetContext, attachedData) -> {
