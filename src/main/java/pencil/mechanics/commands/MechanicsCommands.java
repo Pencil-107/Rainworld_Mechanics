@@ -102,6 +102,7 @@ public class MechanicsCommands {
                         .executes(context -> {
                             final boolean newValue = BoolArgumentType.getBool(context, "value");
                             context.getSource().sendFeedback(() -> Text.literal("rain is now "+newValue), false);
+                            ConfigValues.rainEnabled = newValue;
                             return 1;
                         })
                 ).then(literal("setTimer").then(argument("value", FloatArgumentType.floatArg())
@@ -109,8 +110,55 @@ public class MechanicsCommands {
                         .executes(context -> {
                             final float newValue = FloatArgumentType.getFloat(context, "value");
                             context.getSource().sendFeedback(() -> Text.literal("rain timer is now "+newValue+" ticks"), false);
+                            ConfigValues.rainTimer = newValue;
                             return 1;
                         }))))));
+
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(literal("items")
+                .requires(source -> source.hasPermissionLevel(2))
+                .executes(context -> {
+                    context.getSource().sendFeedback(() -> Text.literal("Current Items Settings"), false);
+                    context.getSource().sendFeedback(() -> Text.literal("Spear Base Speed: "+ConfigValues.spearSpeed), false);
+                    return 1;
+                })
+                .then(literal("spear").then(argument("value", BoolArgumentType.bool())
+                        .requires(source -> source.hasPermissionLevel(2))
+                        .executes(context -> {
+                            context.getSource().sendFeedback(() -> Text.literal("Spear Base Speed: "+ConfigValues.spearSpeed), false);
+                            return 1;
+                        })
+                        .then(literal("setSpeed").then(argument("value", FloatArgumentType.floatArg())
+                                .requires(source -> source.hasPermissionLevel(2))
+                                .executes(context -> {
+                                    final float newValue = FloatArgumentType.getFloat(context, "value");
+                                    context.getSource().sendFeedback(() -> Text.literal("Spear Base Speed is now: "+newValue), false);
+                                    return 1;
+                                }
+                                ))))
+                        )));
+
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(literal("items")
+                .requires(source -> source.hasPermissionLevel(2))
+                .executes(context -> {
+                    context.getSource().sendFeedback(() -> Text.literal("Current Items Settings"), false);
+                    context.getSource().sendFeedback(() -> Text.literal("Spear Base Speed: "+ConfigValues.spearSpeed), false);
+                    return 1;
+                })
+                .then(literal("spear").then(argument("value", BoolArgumentType.bool())
+                        .requires(source -> source.hasPermissionLevel(2))
+                        .executes(context -> {
+                            context.getSource().sendFeedback(() -> Text.literal("Spear Base Speed: "+ConfigValues.spearSpeed), false);
+                            return 1;
+                        })
+                        .then(literal("setSpeed").then(argument("value", FloatArgumentType.floatArg())
+                                .requires(source -> source.hasPermissionLevel(2))
+                                .executes(context -> {
+                                            final float newValue = FloatArgumentType.getFloat(context, "value");
+                                            context.getSource().sendFeedback(() -> Text.literal("Spear Base Speed is now: "+newValue), false);
+                                            return 1;
+                                        }
+                                ))))
+                )));
     }
 
 }

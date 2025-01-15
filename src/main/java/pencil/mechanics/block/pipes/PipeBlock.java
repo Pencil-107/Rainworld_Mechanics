@@ -42,7 +42,7 @@ public class PipeBlock extends Block implements BlockEntityProvider {
     public static BlockPos location = null;
     public static World blockWorld = null;
 
-    public static int litColor = 0x1f1f1f;
+    public static int litColor = 0xf0f0f0;
 
     public PipeBlock(Settings settings) {
         super(settings);
@@ -158,6 +158,7 @@ public class PipeBlock extends Block implements BlockEntityProvider {
             if (world.getBlockEntity(pos) instanceof PipeBlockEntity pipeBlockEntity) {
                 final int newColor = 0x1f1f1f;
                 pipeBlockEntity.color = newColor;
+                litColor = 0xf0f0f0;
                 pipeBlockEntity.markDirty();
                 world.updateListeners(pos, state, state, 0);
             }

@@ -18,12 +18,14 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import pencil.mechanics.ConfigValues;
 import pencil.mechanics.entity.SpearEntity;
 
 public class SpearItem extends Item implements Vanishable {
     public static final int field_30926 = 10;
     public static final float ATTACK_DAMAGE = 8.0F;
     public static final float field_30928 = 2.5F;
+    public static float spearSpeed = ConfigValues.spearSpeed;
     private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
     public SpearItem(Settings settings) {
@@ -31,7 +33,7 @@ public class SpearItem extends Item implements Vanishable {
         ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(
                 EntityAttributes.GENERIC_ATTACK_DAMAGE,
-                new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", 8.0, EntityAttributeModifier.Operation.ADDITION)
+                new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", 0, EntityAttributeModifier.Operation.MULTIPLY_BASE)
         );
         builder.put(
                 EntityAttributes.GENERIC_ATTACK_SPEED,
@@ -57,6 +59,7 @@ public class SpearItem extends Item implements Vanishable {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
+        spearSpeed = ConfigValues.spearSpeed;
         ItemStack itemStack = playerEntity.getStackInHand(hand);
         SpearEntity spearEntity = new SpearEntity(world, playerEntity, playerEntity.getStackInHand(hand));
         spearEntity.setVelocity(playerEntity.getRotationVector().getX()*2+playerEntity.forwardSpeed, 0, playerEntity.getRotationVector().getZ()*2+playerEntity.forwardSpeed);

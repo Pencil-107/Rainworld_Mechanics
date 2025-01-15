@@ -36,6 +36,7 @@ public class GreenLizardEntity extends HostileEntity implements GeoEntity {
     private static final float biteTimer = 20;
     private static float timer = biteTimer;
     private static float speed = 0.3F;
+    private static final float health = 5;
 
     private static boolean biting = false;
 
@@ -103,7 +104,6 @@ public class GreenLizardEntity extends HostileEntity implements GeoEntity {
     @Override
     public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "Walking", 5, this::walkAnimController));
-        controllers.add(new AnimationController<>(this, "Attacking", 5, this::biteAnimController));
     }
 
     protected <E extends GreenLizardEntity> PlayState walkAnimController(final AnimationState<E> event) {
@@ -119,14 +119,6 @@ public class GreenLizardEntity extends HostileEntity implements GeoEntity {
         biting = true;
         this.getWorld().playSound(null, this.getBlockPos(), RainworldMechanics.BITE01_EVENT, SoundCategory.HOSTILE, 1, 1);
         super.swingHand(hand);
-    }
-
-    protected <E extends GreenLizardEntity> PlayState biteAnimController(final AnimationState<E> event) {
-        if (biting) {
-            return event.setAndContinue(ATTACK_ANIM);
-        }
-
-        return event.setAndContinue(IDLE_ANIM);
     }
 
     @Override

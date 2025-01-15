@@ -21,6 +21,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import pencil.mechanics.RainworldMechanics;
 import pencil.mechanics.init.BlockInit;
 import pencil.mechanics.init.EntityTypeInit;
 import pencil.mechanics.init.ItemInit;
@@ -74,7 +75,7 @@ public class SpearEntity extends PersistentProjectileEntity {
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        float f = 1000F;
+        float f = 1F;
         if (entity instanceof LivingEntity livingEntity) {
             f += EnchantmentHelper.getAttackDamage(this.spearStack, livingEntity.getGroup());
         }
@@ -82,7 +83,7 @@ public class SpearEntity extends PersistentProjectileEntity {
         Entity entity2 = this.getOwner();
         DamageSource damageSource = this.getDamageSources().trident(this, (Entity)(entity2 == null ? this : entity2));
         this.dealtDamage = true;
-        SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_HIT;
+        SoundEvent soundEvent = RainworldMechanics.BITE01_EVENT;
         if (entity.damage(damageSource, f)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
