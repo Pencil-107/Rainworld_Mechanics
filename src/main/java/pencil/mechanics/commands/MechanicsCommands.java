@@ -116,48 +116,66 @@ public class MechanicsCommands {
 
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(literal("items")
                 .requires(source -> source.hasPermissionLevel(2))
-                .executes(context -> {
-                    context.getSource().sendFeedback(() -> Text.literal("Current Items Settings"), false);
-                    context.getSource().sendFeedback(() -> Text.literal("Spear Base Speed: "+ConfigValues.spearSpeed), false);
-                    return 1;
-                })
-                .then(literal("spear").then(argument("value", BoolArgumentType.bool())
+                .then(literal("spear")
                         .requires(source -> source.hasPermissionLevel(2))
                         .executes(context -> {
-                            context.getSource().sendFeedback(() -> Text.literal("Spear Base Speed: "+ConfigValues.spearSpeed), false);
+                            context.getSource().sendFeedback(() -> Text.literal("---Current Spear Settings---"), false);
+                            context.getSource().sendFeedback(() -> Text.literal("Spear Speed: "+ConfigValues.spearSpeed), false);
+                            context.getSource().sendFeedback(() -> Text.literal("Spear Damage Multiplier: "+ConfigValues.spearDamageMultiplier), false);
                             return 1;
-                        })
-                        .then(literal("setSpeed").then(argument("value", FloatArgumentType.floatArg())
+                            }).then(literal("speed").then(argument("value", FloatArgumentType.floatArg())
                                 .requires(source -> source.hasPermissionLevel(2))
                                 .executes(context -> {
-                                    final float newValue = FloatArgumentType.getFloat(context, "value");
-                                    context.getSource().sendFeedback(() -> Text.literal("Spear Base Speed is now: "+newValue), false);
-                                    return 1;
-                                }
-                                ))))
-                        )));
-
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(literal("items")
-                .requires(source -> source.hasPermissionLevel(2))
-                .executes(context -> {
-                    context.getSource().sendFeedback(() -> Text.literal("Current Items Settings"), false);
-                    context.getSource().sendFeedback(() -> Text.literal("Spear Base Speed: "+ConfigValues.spearSpeed), false);
-                    return 1;
-                })
-                .then(literal("spear").then(argument("value", BoolArgumentType.bool())
-                        .requires(source -> source.hasPermissionLevel(2))
-                        .executes(context -> {
-                            context.getSource().sendFeedback(() -> Text.literal("Spear Base Speed: "+ConfigValues.spearSpeed), false);
-                            return 1;
-                        })
-                        .then(literal("setSpeed").then(argument("value", FloatArgumentType.floatArg())
-                                .requires(source -> source.hasPermissionLevel(2))
-                                .executes(context -> {
+                                        final float newValue = FloatArgumentType.getFloat(context, "value");
+                                        context.getSource().sendFeedback(() -> Text.literal("Spear Speed is now: "+newValue), false);
+                                        ConfigValues.spearSpeed = newValue;
+                                        return 1;
+                                })
+                            ).then(literal("damageMultiplier").then(argument("value", FloatArgumentType.floatArg())
+                                        .requires(source -> source.hasPermissionLevel(2))
+                                        .executes(context -> {
                                             final float newValue = FloatArgumentType.getFloat(context, "value");
-                                            context.getSource().sendFeedback(() -> Text.literal("Spear Base Speed is now: "+newValue), false);
+                                            context.getSource().sendFeedback(() -> Text.literal("Spear Damage Multiplier is now: "+newValue), false);
+                                            ConfigValues.spearDamageMultiplier = newValue;
                                             return 1;
-                                        }
-                                ))))
+                                        }))))
+                                    )));
+
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(literal("creatures")
+                .requires(source -> source.hasPermissionLevel(2))
+                .then(literal("green_lizard").then(argument("value", BoolArgumentType.bool())
+                        .requires(source -> source.hasPermissionLevel(2))
+                        .executes(context -> {
+                            context.getSource().sendFeedback(() -> Text.literal("---Current Green Lizard Settings---"), false);
+                            context.getSource().sendFeedback(() -> Text.literal("Green Lizard Speed: "+ConfigValues.greenLizardSpeed), false);
+                            context.getSource().sendFeedback(() -> Text.literal("Green Lizard Health: "+ConfigValues.greenLizardSpeed), false);
+                            context.getSource().sendFeedback(() -> Text.literal("Green Lizard Bite Lethality: "+ConfigValues.greenLizardLethality+"%"), false);
+                            return 1;
+                        }).then(literal("speed").then(argument("value", BoolArgumentType.bool())
+                            .requires(source -> source.hasPermissionLevel(2))
+                            .executes(context -> {
+                                final float newValue = FloatArgumentType.getFloat(context, "value");
+                                context.getSource().sendFeedback(() -> Text.literal("Green Lizard Speed is now: "+newValue), false);
+                                ConfigValues.greenLizardSpeed = newValue;
+                                return 1;
+                            })
+                        ).then(literal("health").then(argument("value", BoolArgumentType.bool())
+                            .requires(source -> source.hasPermissionLevel(2))
+                            .executes(context -> {
+                                final float newValue = FloatArgumentType.getFloat(context, "value");
+                                context.getSource().sendFeedback(() -> Text.literal("Green Lizard Health is now: "+newValue), false);
+                                ConfigValues.greenLizardHealth = newValue;
+                                return 1;
+                            })
+                        ).then(literal("lethality").then(argument("value", BoolArgumentType.bool())
+                            .requires(source -> source.hasPermissionLevel(2))
+                            .executes(context -> {
+                                final float newValue = FloatArgumentType.getFloat(context, "value");
+                                context.getSource().sendFeedback(() -> Text.literal("Green Lizard lethality is now: "+newValue), false);
+                                ConfigValues.greenLizardLethality = newValue;
+                                return 1;
+                            })
+                        )))))
                 )));
     }
 

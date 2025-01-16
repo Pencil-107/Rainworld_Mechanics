@@ -26,11 +26,14 @@ public class ConfigValues {
 
     // Green Lizard
     public static float greenLizardSpeed = 0.3f;
+    public static float greenLizardHealth = 5;
+    public static float greenLizardLethality = 50;
 
     // ---Item Values---
 
     // Spear
     public static float spearSpeed = 6.0f;
+    public static float spearDamageMultiplier = 1;
 
     // ---Rain Values---
 
