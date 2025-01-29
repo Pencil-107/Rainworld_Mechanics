@@ -1,7 +1,9 @@
 package pencil.mechanics.entity;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.ai.goal.ActiveTargetGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.HostileEntity;
@@ -23,19 +25,19 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class GreenLizardEntity extends HostileEntity implements GeoEntity {
+public class PinkLizardEntity extends HostileEntity implements GeoEntity {
 
-    protected static final RawAnimation WALK_ANIM = RawAnimation.begin().thenLoop("green_lizard.animation.walk");
-    protected static final RawAnimation ATTACK_ANIM = RawAnimation.begin().thenLoop("green_lizard.animation.attack");
-    protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("green_lizard.animation.idle");
-    public int color = 0x24c814;
+    protected static final RawAnimation WALK_ANIM = RawAnimation.begin().thenLoop("pink_lizard.animation.walk");
+    protected static final RawAnimation ATTACK_ANIM = RawAnimation.begin().thenLoop("pink_lizard.animation.attack");
+    protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("pink_lizard.animation.idle");
+    public int color = 0xff33ec;
 
     private static BlockPos lastTargetPos = null;
 
     private static final float biteTimer = 20;
     private static float timer = biteTimer;
     private static float speed = 0.3F;
-    private static final float health = 5;
+    private static final float health = 2;
 
     private static boolean biting = false;
 
@@ -45,7 +47,7 @@ public class GreenLizardEntity extends HostileEntity implements GeoEntity {
         return color;
     }
 
-    public GreenLizardEntity(EntityType<? extends HostileEntity> entityType, World world) {
+    public PinkLizardEntity(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world);
     }
 
@@ -61,7 +63,7 @@ public class GreenLizardEntity extends HostileEntity implements GeoEntity {
         this.goalSelector.add(3, new WanderAroundFarGoal(this, 1D));
         this.goalSelector.add(4, new WanderIntoPipeGoal(this, 0.3F, 3));
 
-        this.targetSelector.add(2, new ActiveTargetGoal<>(this, GreenLizardEntity.class, true));
+        this.targetSelector.add(2, new ActiveTargetGoal<>(this, PinkLizardEntity.class, true));
         this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.add(4, new ActiveTargetGoal<>(this, PassiveEntity.class, true));
     }
@@ -105,7 +107,7 @@ public class GreenLizardEntity extends HostileEntity implements GeoEntity {
         controllers.add(new AnimationController<>(this, "Walking", 5, this::walkAnimController));
     }
 
-    protected <E extends GreenLizardEntity> PlayState walkAnimController(final AnimationState<E> event) {
+    protected <E extends PinkLizardEntity> PlayState walkAnimController(final AnimationState<E> event) {
         if (event.isMoving()) {
             return event.setAndContinue(WALK_ANIM);
         }

@@ -1,17 +1,18 @@
 package pencil.mechanics.entity.ai.goal;
 
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.sound.SoundCategory;
 import pencil.mechanics.RainworldMechanics;
 import pencil.mechanics.entity.GreenLizardEntity;
 
 import java.util.EnumSet;
 
-public class GreenLizardAttackGoal extends MeleeAttackGoal {
-    private final GreenLizardEntity lizard;
+public class LizardAttackGoal extends MeleeAttackGoal {
+    private final HostileEntity lizard;
     private int ticks;
 
-    public GreenLizardAttackGoal(GreenLizardEntity mob, double speed, boolean pauseWhenMobIdle) {
+    public LizardAttackGoal(HostileEntity mob, double speed, boolean pauseWhenMobIdle) {
         super(mob, speed, pauseWhenMobIdle);
         this.lizard = mob;
         this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));

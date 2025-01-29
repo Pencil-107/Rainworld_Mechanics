@@ -573,7 +573,7 @@
 				},
 				"Head": {
 					"rotation": {
-						"vector": [5, 0, 0]
+						"vector": [-2.5, 0, 0]
 					}
 				},
 				"Hand2": {
