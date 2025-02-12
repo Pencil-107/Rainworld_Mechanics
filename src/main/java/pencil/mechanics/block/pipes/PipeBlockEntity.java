@@ -19,6 +19,9 @@ public class PipeBlockEntity extends BlockEntity {
 
     public int color = 0x1f1f1f;
 
+    public BlockPos entrance1 = null;
+    public BlockPos entrance2 = null;
+
     public PipeBlockEntity(BlockPos pos, BlockState state) {
         super(RainworldMechanics.PIPE_BLOCK_ENTITY, pos, state);
     }

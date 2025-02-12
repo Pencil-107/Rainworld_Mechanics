@@ -6,6 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import pencil.mechanics.init.BlockInit;
 
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class EntityAIMain {
@@ -14,10 +15,11 @@ public abstract class EntityAIMain {
 
     private final int searchRange = 6;
     private final float moveSpeed;
-    private final float cooldown = 200;
+    private final float cooldown = 20;
     private float timer = cooldown;
-    private List targetBlocks = List.of(BlockInit.PIPE_ENTRANCE);
-    private List foundPaths = List.of();
+    private final List targetBlocks = List.of(BlockInit.PIPE_ENTRANCE, BlockInit.POLE_JOINT, BlockInit.POLE_X, BlockInit.POLE_Y, BlockInit.POLE_Z);
+    HashMap<BlockPos, String> foundBlocks = new HashMap<>();
+    private List foundPos = List.of();
     private BlockPos closestPos = null;
     private BlockPos checkPos;
 
@@ -26,8 +28,22 @@ public abstract class EntityAIMain {
         targetPos = targetBlockPos;
         moveSpeed = speed;
     }
+
+    public void main() {
+        for (float clock = cooldown; clock >= 0; clock--) {
+            if (clock == 0) {
+                calculateGrid();
+            }
+        }
+    }
+
+    public void calculateGrid() {
+        foundPos.clear();
+        foundBlocks.clear();
+        findBlocks();
+    }
     
-    public Vec3d findBlocks() {
+    public void findBlocks() {
         for (int x = entity.getBlockX()-searchRange; x < entity.getBlockX()+searchRange; x++)
         {
             for (int y = entity.getBlockY()-searchRange; y < entity.getBlockY()+searchRange; y++)
@@ -38,16 +54,16 @@ public abstract class EntityAIMain {
                     if (targetBlocks.contains(foundBlock)) {
 
                         if (foundBlock == BlockInit.PIPE_ENTRANCE) {
-                            foundPaths.add(List.of(checkPos, foundBlock, "exit position"));
+                            foundBlocks.put(checkPos, "PipeEntrance");
                         }
+                        if (foundBlock == BlockInit.POLE_JOINT || foundBlock == BlockInit.POLE_Y || foundBlock == BlockInit.POLE_X || foundBlock == BlockInit.POLE_Z) {
+                            foundBlocks.put(checkPos, "Pole");
+                        }
+
+                        foundPos.add(checkPos);
                     }
                 }
             }
-        }
-        if (closestPos != null) {
-            return new Vec3d(closestPos.getX(), closestPos.getY(), closestPos.getZ());
-        } else {
-            return null;
         }
     }
 }

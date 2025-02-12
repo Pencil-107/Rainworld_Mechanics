@@ -18,6 +18,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.StringIdentifiable;
@@ -30,12 +31,14 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import pencil.mechanics.RainworldMechanics;
+import pencil.mechanics.init.BlockInit;
 import pencil.mechanics.init.ItemInit;
 
 public class PipeEntrance extends Block implements Waterloggable{
 
     private Entity lastCol;
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+    public BlockPos exit;
 
     // Enum for orientation
     public enum Orientation implements StringIdentifiable {
@@ -148,8 +151,19 @@ public class PipeEntrance extends Block implements Waterloggable{
             if (direction == excludeDirection) continue;
             BlockState neighborState = ctx.getWorld().getBlockState(ctx.getBlockPos().offset(direction));
             Block neighborBlock = neighborState.getBlock();
-            if (neighborBlock instanceof PipeBlock || neighborBlock instanceof PipeEntrance) {
+            if (neighborBlock instanceof PipeBlock) {
+                if (((PipeBlockEntity) ctx.getWorld().getBlockEntity(ctx.getBlockPos().offset(direction))).entrance1 != null &&
+                        ctx.getBlockPos() == ((PipeBlockEntity) ctx.getWorld().getBlockEntity(ctx.getBlockPos().offset(direction))).entrance1) {
+                    exit = ((PipeBlockEntity) ctx.getWorld().getBlockEntity(ctx.getBlockPos().offset(direction))).entrance2;
+                }
+                if (((PipeBlockEntity) ctx.getWorld().getBlockEntity(ctx.getBlockPos().offset(direction))).entrance2 != null &&
+                        ctx.getBlockPos() == ((PipeBlockEntity) ctx.getWorld().getBlockEntity(ctx.getBlockPos().offset(direction))).entrance2) {
+                    exit = ((PipeBlockEntity) ctx.getWorld().getBlockEntity(ctx.getBlockPos().offset(direction))).entrance1;
+                }
                 return direction;
+            }
+            if (neighborBlock instanceof PipeEntrance) {
+                exit = ctx.getBlockPos().offset(direction);
             }
         }
         return excludeDirection; // Default to the same direction if no connection found
@@ -165,6 +179,23 @@ public class PipeEntrance extends Block implements Waterloggable{
                 if (o.getDirection() == direction) {
                     connectionOrientation = o;
                     break;
+                }
+            }
+
+            if (neighborBlock instanceof PipeBlock) {
+                if (((PipeBlockEntity) world.getBlockEntity(neighborPos)).entrance1 != null &&
+                        pos == ((PipeBlockEntity) world.getBlockEntity(neighborPos)).entrance1) {
+                    exit = ((PipeBlockEntity) world.getBlockEntity(neighborPos)).entrance2;
+                }
+                if (((PipeBlockEntity) world.getBlockEntity(neighborPos)).entrance2 != null &&
+                        pos == ((PipeBlockEntity) world.getBlockEntity(neighborPos)).entrance2) {
+                    exit = ((PipeBlockEntity) world.getBlockEntity(neighborPos)).entrance1;
+                }
+
+                if (((PipeBlockEntity) world.getBlockEntity(neighborPos)).entrance1 == null) {
+                    ((PipeBlockEntity) world.getBlockEntity(neighborPos)).entrance1 = pos;
+                } else if (((PipeBlockEntity) world.getBlockEntity(neighborPos)).entrance2 == null) {
+                    ((PipeBlockEntity) world.getBlockEntity(neighborPos)).entrance2 = pos;
                 }
             }
 
@@ -193,8 +224,13 @@ public class PipeEntrance extends Block implements Waterloggable{
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient && player != null && !player.isCreative()) {
+        if (!world.isClient && player != null) {
             TransportManager.startTransport(player, pos, state.get(CONNECTION).getDirection());
+        }
+        if (!world.isClient && player != null && player.isCreative() && exit != null) {
+            player.sendMessage(Text.of(""+exit), true);
+        } else if (!world.isClient && player != null && player.isCreative()) {
+            player.sendMessage(Text.of("No exit connected"), true);
         }
         return ActionResult.SUCCESS;
     }

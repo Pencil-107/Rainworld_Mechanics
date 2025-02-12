@@ -303,14 +303,14 @@ public class PoleClimbing {
                             client.player.setPos(climbOffsetPos.getX(), climbOffsetPos.getY(), client.player.getZ());
                         }
                     }
-                    if (client.player.getPos().getX() > pole.toCenterPos().getX() + 0.6 && axis == 1
-                            || client.player.getPos().getZ() > pole.toCenterPos().getZ() + 0.6 && axis == 2) {
+                    if (set && client.player.getPos().getX() > pole.toCenterPos().getX() + 0.6 && axis == 1
+                            || set && client.player.getPos().getZ() > pole.toCenterPos().getZ() + 0.6 && axis == 2) {
                         touchingPole = false;
                         climbing = false;
                         set = false;
                         setPole = false;
-                    } else if (client.player.getPos().getX() < pole.toCenterPos().getX() - 0.6 && axis == 1
-                            || client.player.getPos().getZ() < pole.toCenterPos().getZ() - 0.6 && axis == 2) {
+                    } else if (set && client.player.getPos().getX() < pole.toCenterPos().getX() - 0.6 && axis == 1
+                            || set && client.player.getPos().getZ() < pole.toCenterPos().getZ() - 0.6 && axis == 2) {
                         touchingPole = false;
                         climbing = false;
                         set = false;

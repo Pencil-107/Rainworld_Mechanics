@@ -12,15 +12,15 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.Property;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ColorHelper;
-import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
@@ -81,6 +81,22 @@ public class PipeBlock extends Block implements BlockEntityProvider {
             if (shouldConnect(ctx, direction)) {
                 state = state.with(getProperty(direction), true);
             }
+
+            if (ctx.getBlockPos() != null && ctx.getWorld() != null && ctx.getWorld().getBlockEntity(ctx.getBlockPos()) != null) {
+                if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(direction)).getBlock() instanceof PipeEntrance) {
+                    if (((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos()))).entrance1 != null) {
+                        ((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos()))).entrance2 = ctx.getBlockPos().offset(direction);
+                    } else {
+                        ((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos()))).entrance1 = ctx.getBlockPos().offset(direction);
+                    }
+                } else if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(direction)).getBlock() instanceof PipeBlock) {
+                    if (((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos().offset(direction)))).entrance1 != null &&
+                            ((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos().offset(direction)))).entrance2 != null) {
+                        ((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos()))).entrance1 = ((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos().offset(direction)))).entrance1;
+                        ((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos()))).entrance2 = ((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos().offset(direction)))).entrance2;
+                    }
+                }
+            }
         }
 
         return state;
@@ -97,6 +113,19 @@ public class PipeBlock extends Block implements BlockEntityProvider {
         Block neighborBlock = neighborState.getBlock();
         if (!(neighborBlock instanceof PipeBlock || neighborBlock instanceof PipeEntrance)) {
             return state.with(getProperty(direction), false);
+        }
+
+        if (pos != null) {
+            if (neighborBlock instanceof PipeEntrance) {
+                if (((PipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(pos))).entrance1 != null) {
+                    ((PipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(pos))).entrance2 = neighborPos;
+                } else {
+                    ((PipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(pos))).entrance1 = neighborPos;
+                }
+            } else if (neighborBlock instanceof PipeBlock) {
+                ((PipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(pos))).entrance1 = ((PipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(neighborPos))).entrance1;
+                ((PipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(pos))).entrance2 = ((PipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(neighborPos))).entrance2;
+            }
         }
 
         return state.with(getProperty(direction), true);
@@ -117,13 +146,6 @@ public class PipeBlock extends Block implements BlockEntityProvider {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!world.isClient && player.isCreative()) {
-            // Output the block's connections to the console
-            System.out.println("North: " + state.get(NORTH));
-            System.out.println("South: " + state.get(SOUTH));
-            System.out.println("East: " + state.get(EAST));
-            System.out.println("West: " + state.get(WEST));
-            System.out.println("Up: " + state.get(UP));
-            System.out.println("Down: " + state.get(DOWN));
 
             if (!player.getMainHandStack().isEmpty() && Block.getBlockFromItem(player.getMainHandStack().getItem()) != null && Block.getBlockFromItem(player.getMainHandStack().getItem()) != BlockInit.PIPE_BLOCK && Block.getBlockFromItem(player.getMainHandStack().getItem()) != BlockInit.PIPE_ENTRANCE) {
                 if (world.getBlockEntity(pos) instanceof PipeBlockEntity) {
