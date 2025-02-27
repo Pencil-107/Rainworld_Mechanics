@@ -10,6 +10,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
+import pencil.mechanics.RainworldMechanics;
 import pencil.mechanics.RainworldMechanicsClient;
 import pencil.mechanics.entity.SpearEntity;
 
@@ -31,6 +32,6 @@ public class SpearEntityRenderer extends EntityRenderer<SpearEntity> {
 
     @Override
     public Identifier getTexture(SpearEntity entity) {
-        return new Identifier("slugcatmovement", "textures/block/pole_xyz.png");
+        return new Identifier(RainworldMechanics.MOD_ID, "textures/block/pole_xyz.png");
     }
 }

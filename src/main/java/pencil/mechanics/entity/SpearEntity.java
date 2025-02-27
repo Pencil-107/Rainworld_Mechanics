@@ -21,6 +21,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import pencil.mechanics.ConfigValues;
 import pencil.mechanics.RainworldMechanics;
 import pencil.mechanics.init.BlockInit;
 import pencil.mechanics.init.EntityTypeInit;
@@ -50,6 +51,7 @@ public class SpearEntity extends PersistentProjectileEntity {
         if (this.inGroundTime > 4) {
             this.dealtDamage = true;
         }
+        this.setVelocity(this.getVelocity().getX(), -0.1, this.getVelocity().getZ());
         super.tick();
     }
 
@@ -75,7 +77,7 @@ public class SpearEntity extends PersistentProjectileEntity {
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        float f = 1F;
+        float f = ConfigValues.spearDamageMultiplier;
         if (entity instanceof LivingEntity livingEntity) {
             f += EnchantmentHelper.getAttackDamage(this.spearStack, livingEntity.getGroup());
         }

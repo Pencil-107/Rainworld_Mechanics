@@ -62,7 +62,7 @@ public class SpearItem extends Item implements Vanishable {
         spearSpeed = ConfigValues.spearSpeed;
         ItemStack itemStack = playerEntity.getStackInHand(hand);
         SpearEntity spearEntity = new SpearEntity(world, playerEntity, playerEntity.getStackInHand(hand));
-        spearEntity.setVelocity(playerEntity.getRotationVector().getX()*2+playerEntity.forwardSpeed, 0, playerEntity.getRotationVector().getZ()*2+playerEntity.forwardSpeed);
+        spearEntity.setVelocity(playerEntity.getRotationVector().getX()*6+playerEntity.forwardSpeed, 0, playerEntity.getRotationVector().getZ()*6+playerEntity.forwardSpeed);
         if (playerEntity.getAbilities().creativeMode) {
             spearEntity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
         }
