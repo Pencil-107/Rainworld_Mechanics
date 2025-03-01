@@ -10,6 +10,7 @@ import net.minecraft.resource.featuretoggle.ToggleableFeature;
 import net.minecraft.util.TypeFilter;
 import org.jetbrains.annotations.Nullable;
 import pencil.mechanics.entity.GreenLizardEntity;
+import pencil.mechanics.entity.NoodleflyEntity;
 import pencil.mechanics.entity.PinkLizardEntity;
 import pencil.mechanics.entity.SpearEntity;
 
@@ -33,6 +34,12 @@ public class EntityTypeInit<T extends Entity> implements ToggleableFeature, Type
             "pink_lizard",
             EntityType.Builder.<PinkLizardEntity>create(PinkLizardEntity::new, SpawnGroup.MONSTER).setDimensions(0.9F, 0.9F).maxTrackingRange(4)
     );
+
+    public static final EntityType<NoodleflyEntity> NOODLEFLY_ENTITY = register(
+            "noodlefly_entity",
+            EntityType.Builder.<NoodleflyEntity>create(NoodleflyEntity::new, SpawnGroup.MONSTER).setDimensions(0.9F, 0.9F).maxTrackingRange(4)
+    );
+
 
     public static final EntityType<SpearEntity> SPEAR = register(
             "spear",

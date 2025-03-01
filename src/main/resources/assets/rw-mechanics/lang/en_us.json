@@ -8,6 +8,7 @@
   "block.rw-mechanics.telepipe_block": "Telepipe",
 
   "item.rw-mechanics.pipe_wand": "Pipe Editor",
+  "item.rw-mechanics.spear": "Spear",
 
   "category.rw-mechanics.rainworld": "Rainworld Movement",
   "key.rw-mechanics.crawl": "Crawl",
@@ -15,8 +16,9 @@
   "key.rw-mechanics.interact": "Grab",
   "key.rw-mechanics.drop": "Drop",
 
-  "itemGroup.rw-mechanics.rainworld_group": "Rainworld Movement",
+  "itemgroup.rw-mechanics.rainworld_group": "Rainworld Movement",
 
   "entity.minecraft.green_lizard": "Green Lizard",
-  "item.rw-mechanics.green_lizard_spawn_egg": "GreenLizard Spawn Egg"
+  "item.rw-mechanics.green_lizard_spawn_egg": "GreenLizard Spawn Egg",
+  "item.rw-mechanics.noodle_fly_spawn_egg": "Noodlefly Spawn Egg"
 }

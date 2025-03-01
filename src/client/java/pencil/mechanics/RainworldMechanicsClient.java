@@ -41,10 +41,7 @@ import pencil.mechanics.init.ItemInit;
 import pencil.mechanics.player.Keybinds;
 import pencil.mechanics.player.foodHandler;
 import pencil.mechanics.render.block.PipeBlockEntityRenderer;
-import pencil.mechanics.render.entity.GreenLizardEntityRenderer;
-import pencil.mechanics.render.entity.PinkLizardEntityRenderer;
-import pencil.mechanics.render.entity.SpearEntityModel;
-import pencil.mechanics.render.entity.SpearEntityRenderer;
+import pencil.mechanics.render.entity.*;
 import software.bernie.geckolib.GeckoLib;
 import software.bernie.geckolib.animatable.GeoReplacedEntity;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
@@ -58,6 +55,7 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 
 	public static final DefaultedEntityGeoModel GREEN_LIZARD = new DefaultedEntityGeoModel<>(new Identifier(RainworldMechanics.MOD_ID, "green_lizard"));
 	public static final DefaultedEntityGeoModel PINK_LIZARD = new DefaultedEntityGeoModel<>(new Identifier(RainworldMechanics.MOD_ID, "pink_lizard"));
+	public static final DefaultedEntityGeoModel NOODLE_FLY = new DefaultedEntityGeoModel<>(new Identifier(RainworldMechanics.MOD_ID, "noodle_fly"));
 
 	// True only if mod is on server
 	public static boolean modEnabled = false;
@@ -153,6 +151,7 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 
 		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.GREEN_LIZARD, (context) -> {return new GreenLizardEntityRenderer(context, GREEN_LIZARD); });
 		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.PINK_LIZARD, (context) -> {return new PinkLizardEntityRenderer(context, PINK_LIZARD); });
+		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.NOODLEFLY_ENTITY, (context) -> {return new NoodleflyEntityRenderer(context, NOODLE_FLY); });
 
 		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.SPEAR, SpearEntityRenderer::new);
 		EntityModelLayerRegistry.registerModelLayer(MODEL_SPEAR_LAYER, SpearEntityModel::getTexturedModelData);
