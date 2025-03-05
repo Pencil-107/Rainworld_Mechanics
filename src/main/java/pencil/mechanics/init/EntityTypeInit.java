@@ -9,10 +9,7 @@ import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.resource.featuretoggle.ToggleableFeature;
 import net.minecraft.util.TypeFilter;
 import org.jetbrains.annotations.Nullable;
-import pencil.mechanics.entity.GreenLizardEntity;
-import pencil.mechanics.entity.NoodleflyEntity;
-import pencil.mechanics.entity.PinkLizardEntity;
-import pencil.mechanics.entity.SpearEntity;
+import pencil.mechanics.entity.*;
 
 
 public class EntityTypeInit<T extends Entity> implements ToggleableFeature, TypeFilter<Entity, T> {
@@ -40,6 +37,25 @@ public class EntityTypeInit<T extends Entity> implements ToggleableFeature, Type
             EntityType.Builder.<NoodleflyEntity>create(NoodleflyEntity::new, SpawnGroup.MONSTER).setDimensions(0.9F, 0.9F).maxTrackingRange(4)
     );
 
+    public static final EntityType<JetfishEntity> JETFISH = register(
+            "jetfish",
+            EntityType.Builder.<JetfishEntity>create(JetfishEntity::new, SpawnGroup.MONSTER).setDimensions(0.9F, 0.9F).maxTrackingRange(4)
+    );
+
+    public static final EntityType<PoleplantEntity> POLEPLANT = register(
+            "poleplant",
+            EntityType.Builder.<PoleplantEntity>create(PoleplantEntity::new, SpawnGroup.MONSTER).setDimensions(0.9F, 0.9F).maxTrackingRange(4)
+    );
+
+    public static final EntityType<DropwigEntity> DROPWIG = register(
+            "dropwig",
+            EntityType.Builder.<DropwigEntity>create(DropwigEntity::new, SpawnGroup.MONSTER).setDimensions(0.9F, 0.9F).maxTrackingRange(4)
+    );
+
+    public static final EntityType<FivePebblesEntity> FIVEPEBBLES = register(
+            "fivepebbles",
+            EntityType.Builder.<FivePebblesEntity>create(FivePebblesEntity::new, SpawnGroup.MONSTER).setDimensions(0.9F, 0.9F).maxTrackingRange(4)
+    );
 
     public static final EntityType<SpearEntity> SPEAR = register(
             "spear",

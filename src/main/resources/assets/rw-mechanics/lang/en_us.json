@@ -2,13 +2,14 @@
   "block.rw-mechanics.pole_y": "Pole Vertical",
   "block.rw-mechanics.pole_x": "Pole Horizontal X",
   "block.rw-mechanics.pole_z": "Pole Horizontal Z",
+  "block.rw-mechanics.pole_joint": "Pole Joint",
   "block.rw-mechanics.crawl_frame": "Crawl Frame",
   "block.rw-mechanics.pipe_block": "Travel Pipe",
   "block.rw-mechanics.pipe_entrance": "Travel Pipe Entrance",
   "block.rw-mechanics.telepipe_block": "Telepipe",
 
   "item.rw-mechanics.pipe_wand": "Pipe Editor",
-  "item.rw-mechanics.spear": "Spear",
+  "item.rw-mechanics.spear_item": "Spear",
 
   "category.rw-mechanics.rainworld": "Rainworld Movement",
   "key.rw-mechanics.crawl": "Crawl",
@@ -20,5 +21,6 @@
 
   "entity.minecraft.green_lizard": "Green Lizard",
   "item.rw-mechanics.green_lizard_spawn_egg": "GreenLizard Spawn Egg",
-  "item.rw-mechanics.noodle_fly_spawn_egg": "Noodlefly Spawn Egg"
+  "item.rw-mechanics.noodle_fly_spawn_egg": "Noodlefly Spawn Egg",
+  "item.rw-mechanics.poleplant_spawn_egg": "Poleplant Spawn Egg"
 }

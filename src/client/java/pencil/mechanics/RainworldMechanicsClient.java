@@ -32,6 +32,7 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.glfw.GLFW;
+import pencil.mechanics.entity.PoleplantEntity;
 import pencil.mechanics.gui.screen.BlockEditorScreen;
 import pencil.mechanics.gui.screen.KarmaScreen;
 import pencil.mechanics.gui.screen.PlayerModelScreen;
@@ -56,6 +57,10 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 	public static final DefaultedEntityGeoModel GREEN_LIZARD = new DefaultedEntityGeoModel<>(new Identifier(RainworldMechanics.MOD_ID, "green_lizard"));
 	public static final DefaultedEntityGeoModel PINK_LIZARD = new DefaultedEntityGeoModel<>(new Identifier(RainworldMechanics.MOD_ID, "pink_lizard"));
 	public static final DefaultedEntityGeoModel NOODLE_FLY = new DefaultedEntityGeoModel<>(new Identifier(RainworldMechanics.MOD_ID, "noodle_fly"));
+	public static final DefaultedEntityGeoModel JETFISH = new DefaultedEntityGeoModel<>(new Identifier(RainworldMechanics.MOD_ID, "jetfish"));
+	public static final DefaultedEntityGeoModel POLEPLANT = new DefaultedEntityGeoModel<>(new Identifier(RainworldMechanics.MOD_ID, "poleplant"));
+	public static final DefaultedEntityGeoModel DROPWIG = new DefaultedEntityGeoModel<>(new Identifier(RainworldMechanics.MOD_ID, "dropwig"));
+	public static final DefaultedEntityGeoModel FIVEPEBBLES = new DefaultedEntityGeoModel<>(new Identifier(RainworldMechanics.MOD_ID, "fivepebbles"));
 
 	// True only if mod is on server
 	public static boolean modEnabled = false;
@@ -151,7 +156,13 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 
 		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.GREEN_LIZARD, (context) -> {return new GreenLizardEntityRenderer(context, GREEN_LIZARD); });
 		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.PINK_LIZARD, (context) -> {return new PinkLizardEntityRenderer(context, PINK_LIZARD); });
+
 		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.NOODLEFLY_ENTITY, (context) -> {return new NoodleflyEntityRenderer(context, NOODLE_FLY); });
+		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.DROPWIG , (context) -> {return new DropwigEntityRenderer(context, DROPWIG); });
+		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.JETFISH , (context) -> {return new JetfishEntityRenderer(context, JETFISH); });
+		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.POLEPLANT , (context) -> {return new PoleplantEntityRenderer(context, POLEPLANT); });
+
+		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.FIVEPEBBLES , (context) -> {return new FivePebblesEntityRenderer(context, FIVEPEBBLES); });
 
 		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.SPEAR, SpearEntityRenderer::new);
 		EntityModelLayerRegistry.registerModelLayer(MODEL_SPEAR_LAYER, SpearEntityModel::getTexturedModelData);

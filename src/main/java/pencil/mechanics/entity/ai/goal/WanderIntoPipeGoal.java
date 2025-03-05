@@ -40,7 +40,7 @@ public class WanderIntoPipeGoal extends Goal {
     }
 
     public boolean canStart() {
-        if (new Vec3d(targetX, targetY, targetZ).isInRange(creature.getPos(), 1.75) && enterable && creature.getWorld().getBlockState(closestPos) != null) {
+        if (closestPos != null && new Vec3d(targetX, targetY, targetZ).isInRange(creature.getPos(), 1.75) && enterable && creature.getWorld().getBlockState(closestPos) != null) {
             TransportManager.startTransport(creature, closestPos, creature.getWorld().getBlockState(closestPos).get(CONNECTION).getDirection());
             creature.getNavigation().recalculatePath();
             enterable = false;

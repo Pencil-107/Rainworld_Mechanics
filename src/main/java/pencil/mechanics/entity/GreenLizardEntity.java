@@ -12,7 +12,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import pencil.mechanics.RainworldMechanics;
-import pencil.mechanics.entity.ai.goal.LizardAttackGoal;
+import pencil.mechanics.entity.ai.goal.CustomAttackGoal;
 import pencil.mechanics.entity.ai.goal.WanderIntoPipeGoal;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -57,7 +57,7 @@ public class GreenLizardEntity extends HostileEntity implements GeoEntity {
     @Override
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(2, new LizardAttackGoal(this, 0.7, false));
+        this.goalSelector.add(2, new CustomAttackGoal(this, 0.7, RainworldMechanics.GREEN_LIZARD_HISS_EVENT, false));
         this.goalSelector.add(3, new WanderAroundFarGoal(this, 1D));
         this.goalSelector.add(4, new WanderIntoPipeGoal(this, 0.3F, 3));
 

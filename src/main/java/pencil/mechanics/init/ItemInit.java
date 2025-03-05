@@ -20,6 +20,8 @@ public class ItemInit {
 
     public static final Item NOODLE_FLY_SPAWN_EGG = register("noodle_fly_spawn_egg", new SpawnEggItem(EntityTypeInit.NOODLEFLY_ENTITY, 0xf7785d, 0xf75d5d, new Item.Settings()));
 
+    public static final Item POLEPLANT_SPAWNN_EGG = register("poleplant_spawn_egg", new SpawnEggItem(EntityTypeInit.NOODLEFLY_ENTITY, 0xf7785d, 0xf75d5d, new Item.Settings()));
+
     public static <T extends Item> T register(String name, T item) {
         return Registry.register(Registries.ITEM, RainworldMechanics.id(name), item);
     }

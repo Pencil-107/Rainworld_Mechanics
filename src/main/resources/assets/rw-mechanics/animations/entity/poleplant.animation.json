@@ -1,0 +1,291 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.model.idle_active": {
+			"loop": true,
+			"bones": {
+				"bone8": {
+					"rotation": {
+						"vector": [0, 127.5, 0]
+					}
+				}
+			}
+		},
+		"animation.model.idle_inactive": {
+			"loop": true,
+			"bones": {
+				"spines1d": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines1a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines1b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines1c": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines2d": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines2a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines2b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines2c": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines6b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines3a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines3b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines3c": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines3d": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines4a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines4b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines5a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines5b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines5c": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines5d": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines6a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines20b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines7a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines7b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines7c": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines7d": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines8a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines8b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines8c": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines8d": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines9a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines9b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines10a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines10b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines10c": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines10d": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines11a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines11b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines12a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines12b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines13a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines13b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines14a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines14b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines15a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines15b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines16a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines16b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines17a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines17b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines18a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines18b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines19a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines19b": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"spines20a": {
+					"scale": {
+						"vector": [0, 1, 1]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}
