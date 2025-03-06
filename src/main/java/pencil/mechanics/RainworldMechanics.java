@@ -102,8 +102,9 @@ public class RainworldMechanics implements ModInitializer {
 		// Crawls
 		ServerSidePacketRegistry.INSTANCE.register(CRAWL_PACKET_ID, (packetContext, attachedData) -> {
 			packetContext.getTaskQueue().execute(() -> { // Execute on the main thread
-				packetContext.getPlayer().setBoundingBox(Box.of(packetContext.getPlayer().getBoundingBox().getCenter(), 0.6f, 0.6f,1.8f));
-				pencil.mechanics.player.movement.CrawlingServer.main(packetContext.getPlayer());
+				packetContext.getPlayer().setBoundingBox(Box.of(packetContext.getPlayer().getBoundingBox().getCenter(), 0.6f, 0.6f,0.6f));
+				packetContext.getPlayer().setPose(EntityPose.SWIMMING);
+				ServerSidePacketRegistry.INSTANCE.sendToPlayer(packetContext.getPlayer(), RainworldMechanics.CRAWL_PACKET_ID, PacketByteBufs.empty());
 			});
 		});
 

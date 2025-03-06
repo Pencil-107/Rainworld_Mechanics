@@ -81,22 +81,6 @@ public class PipeBlock extends Block implements BlockEntityProvider {
             if (shouldConnect(ctx, direction)) {
                 state = state.with(getProperty(direction), true);
             }
-
-            if (ctx.getBlockPos() != null && ctx.getWorld() != null && ctx.getWorld().getBlockEntity(ctx.getBlockPos()) != null) {
-                if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(direction)).getBlock() instanceof PipeEntrance) {
-                    if (((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos()))).entrance1 != null) {
-                        ((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos()))).entrance2 = ctx.getBlockPos().offset(direction);
-                    } else {
-                        ((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos()))).entrance1 = ctx.getBlockPos().offset(direction);
-                    }
-                } else if (ctx.getWorld().getBlockState(ctx.getBlockPos().offset(direction)).getBlock() instanceof PipeBlock) {
-                    if (((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos().offset(direction)))).entrance1 != null &&
-                            ((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos().offset(direction)))).entrance2 != null) {
-                        ((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos()))).entrance1 = ((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos().offset(direction)))).entrance1;
-                        ((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos()))).entrance2 = ((PipeBlockEntity) Objects.requireNonNull(ctx.getWorld().getBlockEntity(ctx.getBlockPos().offset(direction)))).entrance2;
-                    }
-                }
-            }
         }
 
         return state;
@@ -115,18 +99,6 @@ public class PipeBlock extends Block implements BlockEntityProvider {
             return state.with(getProperty(direction), false);
         }
 
-        if (pos != null) {
-            if (neighborBlock instanceof PipeEntrance) {
-                if (((PipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(pos))).entrance1 != null) {
-                    ((PipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(pos))).entrance2 = neighborPos;
-                } else {
-                    ((PipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(pos))).entrance1 = neighborPos;
-                }
-            } else if (neighborBlock instanceof PipeBlock) {
-                ((PipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(pos))).entrance1 = ((PipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(neighborPos))).entrance1;
-                ((PipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(pos))).entrance2 = ((PipeBlockEntity) Objects.requireNonNull(world.getBlockEntity(neighborPos))).entrance2;
-            }
-        }
 
         return state.with(getProperty(direction), true);
     }

@@ -1,7 +1,9 @@
 package pencil.mechanics.mixin.client;
 
+import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import pencil.mechanics.RainworldMechanics;
 import pencil.mechanics.RainworldMechanicsClient;
 
 import java.util.Objects;
@@ -27,9 +30,13 @@ public abstract class RainworldMechanicsEntityMixin {
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void tick(CallbackInfo ci) {
-        if (RainworldMechanicsClient.crawling) {
-            RainworldMechanicsClient.clientPlayer.player.setBoundingBox(Box.of(RainworldMechanicsClient.clientPlayer.player.getBoundingBox().getCenter(), 0.6f, 0.6f, 0.6f));
-        }
+        ClientSidePacketRegistry.INSTANCE.register(RainworldMechanics.CRAWL_PACKET_ID, (packetContext, attachedData) -> {
+            packetContext.getTaskQueue().execute(() -> {
+                if (this.isPlayer()) {
+                    RainworldMechanicsClient.playerEntity.setBoundingBox(Box.of(RainworldMechanicsClient.playerEntity.getBoundingBox().getCenter(), 0.6f, 0.6f, 0.6f));
+                }
+            });
+        });
     }
 
 

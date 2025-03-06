@@ -2,7 +2,12 @@ package pencil.mechanics.player.movement;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.RaycastContext;
 import pencil.mechanics.ConfigValues;
 import pencil.mechanics.RainworldMechanicsClient;
 import pencil.mechanics.init.BlockInit;
@@ -14,6 +19,9 @@ public class Crawling {
     public static float crawlJumpXMultiplier = ConfigValues.crawlJumpXMultiplier;
     public static float crawlJumpYMultiplier = ConfigValues.crawlJumpYMultiplier;
     public static boolean soundPlayed = false;
+
+    private static boolean wall3 = false;
+    private static boolean wall4 = false;
 
     public static void main(MinecraftClient client) {
         if (RainworldMechanicsClient.clientPlayer != null) {
@@ -47,22 +55,57 @@ public class Crawling {
                     pressed = false;
                 }
             }
-            if (client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() == BlockInit.CRAWL_FRAME || client.player.getWorld().getBlockState(client.player.getBlockPos()).getBlock() == BlockInit.PIPE_ENTRANCE) {
-                RainworldMechanicsClient.crawlFrame = true;
-                client.player.setNoGravity(true);
-                if (client.options.forwardKey.isPressed()) {
-                    client.player.setVelocity(client.player.getRotationVector().getX()* 0.1, client.player.getRotationVector().getY()* 0.1, client.player.getRotationVector().getZ()* 0.1);
-                } else {
-                    client.player.setVelocity(0, 0, 0);
-                }
-            } else {
-                client.player.setNoGravity(false);
-                RainworldMechanicsClient.crawlFrame = false;
-            }
         } else {
             heldTime = 0;
             pressed = false;
             soundPlayed = false;
+            client.player.setNoGravity(false);
+            RainworldMechanicsClient.crawlFrame = false;
+        }
+
+        Vec3d wallVector3 = client.player.getPos().offset(client.player.getHorizontalFacing().rotateYClockwise().getOpposite()  , 0.3);
+        Vec3d wallVector4 = client.player.getPos().offset(client.player.getHorizontalFacing().rotateYClockwise(), 0.3);
+
+        BlockHitResult hit3 = client.world.raycast( // Raycast Shooter
+                new RaycastContext(
+                        // raycast shoots thin box from center of player torso in the direction of Second Corner
+                        new Vec3d(wallVector3.getX()-0.6, client.player.getBoundingBox().minY, wallVector3.getZ()-0.6), // First Corner
+                        new Vec3d(wallVector3.getX()+0.6, client.player.getBoundingBox().maxY, wallVector3.getZ()+0.6), // Second Corner
+                        RaycastContext.ShapeType.COLLIDER, // ShapeType
+                        RaycastContext.FluidHandling.NONE, client.player)); // extra Variables
+        if (hit3.getType() == HitResult.Type.BLOCK) { // check if the detected thing is a block
+            BlockHitResult blockhit3 = hit3; // sets detected block
+            wall3 = true;
+        } else {
+            wall3 = false;
+        }
+        BlockHitResult hit4 = client.world.raycast( // Raycast Shooter
+                new RaycastContext(
+                        // raycast shoots thin box from center of player torso in the direction of Second Corner
+                        new Vec3d(wallVector4.getX()-0.6, client.player.getBoundingBox().minY, wallVector4.getZ()-0.6), // First Corner
+                        new Vec3d(wallVector4.getX()+0.6, client.player.getBoundingBox().maxY, wallVector4.getZ()+0.6), // Second Corner
+                        RaycastContext.ShapeType.COLLIDER, // ShapeType
+                        RaycastContext.FluidHandling.NONE, client.player)); // extra Variables
+        if (hit4.getType() == HitResult.Type.BLOCK) { // check if the detected thing is a block
+            BlockHitResult blockhit4 = hit4; // sets detected block
+            wall4 = true;
+        } else {
+            wall4 = false;
+        }
+
+        if (RainworldMechanicsClient.crawling) {
+            client.player.sendMessage(Text.of("Wall3: "+wall3+" Wall4: "+wall4), true);
+        }
+
+        if (wall3 && wall4 && RainworldMechanicsClient.crawling) {
+            RainworldMechanicsClient.crawlFrame = true;
+            client.player.setNoGravity(true);
+            if (client.options.forwardKey.isPressed()) {
+                client.player.setVelocity(client.player.getRotationVector().getX()* 0.1, client.player.getRotationVector().getY()* 0.1, client.player.getRotationVector().getZ()* 0.1);
+            } else {
+                client.player.setVelocity(0, 0, 0);
+            }
+        } else {
             client.player.setNoGravity(false);
             RainworldMechanicsClient.crawlFrame = false;
         }

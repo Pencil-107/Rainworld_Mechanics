@@ -6,6 +6,7 @@ import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.sound.SoundInstanceListener;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -16,6 +17,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.RaycastContext;
 import pencil.mechanics.RainworldMechanics;
 import pencil.mechanics.RainworldMechanicsClient;
+import pencil.mechanics.init.BlockInit;
 
 public class WallMovement {
 
@@ -133,15 +135,11 @@ public class WallMovement {
                 BlockHitResult blockHit3 = Hit3; // sets detected block
                 if (blockHit3.getSide() != Direction.UP) { // checks for side of block
                     if (client.options.forwardKey.isPressed()) {
-                        // client.player.addVelocity(client.player.getVelocity().getX(), 0.6, client.player.getVelocity().getZ() ); // Slowing down fall with velocity
+                        client.player.addVelocity(client.player.getVelocity().getX(), 0.6, client.player.getVelocity().getZ() ); // Slowing down fall with velocity
                         boosted = true;
                     }
                 }
             }
-        }
-
-        if (client.player.isOnGround()) {
-            boosted = false;
         }
     }
 }

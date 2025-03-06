@@ -1,9 +1,7 @@
 package pencil.mechanics.entity;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.brain.task.LookAtMobTask;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.attribute.AttributeContainer;
@@ -24,38 +22,35 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class FivePebblesEntity extends PathAwareEntity implements GeoEntity {
+public class JellyfishEntity extends PathAwareEntity implements GeoEntity {
 
-    protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("float");
+    protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("Float");
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-    public FivePebblesEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
+    public JellyfishEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
         super(entityType, world);
     }
 
     @Override
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new LookAtEntityGoal(this, PlayerEntity.class, 10));
-
-        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
     }
 
     @Override
     public AttributeContainer getAttributes() {
         return new AttributeContainer(createMobAttributes()
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 10)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, speed)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3)
                 .build());
     }
 
     @Override
-    public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Idle", 5, this::idleAnimController));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "Walking", 5, this::idleAnimController));
     }
 
-    protected <E extends FivePebblesEntity> PlayState idleAnimController(final AnimationState<E> event) {
+    protected <E extends JellyfishEntity> PlayState idleAnimController(final AnimationState<E> event) {
         return event.setAndContinue(IDLE_ANIM);
     }
 

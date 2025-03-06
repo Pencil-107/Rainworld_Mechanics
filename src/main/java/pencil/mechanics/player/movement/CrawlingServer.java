@@ -8,7 +8,5 @@ import net.minecraft.util.math.Box;
 
 public class CrawlingServer {
     public static void main(PlayerEntity client) {
-        client.setPose(EntityPose.SWIMMING);
-        client.setVelocity(client.getVelocity().getX(), -100, client.getVelocity().getZ());
     }
 }

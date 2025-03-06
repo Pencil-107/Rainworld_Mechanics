@@ -57,6 +57,11 @@ public class EntityTypeInit<T extends Entity> implements ToggleableFeature, Type
             EntityType.Builder.<FivePebblesEntity>create(FivePebblesEntity::new, SpawnGroup.MONSTER).setDimensions(0.9F, 0.9F).maxTrackingRange(4)
     );
 
+    public static final EntityType<JellyfishEntity> JELLYFISH = register(
+            "jellyfish",
+            EntityType.Builder.<JellyfishEntity>create(JellyfishEntity::new, SpawnGroup.MONSTER).setDimensions(0.9F, 0.9F).maxTrackingRange(4)
+    );
+
     public static final EntityType<SpearEntity> SPEAR = register(
             "spear",
             EntityType.Builder.<SpearEntity>create(SpearEntity::new, SpawnGroup.MISC).setDimensions(0.5F, 0.5F).maxTrackingRange(4).trackingTickInterval(20)

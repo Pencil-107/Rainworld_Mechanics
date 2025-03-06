@@ -31,7 +31,9 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import org.lwjgl.glfw.GLFW;
+import pencil.mechanics.entity.JellyfishEntity;
 import pencil.mechanics.entity.PoleplantEntity;
 import pencil.mechanics.gui.screen.BlockEditorScreen;
 import pencil.mechanics.gui.screen.KarmaScreen;
@@ -61,6 +63,7 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 	public static final DefaultedEntityGeoModel POLEPLANT = new DefaultedEntityGeoModel<>(new Identifier(RainworldMechanics.MOD_ID, "poleplant"));
 	public static final DefaultedEntityGeoModel DROPWIG = new DefaultedEntityGeoModel<>(new Identifier(RainworldMechanics.MOD_ID, "dropwig"));
 	public static final DefaultedEntityGeoModel FIVEPEBBLES = new DefaultedEntityGeoModel<>(new Identifier(RainworldMechanics.MOD_ID, "fivepebbles"));
+	public static final DefaultedEntityGeoModel JELLYFISH = new DefaultedEntityGeoModel<>(new Identifier(RainworldMechanics.MOD_ID, "jellyfish"));
 
 	// True only if mod is on server
 	public static boolean modEnabled = false;
@@ -161,6 +164,7 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.DROPWIG , (context) -> {return new DropwigEntityRenderer(context, DROPWIG); });
 		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.JETFISH , (context) -> {return new JetfishEntityRenderer(context, JETFISH); });
 		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.POLEPLANT , (context) -> {return new PoleplantEntityRenderer(context, POLEPLANT); });
+		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.JELLYFISH , (context) -> {return new JellyfishEntityRenderer(context, JELLYFISH); });
 
 		EntityRendererRegistry.INSTANCE.register(EntityTypeInit.FIVEPEBBLES , (context) -> {return new FivePebblesEntityRenderer(context, FIVEPEBBLES); });
 
@@ -295,7 +299,6 @@ public class RainworldMechanicsClient implements ClientModInitializer {
 					// Checks if crawling
 					if (crawling && !climbing) { // Then activates the crawling code
 						pencil.mechanics.player.movement.Crawling.main(client);
-						client.player.setPose(EntityPose.SWIMMING);
 						ClientSidePacketRegistry.INSTANCE.sendToServer(RainworldMechanics.CRAWL_PACKET_ID, PacketByteBufs.empty());
 					}
 				}
